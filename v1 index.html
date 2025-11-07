@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Any & All — AI, der svarer som et menneske</title>
+  <meta name="description" content="Any & All: Laura tager telefonen, omstiller til salg og support, og taler naturligt dansk. Professionel, imødekommende og altid på.">
+  <meta property="og:title" content="Any & All — AI, der svarer som et menneske">
+  <meta property="og:description" content="Laura tager telefonen, så du kan tage dig af din forretning.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#2E6F9E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%232E6F9E'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' font-size='28' fill='white' font-family='Verdana'%3EA%26A%3C/text%3E%3C/svg%3E">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      --aa-blue:#2E6F9E; --aa-beige:#F8EBD8; --aa-cyan:#74C2E1; --aa-gray:#F5F6F8; --aa-text:#333333;
+    }
+    .aa-gradient{ background: radial-gradient(1200px 600px at 85% -10%, var(--aa-cyan) 0%, transparent 35%),
+                              radial-gradient(900px 500px at -10% 10%, #9BD7EB 0%, transparent 35%),
+                              linear-gradient(180deg, #ffffff 0%, #EAF6FB 100%);}
+    .aa-glow{ box-shadow: 0 0 0 8px rgba(116,194,225,.25); }
+    .aa-card{ box-shadow: 0 10px 30px rgba(0,0,0,.06); }
+  </style>
+</head>
+<body class="text-[var(--aa-text)] antialiased">
+  <!-- Topbar -->
+  <header class="bg-white/80 backdrop-blur border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
+      <!-- Logo (tekstlogo) -->
+      <a href="#" class="font-semibold tracking-tight" aria-label="Any & All forside">
+        <span class="text-2xl md:text-3xl" style="color: var(--aa-blue)">Any &amp; All</span>
+      </a>
+      <nav class="hidden md:flex gap-6 text-sm">
+        <a href="#saadan" class="hover:opacity-80">Sådan virker det</a>
+        <a href="#hvorfor" class="hover:opacity-80">Hvorfor os</a>
+        <a href="#kontakt" class="hover:opacity-80">Kontakt</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <a href="#kontakt" class="hidden sm:inline-block px-4 py-2 rounded-xl border border-slate-300 hover:bg-slate-50">Book en samtale</a>
+        <a href="#demo" class="inline-block px-4 py-2 rounded-xl text-white" style="background: var(--aa-blue)">Prøv Laura gratis</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="aa-gradient">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 pt-14 md:pt-24 pb-16 md:pb-24 grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <h1 class="text-4xl md:text-5xl font-semibold leading-tight">
+          AI, der <span class="text-[var(--aa-blue)]">svarer som et menneske</span>.
+        </h1>
+        <p class="mt-5 text-lg md:text-xl text-slate-700">
+          Laura tager telefonen, forstår dansk, omstiller til <strong>salg</strong> eller <strong>support</strong> og følger op — høfligt, hurtigt og altid på.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-3">
+          <a href="#demo" class="px-6 py-3 rounded-xl text-white aa-glow inline-block text-center" style="background: var(--aa-blue)">Prøv Laura gratis</a>
+          <a href="#kontakt" class="px-6 py-3 rounded-xl bg-white border border-slate-300 inline-block text-center">Book en samtale</a>
+        </div>
+        <div class="mt-6 flex items-center gap-3 text-sm text-slate-600">
+          <span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-green-500"></span>Live omstilling</span>
+          <span>•</span>
+          <span>Naturlig dansk tale</span>
+          <span>•</span>
+          <span>Virker med Twilio Studio</span>
+        </div>
+      </div>
+
+      <!-- Hero “voice” kort -->
+      <div class="relative">
+        <div class="absolute -inset-4 blur-3xl opacity-40" style="background: radial-gradient(300px 200px at 70% 20%, var(--aa-cyan), transparent)"></div>
+        <div class="relative bg-white rounded-2xl aa-card p-6 md:p-8">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center text-white" style="background: var(--aa-blue)">LA</div>
+            <div>
+              <p class="text-sm text-slate-500">Virtuel receptionist</p>
+              <p class="font-medium">Laura</p>
+            </div>
+          </div>
+          <div class="mt-6">
+            <div class="p-4 rounded-xl bg-[var(--aa-gray)]">
+              <p class="text-slate-800">“Hej, du taler med Laura fra Any &amp; All. Tast <strong>1</strong> for salg eller <strong>2</strong> for support.”</p>
+            </div>
+            <div class="mt-4 flex gap-2">
+              <span class="inline-block px-3 py-1 rounded-full bg-[var(--aa-beige)] text-sm">Dansk</span>
+              <span class="inline-block px-3 py-1 rounded-full bg-[var(--aa-beige)] text-sm">Omstilling</span>
+              <span class="inline-block px-3 py-1 rounded-full bg-[var(--aa-beige)] text-sm">24/7</span>
+            </div>
+          </div>
+          <div class="mt-6">
+            <!-- Enkel lyd-bølge animation (CSS) -->
+            <div class="flex items-end gap-1 h-10" aria-hidden="true">
+              <span class="w-1.5 bg-[var(--aa-blue)] rounded animate-[pulse_1s_ease-in-out_infinite]"></span>
+              <span class="w-1.5 bg-[var(--aa-blue)] rounded animate-[pulse_1.2s_ease-in-out_infinite] h-6"></span>
+              <span class="w-1.5 bg-[var(--aa-blue)] rounded animate-[pulse_0.9s_ease-in-out_infinite] h-8"></span>
+              <span class="w-1.5 bg-[var(--aa-blue)] rounded animate-[pulse_1.1s_ease-in-out_infinite] h-5"></span>
+              <span class="w-1.5 bg-[var(--aa-blue)] rounded animate-[pulse_1.3s_ease-in-out_infinite] h-7"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SÅDAN VIRKER DET -->
+  <section id="saadan" class="bg-white">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-24">
+      <h2 class="text-3xl md:text-4xl font-semibold">Sådan virker det</h2>
+      <p class="mt-3 text-slate-600 max-w-2xl">En enkel kæde i Twilio Studio: hils, lyt, split på tast/speech, omstil — og log alt.</p>
+
+      <div class="mt-10 grid md:grid-cols-4 gap-6">
+        <div class="bg-[var(--aa-gray)] p-6 rounded-2xl">
+          <p class="text-sm text-slate-500">Trin 1</p>
+          <h3 class="font-semibold mt-1">Hilsen</h3>
+          <p class="mt-2 text-slate-700">Laura byder velkommen på dansk i din tone.</p>
+        </div>
+        <div class="bg-[var(--aa-gray)] p-6 rounded-2xl">
+          <p class="text-sm text-slate-500">Trin 2</p>
+          <h3 class="font-semibold mt-1">Input</h3>
+          <p class="mt-2 text-slate-700">Kunden taster eller siger “salg” / “support”.</p>
+        </div>
+        <div class="bg-[var(--aa-gray)] p-6 rounded-2xl">
+          <p class="text-sm text-slate-500">Trin 3</p>
+          <h3 class="font-semibold mt-1">Omstilling</h3>
+          <p class="mt-2 text-slate-700">Laura omstiller til rette team eller voicemail.</p>
+        </div>
+        <div class="bg-[var(--aa-gray)] p-6 rounded-2xl">
+          <p class="text-sm text-slate-500">Trin 4</p>
+          <h3 class="font-semibold mt-1">Log & læring</h3>
+          <p class="mt-2 text-slate-700">Vi logger hændelser og forbedrer løbende.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HVORFOR OS -->
+  <section id="hvorfor" class="bg-[var(--aa-beige)]">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-24">
+      <h2 class="text-3xl md:text-4xl font-semibold">Hvorfor vælge Any &amp; All?</h2>
+      <div class="mt-8 grid md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-2xl aa-card">
+          <h3 class="font-semibold">Menneskelig lyd</h3>
+          <p class="mt-2 text-slate-700">Naturlig dansk stemme og høflig tone — brandet som en del af dit team.</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl aa-card">
+          <h3 class="font-semibold">Plug &amp; play</h3>
+          <p class="mt-2 text-slate-700">Virker i Twilio Studio. Du kan selv tilpasse menuer og omstilling.</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl aa-card">
+          <h3 class="font-semibold">Altid tilgængelig</h3>
+          <p class="mt-2 text-slate-700">24/7 svar — også uden for åbningstid. Ingen ventetid for kunden.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO / LEAD -->
+  <section id="demo" class="bg-white">
+    <div class="max-w-3xl mx-auto px-4 md:px-6 py-16 md:py-20 text-center">
+      <h2 class="text-3xl md:text-4xl font-semibold">Vil du prøve Laura?</h2>
+      <p class="mt-3 text-slate-600">Skriv til os, så aktiverer vi en demo på dit nummer — eller tester via vores.</p>
+
+      <form class="mt-8 grid gap-3 text-left bg-[var(--aa-gray)] p-6 md:p-8 rounded-2xl aa-card"
+            action="https://formsubmit.co/support@anyandall.dk" method="POST">
+        <input type="hidden" name="_subject" value="Demo-forespørgsel fra websitet">
+        <input type="hidden" name="_captcha" value="false">
+        <label class="text-sm text-slate-600">Navn
+          <input required name="navn" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3" placeholder="Dit navn">
+        </label>
+        <label class="text-sm text-slate-600">E-mail
+          <input required type="email" name="email" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3" placeholder="din@virksomhed.dk">
+        </label>
+        <label class="text-sm text-slate-600">Telefon (valgfri)
+          <input name="telefon" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3" placeholder="+45 …">
+        </label>
+        <label class="text-sm text-slate-600">Besked
+          <textarea name="besked" rows="4" class="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3" placeholder="Kort om dit behov…"></textarea>
+        </label>
+        <button class="mt-2 px-6 py-3 rounded-xl text-white" style="background: var(--aa-blue)">Send forespørgsel</button>
+      </form>
+
+      <p class="mt-6 text-sm text-slate-600">
+        Eller send en mail til <a class="underline" href="mailto:support@anyandall.dk">support@anyandall.dk</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- KONTAKT / FOOTER -->
+  <footer id="kontakt" class="bg-[var(--aa-blue)] text-white">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 py-12 grid md:grid-cols-4 gap-8">
+      <div class="md:col-span-2">
+        <p class="text-2xl font-semibold">Any &amp; All</p>
+        <p class="mt-3 text-white/90">AI, der svarer som et menneske — og altid tager telefonen.</p>
+      </div>
+      <div>
+        <p class="font-semibold">Kontakt</p>
+        <ul class="mt-3 space-y-1 text-white/90">
+          <li><a href="mailto:support@anyandall.dk" class="underline">support@anyandall.dk</a></li>
+          <li>CVR: (indsæt)</li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-semibold">Links</p>
+        <ul class="mt-3 space-y-1 text-white/90">
+          <li><a href="#saadan" class="underline">Sådan virker det</a></li>
+          <li><a href="#hvorfor" class="underline">Hvorfor os</a></li>
+          <li><a href="#demo" class="underline">Prøv Laura</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/20">
+      <div class="max-w-7xl mx-auto px-4 md:px-6 py-4 text-sm text-white/80 flex items-center justify-between">
+        <span>© <span id="y"></span> Any &amp; All</span>
+        <span>Bygget med kærlighed og kaffe ☕</span>
+      </div>
+    </div>
+    <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
+  </footer>
+</body>
+</html>

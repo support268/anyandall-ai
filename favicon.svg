@@ -1,7 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
-  <rect width="300" height="300" rx="40" fill="#7c5cff"/>
-  <text x="50%" y="55%" text-anchor="middle" font-size="60"
-        fill="#fff" font-family="Arial, sans-serif" font-weight="bold">
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="32" viewBox="0 0 600 96" role="img" aria-label="Any & All">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#10b981"/>
+    </linearGradient>
+  </defs>
+  <!-- Kun tekst, ingen baggrundsfirkant -->
+  <text x="0" y="70" font-family="Inter, Arial, sans-serif" font-size="64" font-weight="800" fill="url(#g)">
     Any &amp; All
   </text>
 </svg>

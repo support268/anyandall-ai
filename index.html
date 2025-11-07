@@ -1,179 +1,95 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="da">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Any & All — Dansk AI-receptionist til jeres telefon</title>
-  <meta name="description" content="Any & All: AI, der tager telefonen på dansk, kvalificerer leads og omstiller til salg eller support. Nemt at komme i gang." />
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-  <link rel="preload" href="styles.css" as="style" />
-  <link rel="stylesheet" href="styles.css" />
-  <meta property="og:title" content="Any & All — Dansk AI-receptionist" />
-  <meta property="og:description" content="Svar professionelt på dansk, sorter henvendelser og omstil til salg/support." />
-  <meta property="og:type" content="website" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Any &amp; All – Telefonen, der altid tager den</title>
+  <meta name="description" content="Any &amp; All gør din virksomheds telefonlinje venlig, effektiv og altid åben. Tast 1 for salg, 2 for support – vores stemme “Laura” guider trygt hele vejen.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <!-- Topbar -->
-  <header class="topbar container">
-    <a class="brand" href="#hero" aria-label="Any & All forside">
-      <img src="logo.svg" alt="Any & All" class="logo" />
-    </a>
-    <nav class="nav">
-      <a href="#features">Funktioner</a>
-      <a href="#how">Sådan virker det</a>
-      <a href="#pricing">Priser</a>
-      <a href="#faq">FAQ</a>
-      <a class="btn btn--ghost" href="tel:+4589887788">Ring til os</a>
-      <a class="btn" href="opret.html">Opret virksomhed</a>
-    </nav>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-row">
+      <a class="brand" href="/">
+        <span class="wordmark">Any &amp; All</span>
+      </a>
+      <nav class="nav">
+        <a href="/">Forside</a>
+        <a href="/opret.html">Opret virksomhed</a>
+        <a href="mailto:support@anyandall.dk">Kontakt</a>
+      </nav>
+    </div>
   </header>
 
   <!-- Hero -->
-  <section id="hero" class="hero">
-    <div class="container hero__grid">
-      <div class="hero__copy">
-        <h1>AI, der tager telefonen — på dansk</h1>
-        <p class="lead">
-          Any &amp; All er jeres <strong>AI-receptionist</strong>, der svarer venligt og professionelt,
-          <strong>sorterer henvendelser</strong> og <strong>omstiller</strong> til salg eller support.
+  <section class="hero">
+    <div class="container">
+      <span id="greeting" class="eyebrow"></span>
+      <h1>Telefonen, der altid tager den<br/>— og sender kunden til den rigtige.</h1>
+      <p class="lede">
+        Any &amp; All gør din virksomheds telefonlinje venlig, effektiv og altid åben.
+        Tast 1 for salg, 2 for support – vores stemme “Laura” guider trygt hele vejen.
+      </p>
+      <div class="cta-row">
+        <a class="button primary" href="/opret.html">Kom i gang gratis</a>
+        <a class="button ghost" href="mailto:support@anyandall.dk">Book en demo</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- IVR kort -->
+  <section class="section">
+    <div class="container grid">
+      <div class="card span-6">
+        <h3>Sådan svarer vi</h3>
+        <p>
+          En kort, venlig menu – og så videre til den rigtige person.
+          Det er overskueligt for kunden og effektivt for jer.
         </p>
-        <div class="cta">
-          <a class="btn btn--lg" href="opret.html">Kom i gang</a>
-          <a class="btn btn--lg btn--ghost" href="#how">Se hvordan</a>
-        </div>
-        <ul class="badges">
-          <li>🇩🇰 Naturlig dansk stemme</li>
-          <li>🤝 Tillidsvækkende tone</li>
-          <li>⚡️ Klar på få minutter</li>
+        <ul class="bullets">
+          <li>Dansk stemme (“Laura”)</li>
+          <li>Tryk <strong>1</strong> for salg, <strong>2</strong> for support</li>
+          <li>Direkte omstilling til jeres numre</li>
         </ul>
       </div>
-      <div class="hero__card" aria-label="Eksempel på velkomst">
-        <div class="mock">
-          <div class="mock__bar"></div>
-          <div class="mock__line mock__line--lg"></div>
-          <div class="mock__line"></div>
-          <div class="mock__pill">“Tryk <b>1</b> for salg · <b>2</b> for support”</div>
-          <div class="mock__wave"></div>
-        </div>
+      <div class="card span-6">
+        <h3>Hvorfor Any &amp; All?</h3>
+        <p>
+          I mister færre henvendelser, sparer tid i receptionen og giver en
+          imødekommende oplevelse — også uden for åbningstid.
+        </p>
+        <ul class="bullets">
+          <li>Højere hitrate på salg</li>
+          <li>Hurtigere hjælp i support</li>
+          <li>Rolig, professionel tone</li>
+        </ul>
       </div>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section id="features" class="section">
-    <div class="container">
-      <h2>Det får I med Any &amp; All</h2>
-      <div class="grid-3">
-        <article class="card">
-          <h3>Professionelt førstehåndsindtryk</h3>
-          <p>Laura svarer venligt og konsistent – jeres brand lyder altid godt.</p>
-        </article>
-        <article class="card">
-          <h3>Intelligent omstilling</h3>
-          <p>Opkald sendes til <strong>salg</strong> eller <strong>support</strong> — også uden for åbningstid.</p>
-        </article>
-        <article class="card">
-          <h3>Færre mistede leads</h3>
-          <p>Ingen telefonkøer. Automatisk mail ved ubesvarede opkald.</p>
-        </article>
-        <article class="card">
-          <h3>Nemt at styre</h3>
-          <p>Bygget i Twilio Studio. Test, ændr og udvid uden udviklere.</p>
-        </article>
-        <article class="card">
-          <h3>Indsigt &amp; optagelser</h3>
-          <p>Se data på samtaler og træn dialogen over tid.</p>
-        </article>
-        <article class="card">
-          <h3>Sikkerhed som standard</h3>
-          <p>Twilio-infrastruktur og databegrænsning efter behov.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- How it works -->
-  <section id="how" class="section section--alt">
-    <div class="container">
-      <h2>Sådan virker det</h2>
-      <ol class="steps">
-        <li><strong>Kald går til jeres nummer</strong> → Twilio svarer.</li>
-        <li><strong>Laura byder velkommen</strong> på dansk og beder om valg.</li>
-        <li><strong>Tryk 1/2</strong> → omstilling til salg/support.</li>
-        <li><strong>Uden for åbningstid</strong> → besked + mail til jer.</li>
-      </ol>
-      <p class="hint">Har I allerede et flow? Så finpudser vi tale, logik og rapportering.</p>
-    </div>
-  </section>
-
-  <!-- Pricing -->
-  <section id="pricing" class="section">
-    <div class="container">
-      <h2>Priser</h2>
-      <div class="pricing">
-        <div class="price-card">
-          <h3>Starter</h3>
-          <p class="price">DKK 0/måned</p>
-          <ul>
-            <li>Velkomst + 1/2 til salg/support</li>
-            <li>Dansk TTS</li>
-            <li>Mail ved ubesvaret</li>
-          </ul>
-          <a class="btn btn--block" href="opret.html">Opret virksomhed</a>
-        </div>
-        <div class="price-card price-card--pro">
-          <h3>Pro</h3>
-          <p class="price">Kontakt os</p>
-          <ul>
-            <li>Finpudsning &amp; brand-voice</li>
-            <li>Rapporter &amp; optagelser</li>
-            <li>Integrationer (CRM, kalender)</li>
-          </ul>
-          <a class="btn btn--block" href="mailto:contact@anyandall.dk?subject=Book%20demo">Book demo</a>
-        </div>
-      </div>
-      <p class="fineprint">Minutpriser fra Twilio afregnes separat. Vi hjælper med opsætning.</p>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section id="faq" class="section section--alt">
-    <div class="container">
-      <h2>Ofte stillede spørgsmål</h2>
-      <details>
-        <summary>Taler Laura ordentligt dansk?</summary>
-        <p>Ja, vi bruger naturlige danske stemmer og finpudser tekster, så det lyder godt.</p>
-      </details>
-      <details>
-        <summary>Virker det med vores nuværende nummer?</summary>
-        <p>Ja, via Twilio kan vi pege jeres nummer til flowet eller porte nummeret ind.</p>
-      </details>
-      <details>
-        <summary>Kan vi få flere valg end 1/2?</summary>
-        <p>Ja, fx faktura, onboarding, VIP-linje eller talegenkendelse uden taster.</p>
-      </details>
     </div>
   </section>
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="container footer__grid">
-      <div>
-        <img src="logo.svg" class="logo" alt="Any & All" />
-        <p class="muted">AI der tager telefonen, kvalificerer og omstiller — på dansk.</p>
-      </div>
-      <div class="footer__links">
-        <a href="#features">Funktioner</a>
-        <a href="#how">Sådan virker det</a>
-        <a href="#pricing">Priser</a>
-        <a href="opret.html">Opret virksomhed</a>
-      </div>
-    </div>
-    <div class="container footer__legal">
-      <small>© <span id="year"></span> Any &amp; All. Alle rettigheder forbeholdes.</small>
+    <div class="container footer-row">
+      <a class="brand" href="/"><span class="wordmark">Any &amp; All</span></a>
+      <small>© Any &amp; All — alle rettigheder forbeholdes</small>
     </div>
   </footer>
 
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <!-- Personlig velkomst -->
+  <script>
+    (function(){
+      const el = document.getElementById('greeting');
+      if (!el) return;
+      const name = localStorage.getItem('aa_customer_name') || "";
+      const h = new Date().getHours();
+      let prefix = 'Hej';
+      if (h < 10) prefix = 'Godmorgen';
+      else if (h < 18) prefix = 'Goddag';
+      else prefix = 'Godaften';
+      el.textContent = name ? `${prefix}, ${name} 👋` : `${prefix} 👋`;
+    })();
+  </script>
 </body>
 </html>

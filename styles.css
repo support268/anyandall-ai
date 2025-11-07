@@ -1,15 +1,21 @@
 :root{
   --bg: #fafafb;
   --paper: #ffffff;
-  --ink: #0f172a;          /* mørk marine/sort-blå */
-  --muted: #475569;        /* sekundær tekst */
-  --tint: #eef6ff;         /* blød blå tint */
-  --brand: #2563eb;        /* blå */
-  --brand-ink: #1e40af;    /* mørkere blå til hover */
+  --ink: #0f172a;
+  --muted: #475569;
+  --tint: #eef6ff;
+  --brand: #2563eb;
+  --brand-ink: #1e40af;
   --line: #e5e7eb;
 
   --radius: 16px;
   --shadow: 0 8px 24px rgba(15,23,42,.08);
+
+  /* Typo scale (forstørret) */
+  --h1: clamp(32px, 6vw, 56px);
+  --h2: clamp(24px, 3.6vw, 34px);
+  --lead: clamp(18px, 2.4vw, 22px);
+  --base: clamp(16px, 1.8vw, 18px);
 }
 
 *{box-sizing:border-box}
@@ -19,13 +25,11 @@ body{
   color: var(--ink);
   background: var(--bg);
   line-height: 1.6;
+  font-size: var(--base);
 }
 
 /* Layout helpers */
-.container{
-  width:min(1100px, 92vw);
-  margin-inline:auto;
-}
+.container{ width:min(1100px, 92vw); margin-inline:auto; }
 .nowrap{white-space:nowrap}
 
 /* Topbar */
@@ -39,20 +43,18 @@ body{
   padding: 14px 0;
 }
 .brand{display:flex; align-items:center; gap:.6rem; text-decoration:none}
-.brand-mark{
-  font-weight:800; letter-spacing:.2px; font-size: 1.1rem; color: var(--ink);
-}
+.brand-mark{ font-weight:800; letter-spacing:.2px; font-size: 1.2rem; color: var(--ink); }
 .brand-mark .amp{color:var(--brand)}
-.menu{display:flex; align-items:center; gap:1rem}
+.menu{display:flex; align-items:center; gap:.4rem}
 .menu a{
-  color: var(--muted); text-decoration:none; padding:.5rem .6rem; border-radius:10px
+  color: var(--muted); text-decoration:none; padding:.55rem .7rem; border-radius:10px
 }
 .menu a:hover{color: var(--ink); background:#f3f4f6}
 
 /* Buttons */
 .btn{
   display:inline-block; text-decoration:none; background:var(--brand); color: #fff;
-  padding: .9rem 1.1rem; border-radius: 12px; font-weight:600; box-shadow: var(--shadow);
+  padding: 1rem 1.1rem; border-radius: 12px; font-weight:700; box-shadow: var(--shadow);
 }
 .btn:hover{background:var(--brand-ink)}
 .btn--ghost{
@@ -64,31 +66,31 @@ body{
 /* Hero */
 .hero{
   background: linear-gradient(180deg, #f7fbff 0%, #ffffff 100%);
-  padding: 48px 0 24px;
+  padding: 64px 0 28px;
 }
 .hero__wrap{
-  display:grid; grid-template-columns: 1.3fr .9fr; gap: 32px; align-items: center;
+  display:grid; grid-template-columns: 1.25fr .9fr; gap: 36px; align-items: center;
 }
 .hero__hello h1{
-  margin: 10px 0 10px; line-height: 1.15; font-size: clamp(28px, 4.2vw, 44px);
+  margin: 8px 0 12px; line-height: 1.08; font-size: var(--h1);
 }
-.lead{font-size: clamp(16px, 2vw, 20px); color: var(--muted)}
-.hero__cta{display:flex; gap:.8rem; margin: 18px 0 10px; flex-wrap:wrap}
+.lead{font-size: var(--lead); color: var(--muted)}
+.hero__cta{display:flex; gap:.8rem; margin: 20px 0 12px; flex-wrap:wrap}
 .hero__points{margin: 8px 0 0 0; padding-left: 18px; color: var(--muted)}
 .hero__points li{margin:.25rem 0}
 
 .hello__badge{
   display:inline-flex; align-items:center; gap:.5rem;
-  background:#eef6ff; color:#1e40af; padding:.35rem .6rem; border-radius:999px; font-weight:700;
+  background:#eef6ff; color:#1e40af; padding:.4rem .7rem; border-radius:999px; font-weight:800; font-size: .95rem;
 }
 
 .hero__card .card{
   background: var(--paper); border:1px solid var(--line);
-  border-radius: var(--radius); box-shadow: var(--shadow); padding:18px;
+  border-radius: var(--radius); box-shadow: var(--shadow); padding:20px;
 }
-.card__header{display:flex; align-items:center; gap:.8rem; margin-bottom:10px}
+.card__header{display:flex; align-items:center; gap:.8rem; margin-bottom:12px}
 .ava{
-  width:36px; height:36px; border-radius:50%; background:#e0e7ff; color:#1e3a8a;
+  width:40px; height:40px; border-radius:50%; background:#e0e7ff; color:#1e3a8a;
   display:grid; place-items:center; font-weight:800;
 }
 .who strong{display:block}
@@ -97,25 +99,32 @@ body{
   background: var(--tint); border:1px solid #dbeafe; color:#0b2a6b;
   padding:12px 14px; border-radius: 14px; line-height:1.5; margin-bottom:10px;
 }
-.quick{list-style:none; padding:0; margin:0 0 4px 0; color: var(--muted)}
+.quick{list-style:none; padding:0; margin:0 0 6px 0; color: var(--muted)}
 .quick li{padding-left:16px; position:relative; margin:.25rem 0}
 .quick li::before{content:"›"; position:absolute; left:0; top:0; color: var(--brand)}
 .note{font-size:12px; color: var(--muted)}
 
 /* Sections */
-.section{padding:56px 0}
+.section{padding:64px 0}
 .section--tint{background: #f7fbff; border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
-.section h2{font-size: clamp(24px,3.2vw,32px); margin:0 0 18px 0}
+.section h2{font-size: var(--h2); margin:0 0 18px 0}
 .center{text-align:center}
 
 /* Grids */
 .grid3{display:grid; gap:18px; grid-template-columns: repeat(3,1fr)}
 .grid2{display:grid; gap:18px; grid-template-columns: repeat(2,1fr)}
-@media (max-width:920px){
+@media (max-width:980px){
   .hero__wrap{grid-template-columns:1fr}
+}
+@media (max-width:780px){
   .grid3{grid-template-columns:1fr}
   .grid2{grid-template-columns:1fr}
+  .hero{padding: 48px 0 20px}
+  .hero__cta .btn{width:100%; text-align:center}
+  .hello__badge{font-size:1rem}
 }
+
+/* Cards/boxes */
 .step, .box{
   background: var(--paper); border:1px solid var(--line); border-radius: var(--radius);
   padding:18px; box-shadow: var(--shadow);
@@ -132,11 +141,12 @@ body{
 }
 .form label{display:block; font-weight:600; margin:.6rem 0 .3rem}
 .form input, .form select, .form textarea{
-  width:100%; padding:.8rem .9rem; border-radius:12px; border:1px solid #dfe3eb; outline:none;
+  width:100%; padding:1rem 1rem; border-radius:12px; border:1px solid #dfe3eb; outline:none;
   font: inherit; background:#fff;
 }
 .form input:focus, .form select:focus, .form textarea:focus{border-color:#b6c3ff; box-shadow:0 0 0 3px #e8edff}
-.form__actions{display:flex; gap:.8rem; align-items:center; margin-top:.6rem; flex-wrap:wrap}
+.form__actions{display:flex; gap:.8rem; align-items:center; margin-top:.8rem; flex-wrap:wrap}
+.form__actions .btn{padding:1rem 1.1rem}
 .form__hint{color: var(--muted); font-size:14px; margin-top:.4rem}
 
 /* Footer */
@@ -146,4 +156,3 @@ body{
 .foot__links{display:flex; gap:1rem; flex-wrap:wrap}
 .foot__links a{color:#cdd5e1; text-decoration:none}
 .foot__links a:hover{color:#fff}
-

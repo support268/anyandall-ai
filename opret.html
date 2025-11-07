@@ -1,149 +1,95 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="da">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Opret virksomhed — Any & All</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="styles.css" />
+  <title>Opret virksomhed – Any &amp; All</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <header class="topbar container">
-    <a class="brand" href="index.html"><img src="logo.svg" alt="Any & All" class="logo" /></a>
-    <nav class="nav">
-      <a href="index.html#features">Funktioner</a>
-      <a href="index.html#how">Sådan virker det</a>
-      <a href="index.html#pricing">Priser</a>
-      <a href="index.html#faq">FAQ</a>
-    </nav>
+  <header class="header">
+    <div class="container header-row">
+      <a class="brand" href="/"><span class="wordmark">Any &amp; All</span></a>
+      <nav class="nav">
+        <a href="/">Forside</a>
+        <a href="/opret.html">Opret virksomhed</a>
+        <a href="mailto:support@anyandall.dk">Kontakt</a>
+      </nav>
+    </div>
   </header>
 
   <main class="section">
     <div class="container">
-      <h1>Opret virksomhed</h1>
-      <p class="lead">Udfyld felterne herunder, så sætter vi Laura op korrekt første gang.</p>
+      <h1>Opret din virksomhed</h1>
+      <p class="hint">Det tager ca. 1 minut. Vi bruger oplysningerne til at sætte jeres linje korrekt op (tryk 1 for salg, 2 for support, omstilling m.m.).</p>
 
-      <form class="form card" method="POST" action="https://formspree.io/f/mrbrzbzd/f/REPLACE_WITH_YOUR_ID">
-        <h2>Virksomhed</h2>
-        <div class="grid-2">
-          <label>Virksomhedsnavn*
-            <input name="company_name" required />
-          </label>
-          <label>CVR
-            <input name="cvr" />
-          </label>
-        </div>
-        <div class="grid-2">
-          <label>Branche
-            <input name="industry" />
-          </label>
-          <label>Website
-            <input name="website" placeholder="https://..." />
-          </label>
+      <form class="form card"
+            method="POST"
+            action="https://formspree.io/f/mrbrzbzd"
+            onsubmit="
+              try {
+                const name = this.querySelector('[name=contact_name]')?.value || '';
+                if (name) localStorage.setItem('aa_customer_name', name);
+              } catch(e) {}
+            ">
+        <div class="row">
+          <label for="company_name">Virksomhedsnavn</label>
+          <input id="company_name" name="company_name" type="text" required placeholder="Any &amp; All ApS" />
         </div>
 
-        <h2>Kontakt</h2>
-        <div class="grid-2">
-          <label>Kontaktperson*
-            <input name="contact_name" required />
-          </label>
-          <label>E-mail*
-            <input type="email" name="contact_email" required />
-          </label>
-        </div>
-        <div class="grid-2">
-          <label>Telefon*
-            <input type="tel" name="contact_phone" required />
-          </label>
-          <label>GDPR-kontakt (e-mail)
-            <input type="email" name="gdpr_email" />
-          </label>
+        <div class="row">
+          <label for="cvr">CVR (valgfri)</label>
+          <input id="cvr" name="cvr" type="text" placeholder="12345678" />
         </div>
 
-        <h2>Telefoni</h2>
-        <div class="grid-2">
-          <label>Hovednummer (indgående)
-            <input name="main_number" placeholder="+45..." />
-          </label>
-          <label>Åbningstider (fx man-fre 9-16)
-            <input name="opening_hours" />
-          </label>
-        </div>
-        <div class="grid-2">
-          <label>Omstilling — salg (tlf.)
-            <input name="route_sales" placeholder="+45..." />
-          </label>
-          <label>Omstilling — support (tlf.)
-            <input name="route_support" placeholder="+45..." />
-          </label>
+        <div class="row">
+          <label for="main_phone">Hovednummer (E.164 – fx +4522334455)</label>
+          <input id="main_phone" name="main_phone" type="tel" required placeholder="+45XXXXXXXX" />
         </div>
 
-        <h2>Laura (velkomst & stemme)</h2>
-        <label>Velkomsttekst (sådan præsenterer Laura virksomheden)*
-          <textarea name="welcome_text" rows="3" placeholder="Hej, du taler med Laura hos ... Tryk 1 for salg og 2 for support." required></textarea>
-        </label>
-        <div class="grid-3">
-          <label>Sprog
-            <select name="language">
-              <option value="da" selected>Dansk</option>
-              <option value="en">Engelsk</option>
-            </select>
-          </label>
-          <label>Tidszone
-            <input name="timezone" placeholder="Europe/Copenhagen" />
-          </label>
-          <label>Optagelser
-            <select name="recordings">
-              <option>Ja</option>
-              <option>Nej</option>
-            </select>
-          </label>
+        <div class="row">
+          <label for="contact_name">Kontaktperson</label>
+          <input id="contact_name" name="contact_name" type="text" required placeholder="Fornavn Efternavn" />
         </div>
 
-        <h2>Teknik (valgfrit)</h2>
-        <div class="grid-3">
-          <label>Twilio Account SID
-            <input name="twilio_sid" placeholder="ACxxxxxxxx..." />
-          </label>
-          <label>Webhook til status
-            <input name="status_callback" placeholder="https://..." />
-          </label>
-          <label>CRM (fx HubSpot, Pipedrive)
-            <input name="crm" />
-          </label>
+        <div class="row">
+          <label for="contact_email">E-mail</label>
+          <input id="contact_email" name="contact_email" type="email" required placeholder="navn@firma.dk" />
         </div>
 
-        <label>Øvrige noter
-          <textarea name="notes" rows="3"></textarea>
-        </label>
+        <hr style="border:none; border-top:1px solid rgba(0,0,0,.06)">
 
-        <div class="form__actions">
-          <button class="btn btn--lg" type="submit">Send oplysninger</button>
-          <a class="btn btn--ghost" href="index.html">Tilbage</a>
+        <div class="row">
+          <label for="sales_number">Omstilling – Salg (tryk 1)</label>
+          <input id="sales_number" name="sales_number" type="tel" required placeholder="+45XXXXXXXX" />
+          <span class="hint">Det nummer vi skal omstille til, når kunden trykker 1.</span>
         </div>
-        <p class="fineprint">Ved at indsende accepterer du, at vi kontakter dig for opsætning. Vi deler ikke dine oplysninger med tredjeparter.</p>
+
+        <div class="row">
+          <label for="support_number">Omstilling – Support (tryk 2)</label>
+          <input id="support_number" name="support_number" type="tel" required placeholder="+45XXXXXXXX" />
+          <span class="hint">Det nummer vi skal omstille til, når kunden trykker 2.</span>
+        </div>
+
+        <div class="row">
+          <label for="notes">Evt. bemærkninger</label>
+          <textarea id="notes" name="notes" rows="4" placeholder="Åbningstider, kø-håndtering, svartekst m.m."></textarea>
+        </div>
+
+        <div class="cta-row">
+          <button class="button primary" type="submit">Send &amp; opret</button>
+          <a class="button ghost" href="/">Tilbage</a>
+        </div>
       </form>
     </div>
   </main>
 
   <footer class="footer">
-    <div class="container footer__grid">
-      <div>
-        <img src="logo.svg" class="logo" alt="Any & All" />
-        <p class="muted">AI der tager telefonen, kvalificerer og omstiller — på dansk.</p>
-      </div>
-      <div class="footer__links">
-        <a href="index.html#features">Funktioner</a>
-        <a href="index.html#how">Sådan virker det</a>
-        <a href="index.html#pricing">Priser</a>
-        <a href="mailto:contact@anyandall.dk">Kontakt</a>
-      </div>
-    </div>
-    <div class="container footer__legal">
-      <small>© <span id="year"></span> Any &amp; All.</small>
+    <div class="container footer-row">
+      <a class="brand" href="/"><span class="wordmark">Any &amp; All</span></a>
+      <small>© Any &amp; All — alle rettigheder forbeholdes</small>
     </div>
   </footer>
-
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>

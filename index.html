@@ -1,95 +1,197 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="da">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Any &amp; All – Telefonen, der altid tager den</title>
-  <meta name="description" content="Any &amp; All gør din virksomheds telefonlinje venlig, effektiv og altid åben. Tast 1 for salg, 2 for support – vores stemme “Laura” guider trygt hele vejen.">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/styles.css" />
+  <title>Any & All — Laura tager telefonen 24/7</title>
+  <meta name="description" content="Laura svarer jeres telefon døgnet rundt, ruter opkald og giver beskeder. En enkel måde at sikre, at I aldrig misser et opkald." />
+
+  <!-- Simpelt favicon (emoji i SVG) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📞%3C/text%3E%3C/svg%3E" />
+
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="container header-row">
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="container nav">
       <a class="brand" href="/">
-        <span class="wordmark">Any &amp; All</span>
+        <span class="brand-mark">Any <span class="amp">&amp;</span> All</span>
       </a>
-      <nav class="nav">
-        <a href="/">Forside</a>
-        <a href="/opret.html">Opret virksomhed</a>
-        <a href="mailto:support@anyandall.dk">Kontakt</a>
+      <nav class="menu">
+        <a href="#saadan">Sådan virker det</a>
+        <a href="#fordele">Fordele</a>
+        <a href="#kontakt" class="btn btn--ghost">Kontakt</a>
       </nav>
     </div>
   </header>
 
-  <!-- Hero -->
+  <!-- Hero med personlig velkomst -->
   <section class="hero">
+    <div class="container hero__wrap">
+      <div class="hero__copy">
+        <div class="hero__hello">
+          <div class="hello__badge">👋 Hej!</div>
+          <h1>Jeg er Laura — jeres telefonpasser <span class="nowrap">24/7</span></h1>
+          <p class="lead">
+            Jeg tager telefonen, byder velkommen i jeres navn og sørger for, at opkald
+            lander det rigtige sted. Roligt, høfligt og konsekvent — hver gang.
+          </p>
+        </div>
+
+        <div class="hero__cta">
+          <!-- Udskift telefonnummeret og mailen nedenfor når du er klar -->
+          <a class="btn" href="tel:+4512345678">Kontakt Laura 24/7</a>
+          <a class="btn btn--ghost" href="#saadan">Se hvordan det virker</a>
+        </div>
+
+        <ul class="hero__points">
+          <li>Tryg, menneskelig velkomst på dansk</li>
+          <li>Ruter til “Salg” eller “Support” som aftalt</li>
+          <li>Viderestilling, besked og opsummering efter behov</li>
+        </ul>
+      </div>
+
+      <aside class="hero__card">
+        <div class="card">
+          <div class="card__header">
+            <div class="ava">L</div>
+            <div class="who">
+              <strong>Laura</strong>
+              <span>Receptionist</span>
+            </div>
+          </div>
+          <div class="bubble">
+            Hej og velkommen til Any <span class="amp">&amp;</span> All — hvordan kan jeg hjælpe jer i dag?
+          </div>
+          <ul class="quick">
+            <li>Viderestil til salg</li>
+            <li>Viderestil til support</li>
+            <li>Modtag besked på mail</li>
+          </ul>
+          <div class="note">Opsætningen matcher jeres åbningstider og ønsker.</div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Sådan virker det -->
+  <section id="saadan" class="section">
     <div class="container">
-      <span id="greeting" class="eyebrow"></span>
-      <h1>Telefonen, der altid tager den<br/>— og sender kunden til den rigtige.</h1>
-      <p class="lede">
-        Any &amp; All gør din virksomheds telefonlinje venlig, effektiv og altid åben.
-        Tast 1 for salg, 2 for support – vores stemme “Laura” guider trygt hele vejen.
+      <h2>Sådan virker det</h2>
+      <div class="grid3">
+        <div class="step">
+          <div class="step__no">1</div>
+          <h3>Vi sætter jeres hilsen op</h3>
+          <p>“Hej, du taler med Laura hos <em>jeres firmanavn</em>…” — afstemt med jeres tone og behov.</p>
+        </div>
+        <div class="step">
+          <div class="step__no">2</div>
+          <h3>Opkald rutes korrekt</h3>
+          <p>Opkald sendes til salg, support eller besked — præcis som I ønsker det, også uden for åbningstid.</p>
+        </div>
+        <div class="step">
+          <div class="step__no">3</div>
+          <h3>I får besked, ikke bøvl</h3>
+          <p>I får klar info pr. mail/SMS: hvem ringede, emne, og hvad der skete. Ingen mistede opkald.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fordele -->
+  <section id="fordele" class="section section--tint">
+    <div class="container">
+      <h2>Hvorfor Any <span class="amp">&amp;</span> All?</h2>
+      <div class="grid2">
+        <div class="box">
+          <h3>Altid tilgængelig</h3>
+          <p>Laura svarer døgnet rundt, så kunder altid føler sig taget imod — også når I har travlt.</p>
+        </div>
+        <div class="box">
+          <h3>Nemt at komme i gang</h3>
+          <p>Send os jeres ønsker, telefonnummer og teams — vi klarer resten. I kan ændre når som helst.</p>
+        </div>
+        <div class="box">
+          <h3>Personlig oplevelse</h3>
+          <p>Vi taler pænt, tydeligt og på dansk. Velkomst og rute passer til jeres brand.</p>
+        </div>
+        <div class="box">
+          <h3>Skalerbart</h3>
+          <p>Fra enkeltmandsvirksomhed til større teams. Laura bliver ikke træt — hun hjælper bare.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kom i gang / kontakt -->
+  <section id="kontakt" class="section">
+    <div class="container">
+      <h2>Vil I have Laura på jeres nummer?</h2>
+      <p class="lead center">
+        Svar på et par spørgsmål, så sætter vi jeres velkomst og rutevej op. Det er enkelt.
       </p>
-      <div class="cta-row">
-        <a class="button primary" href="/opret.html">Kom i gang gratis</a>
-        <a class="button ghost" href="mailto:support@anyandall.dk">Book en demo</a>
-      </div>
+
+      <!-- Enkel “opret virksomhed”-formular -->
+      <form class="form" method="POST" action="mailto:support@anyandall.dk" enctype="text/plain">
+        <div class="grid2">
+          <label>
+            Firmanavn
+            <input name="firmanavn" required placeholder="Jeres firmanavn" />
+          </label>
+          <label>
+            CVR / Org.nr. (valgfrit)
+            <input name="cvr" placeholder="CVR-nummer" />
+          </label>
+          <label>
+            Kontaktperson
+            <input name="kontaktperson" required placeholder="Fulde navn" />
+          </label>
+          <label>
+            E-mail
+            <input name="email" type="email" required placeholder="navn@firma.dk" />
+          </label>
+          <label>
+            Telefonnummer (Laura skal svare på)
+            <input name="telefon" required placeholder="+45 xx xx xx xx" />
+          </label>
+          <label>
+            Hvilke valg?
+            <select name="valg">
+              <option>Salg & Support</option>
+              <option>Kun Salg</option>
+              <option>Kun Support</option>
+              <option>Egne (skriv i besked)</option>
+            </select>
+          </label>
+        </div>
+        <label>
+          Besked / ønsker til velkomst
+          <textarea name="besked" rows="5" placeholder="Skriv fx ønsket velkomst, åbningstider, hvor vi skal viderestille osv."></textarea>
+        </label>
+        <div class="form__actions">
+          <button class="btn" type="submit">Send til os</button>
+          <a class="btn btn--ghost" href="tel:+4512345678">Eller ring til Laura nu</a>
+        </div>
+        <div class="form__hint">Når vi modtager jeres oplysninger, vender vi hurtigt tilbage og kobler Laura på.</div>
+      </form>
     </div>
   </section>
 
-  <!-- IVR kort -->
-  <section class="section">
-    <div class="container grid">
-      <div class="card span-6">
-        <h3>Sådan svarer vi</h3>
-        <p>
-          En kort, venlig menu – og så videre til den rigtige person.
-          Det er overskueligt for kunden og effektivt for jer.
-        </p>
-        <ul class="bullets">
-          <li>Dansk stemme (“Laura”)</li>
-          <li>Tryk <strong>1</strong> for salg, <strong>2</strong> for support</li>
-          <li>Direkte omstilling til jeres numre</li>
-        </ul>
-      </div>
-      <div class="card span-6">
-        <h3>Hvorfor Any &amp; All?</h3>
-        <p>
-          I mister færre henvendelser, sparer tid i receptionen og giver en
-          imødekommende oplevelse — også uden for åbningstid.
-        </p>
-        <ul class="bullets">
-          <li>Højere hitrate på salg</li>
-          <li>Hurtigere hjælp i support</li>
-          <li>Rolig, professionel tone</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
   <footer class="footer">
-    <div class="container footer-row">
-      <a class="brand" href="/"><span class="wordmark">Any &amp; All</span></a>
-      <small>© Any &amp; All — alle rettigheder forbeholdes</small>
+    <div class="container foot">
+      <div class="foot__brand">Any <span class="amp">&amp;</span> All</div>
+      <div class="foot__links">
+        <a href="#saadan">Sådan virker det</a>
+        <a href="#fordele">Fordele</a>
+        <a href="mailto:support@anyandall.dk">support@anyandall.dk</a>
+        <a href="tel:+4512345678">+45 12 34 56 78</a>
+      </div>
+      <div class="foot__copy">© <span id="y"></span> Any & All. Alle rettigheder forbeholdes.</div>
     </div>
+    <script>
+      document.getElementById('y').textContent = new Date().getFullYear();
+    </script>
   </footer>
-
-  <!-- Personlig velkomst -->
-  <script>
-    (function(){
-      const el = document.getElementById('greeting');
-      if (!el) return;
-      const name = localStorage.getItem('aa_customer_name') || "";
-      const h = new Date().getHours();
-      let prefix = 'Hej';
-      if (h < 10) prefix = 'Godmorgen';
-      else if (h < 18) prefix = 'Goddag';
-      else prefix = 'Godaften';
-      el.textContent = name ? `${prefix}, ${name} 👋` : `${prefix} 👋`;
-    })();
-  </script>
 </body>
 </html>

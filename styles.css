@@ -1,114 +1,151 @@
-/* Lys, imødekommende stil */
+/* ========== Design tokens ========== */
 :root{
-  --bg:#ffffff;
-  --panel:#ffffff;
-  --panel-border:#e6ebf1;
-  --text:#0b1020;
-  --muted:#5b6473;
-  --brand:#2563eb;   /* blå */
-  --accent:#10b981;  /* grøn */
-  --radius:16px;
-  --shadow:0 10px 30px rgba(16,24,40,.06);
+  --bg: #f7f8fb;
+  --card: #ffffff;
+  --text: #1f2937;       /* mørk grå */
+  --muted: #4b5563;      /* sekundær tekst */
+  --accent: #2f7cf6;     /* rolig blå */
+  --accent-600: #1c63d6;
+  --radius: 16px;
+  --shadow: 0 10px 30px rgba(17,24,39,.06);
 }
 
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
-  font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;}
+/* ========== Basalt ========== */
+*{ box-sizing: border-box }
+html,body{ margin:0; padding:0 }
+body{
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
 
-.container{max-width:1120px;margin-inline:auto;padding:24px}
+a{ color: inherit; text-decoration: none }
+img{ max-width:100%; display:block }
 
-.topbar{
-  position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--panel-border);
-  display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
-.brand{display:inline-flex;align-items:center;text-decoration:none}
-.logo{width:160px;height:auto;display:block}
+/* ========== Layout ========== */
+.container{
+  max-width: 1080px;
+  padding: 0 20px;
+  margin: 0 auto;
+}
 
-.nav{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.nav a{color:var(--text);text-decoration:none;opacity:.9}
-.nav a:hover{opacity:1}
-.btn{background:var(--brand);color:white;padding:10px 16px;border-radius:999px;text-decoration:none;font-weight:700;box-shadow:var(--shadow);display:inline-block;border:1px solid transparent}
-.btn:hover{filter:brightness(1.05)}
-.btn--ghost{background:transparent;border-color:var(--panel-border);color:var(--text)}
-.btn--lg{padding:14px 20px}
-.btn--block{display:block;text-align:center}
+.section{ padding: 36px 0 }
 
+.grid{
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(12, 1fr);
+}
+.span-6{ grid-column: span 12 }
+@media (min-width: 840px){
+  .span-6{ grid-column: span 6 }
+}
+
+/* ========== Header / Nav ========== */
+.header{
+  background: #fff;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+.header-row{
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 14px 0;
+}
+.nav{
+  display:flex; gap:18px; align-items:center;
+}
+.nav a{ opacity:.9 }
+.nav a:hover{ opacity:1; text-decoration: underline }
+
+/* Brand som ren tekst (fjerner “firkant”/pseudo-elementer) */
+.brand{
+  display:inline-flex; align-items:center; gap:.5rem;
+}
+.wordmark{
+  font-weight: 800;
+  letter-spacing: .2px;
+  font-size: 1.25rem;
+  color: var(--text);
+}
+/* Sikring mod tidligere regler */
+.brand::before, .header-logo::before, .logo::before{
+  content: none !important;
+  background: none !important;
+}
+.header-logo img, .logo img{ display:none !important; }
+
+/* ========== Hero ========== */
 .hero{
-  padding:40px 0 10px;
-  background:
-   radial-gradient(900px 300px at 15% -10%, rgba(37,99,235,.08), transparent 60%),
-   radial-gradient(700px 260px at 90% 0%, rgba(16,185,129,.10), transparent 60%);
+  padding: 72px 0 48px;
+  position: relative;
+  overflow: hidden;
 }
-.hero__grid{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center}
-.hero__copy h1{font-size:40px;line-height:1.1;margin:0 0 10px}
-.lead{font-size:18px;color:#243048}
-.cta{display:flex;gap:12px;margin:18px 0 8px;flex-wrap:wrap}
-.badges{display:flex;gap:12px;flex-wrap:wrap;padding:0;margin:10px 0 0;list-style:none}
-.badges li{background:#f3f6ff;border:1px solid #e0e7ff;color:#1e2a44;padding:6px 10px;border-radius:999px;font-size:13px}
-
-.hero__card{display:flex;justify-content:center}
-.mock{background:var(--panel);border:1px solid var(--panel-border);border-radius:20px;padding:18px;box-shadow:var(--shadow);width:100%;max-width:420px}
-.mock__bar{height:10px;background:#eef2f8;border-radius:8px;margin-bottom:14px;width:40%}
-.mock__line{height:10px;background:#f3f6fb;border-radius:8px;margin:8px 0}
-.mock__line--lg{width:80%}
-.mock__pill{display:inline-block;background:#f5fbf8;border:1px solid #d9f2e8;border-radius:999px;padding:10px 12px;font-size:14px;color:#0b5b46;margin:8px 0}
-.mock__pill b{font-weight:800}
-.mock__wave{height:80px;border-radius:12px;background:
-  linear-gradient(90deg, rgba(37,99,235,.18), rgba(16,185,129,.18));margin-top:10px}
-
-.section{padding:56px 0}
-.section--alt{background:linear-gradient(180deg, #f8fafc, #ffffff)}
-
-h2{font-size:28px;margin:0 0 20px}
-h3{margin:0 0 8px;font-size:18px}
-
-.grid-3{display:grid;gap:16px;grid-template-columns:repeat(3,1fr)}
-.grid-2{display:grid;gap:16px;grid-template-columns:1fr 1fr}
-.grid-3 > *, .grid-2 > *{min-width:0}
-
-.card{background:var(--panel);border:1px solid var(--panel-border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);min-height:140px}
-.card p{color:#334155}
-
-.steps{counter-reset:step;display:grid;gap:14px;margin:0 0 8px;padding-left:0}
-.steps li{list-style:none;background:#ffffff;border:1px solid var(--panel-border);border-radius:12px;padding:12px 14px;position:relative}
-.steps li::before{counter-increment:step;content:counter(step);position:absolute;left:-10px;top:-10px;background:var(--brand);color:#fff;font-weight:800;width:28px;height:28px;display:grid;place-items:center;border-radius:50%;box-shadow:var(--shadow)}
-
-.hint{color:var(--muted);margin-top:12px}
-
-.pricing{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.price-card{background:var(--panel);border:1px solid var(--panel-border);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
-.price-card--pro{outline:2px solid var(--brand)}
-.price{font-size:26px;margin:4px 0 10px}
-.price-card ul{padding-left:18px;margin:8px 0 16px}
-.fineprint{color:var(--muted);margin-top:10px}
-
-details{background:#ffffff;border:1px solid var(--panel-border);border-radius:12px;padding:12px 14px;margin:10px 0}
-summary{cursor:pointer;font-weight:700}
-
-.footer{border-top:1px solid var(--panel-border);margin-top:48px;background:#fff}
-.footer__grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;align-items:start}
-.footer__links{display:grid;gap:8px}
-.footer__links a{color:var(--text);text-decoration:none;opacity:.9}
-.footer__links a:hover{opacity:1}
-.footer__legal{display:flex;justify-content:center;padding:12px 0;color:var(--muted)}
-
-.muted{color:var(--muted)}
-
-.form label{display:grid;gap:6px;font-weight:600}
-input, textarea, select{
-  width:100%;padding:12px 12px;border:1px solid var(--panel-border);border-radius:10px;
-  font:16px/1.4 inherit;background:#fff;color:var(--text)
+.hero::after{
+  content:"";
+  position:absolute; right:-120px; top:-120px;
+  width: 380px; height: 380px; border-radius: 50%;
+  background: radial-gradient(100% 100% at 30% 30%, #e8f1ff 0%, #f7f8fb 60%, transparent 70%);
+  filter: blur(2px);
 }
-textarea{resize:vertical}
-.form__actions{display:flex;gap:12px;margin-top:8px}
-
-@media (max-width:920px){
-  .hero__grid{grid-template-columns:1fr}
-  .grid-3{grid-template-columns:1fr 1fr}
-  .pricing{grid-template-columns:1fr}
+.eyebrow{
+  display:inline-block;
+  font-size:.95rem;
+  color: var(--muted);
+  margin-bottom: 10px;
 }
-@media (max-width:600px){
-  .grid-3,.grid-2{grid-template-columns:1fr}
-  .topbar .nav{gap:10px}
-  .hero__copy h1{font-size:32px}
-  .logo{width:140px}
+.hero h1{
+  font-size: clamp(28px, 5vw, 44px);
+  line-height: 1.1;
+  letter-spacing: .2px;
+  margin: 0 0 10px 0;
+}
+.lede{
+  color: var(--muted);
+  max-width: 60ch;
+  margin: 0;
+}
+.cta-row{
+  display:flex; gap:12px; flex-wrap: wrap; margin-top: 20px;
+}
+.button{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding: 12px 18px; border-radius: 999px; border: 1px solid transparent;
+  font-weight: 600;
+}
+.button.primary{ background: var(--accent); color:#fff }
+.button.primary:hover{ background: var(--accent-600) }
+.button.ghost{ background:#fff; border-color: rgba(0,0,0,.08) }
+
+/* ========== Cards ========== */
+.card{
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+.card h3{ margin-top:0; margin-bottom:6px; letter-spacing:.2px }
+.card p{ color: var(--muted); margin-top:0 }
+.bullets{ margin: 8px 0 0 0; padding-left: 18px; color: var(--muted) }
+
+/* ========== Forms (bruges i opret.html) ========== */
+.form.card{ display:grid; gap:12px }
+.form .row{ display:grid; gap:8px }
+input, select, textarea{
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: #fff;
+  font: inherit;
+  color: inherit;
+}
+label{ font-weight:600 }
+.hint{ color: var(--muted); font-size: .9rem }
+
+/* ========== Footer ========== */
+.footer{
+  background:#fff;
+  border-top: 1px solid rgba(0,0,0,.06);
+}
+.footer-row{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding: 18px 0;
 }

@@ -3,55 +3,185 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Any and All — Dansk AI-telefoni der omstiller rigtigt første gang</title>
-  <meta name="description" content="Any and All: Dansk AI-receptionist, der tager telefonen, forstår henvendelsen og omstiller til den rigtige person. Venligt, professionelt og 100% dansk." />
+  <title>Any & All — AI, der tager telefonen, kvalificerer leads og omstiller</title>
+  <meta name="description" content="Any & All: Dansk AI-receptionist, der tager telefonen, kvalificerer leads, omstiller til salg/support og booker møder. Hurtigt, professionelt og prisvenligt." />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="preload" href="/styles.css" as="style" />
+  <link rel="stylesheet" href="/styles.css" />
+  <meta property="og:title" content="Any & All — Dansk AI-receptionist til jeres telefon" />
+  <meta property="og:description" content="Få en professionel AI, der tager telefonen, kvalificerer og omstiller på få minutter." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.anyandall.dk/" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="container">
-      <div class="brand">Any &amp; All</div>
-      <nav class="nav">
-        <a href="#how">Sådan virker det</a>
-        <a href="#features">Fordele</a>
-        <a href="#contact" class="nav-btn">Book demo</a>
-      </nav>
-    </div>
+  <!-- Topbar -->
+  <header class="topbar container">
+    <a class="brand" href="#hero" aria-label="Any & All forside">
+      <img src="/logo.svg" alt="Any & All logo" class="logo" />
+      <span class="brand-name">Any &amp; All</span>
+    </a>
+    <nav class="nav">
+      <a href="#features">Funktioner</a>
+      <a href="#how">Sådan virker det</a>
+      <a href="#pricing">Priser</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn btn--ghost" href="tel:+4589887788">Ring til os</a>
+      <a class="btn" href="mailto:contact@anyandall.dk?subject=Book%20demo&body=Hej%20Any%20%26%20All%2C%0A%0AJeg%20vil%20gerne%20booke%20en%20demo.%0A%0AMvh.%20">Book demo</a>
+    </nav>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="container">
-        <h1>AI-receptionist på dansk, der omstiller rigtigt — første gang</h1>
-        <p>“Laura” tager telefonen, forstår hvad kunden vil, og omstiller til salg, support eller den rette person.</p>
-        <a class="btn" href="mailto:hello@anyandall.dk?subject=Book%20demo">Book demo</a>
+  <!-- Hero -->
+  <section id="hero" class="hero">
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <h1>AI, der tager telefonen — på dansk</h1>
+        <p class="lead">
+          Any &amp; All er jeres <strong>AI-receptionist</strong>, der svarer professionelt, forstår kunden,
+          <strong>sorterer henvendelser</strong> og <strong>omstiller</strong> til salg eller support. Bedre kundeoplevelse, færre mistede leads.
+        </p>
+        <div class="cta">
+          <a class="btn btn--lg" href="mailto:contact@anyandall.dk?subject=Book%20demo&body=Hej%20Any%20%26%20All%2C%0A%0AJeg%20vil%20gerne%20booke%20en%20demo.%0A%0AMvh.%20">Book en demo</a>
+          <a class="btn btn--lg btn--ghost" href="#how">Se hvordan</a>
+        </div>
+        <ul class="badges">
+          <li>🇩🇰 Naturlig dansk stemme</li>
+          <li>⚡️ Opsat på få minutter</li>
+          <li>🔗 Virker med Twilio/Studio</li>
+        </ul>
       </div>
-    </section>
-
-    <section id="how" class="section">
-      <div class="container">
-        <h2>Sådan virker det</h2>
-        <p>1️⃣ Kunden ringer → 2️⃣ Laura forstår → 3️⃣ Rigtigt omstillet.</p>
+      <div class="hero__card" aria-hidden="true">
+        <div class="mock">
+          <div class="mock__bar"></div>
+          <div class="mock__line mock__line--lg"></div>
+          <div class="mock__line"></div>
+          <div class="mock__pill">“Tryk 1 for salg · 2 for support”</div>
+          <div class="mock__wave"></div>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="contact" class="section">
-      <div class="container">
-        <h2>Kontakt os</h2>
-        <p>hello@anyandall.dk</p>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
+  <!-- Features -->
+  <section id="features" class="section">
     <div class="container">
-      <p>© <span id="y"></span> Any and All — AI-telefoni</p>
+      <h2>Det får I med Any &amp; All</h2>
+      <div class="grid-3">
+        <article class="card">
+          <h3>Professionelt førstehåndsindtryk</h3>
+          <p>Laura svarer venligt og konsistent – hver gang. Jeres brand lyder altid godt.</p>
+        </article>
+        <article class="card">
+          <h3>Intelligent omstilling</h3>
+          <p>Caller intent opfanges, og opkald sendes til <strong>salg</strong> eller <strong>support</strong> – også uden for åbningstid.</p>
+        </article>
+        <article class="card">
+          <h3>Færre mistede leads</h3>
+          <p>Ingen telefonkøer. Automatisk besked/mail ved ubesvaret – så I kan ringe tilbage.</p>
+        </article>
+        <article class="card">
+          <h3>Plug-and-play</h3>
+          <p>Bygget direkte i Twilio Studio. Nemt at teste, ændre og udvide.</p>
+        </article>
+        <article class="card">
+          <h3>Optagelser &amp; statistik</h3>
+          <p>Få indblik i kald, varighed og udfald. Træn og forbedr dialogen over tid.</p>
+        </article>
+        <article class="card">
+          <h3>Sikkerhed som standard</h3>
+          <p>Twilio-infrastruktur, rettighedsstyring, og mulighed for databegrænsning.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how" class="section section--alt">
+    <div class="container">
+      <h2>Sådan virker det</h2>
+      <ol class="steps">
+        <li><strong>Kald går til jeres nummer</strong> → Twilio svarer.</li>
+        <li><strong>Laura byder velkommen</strong> på dansk og beder om valg.</li>
+        <li><strong>Split på tast 1/2</strong> → omstilling til salg/support.</li>
+        <li><strong>Fallback uden for åbningstid</strong> → besked og mail.</li>
+      </ol>
+      <p class="hint">Allerede sat op? Perfekt — så optimerer vi dialogen og rapporteringen.</p>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="section">
+    <div class="container">
+      <h2>Enkel prismodel</h2>
+      <div class="pricing">
+        <div class="price-card">
+          <h3>Starter</h3>
+          <p class="price">DKK 0/måned</p>
+          <ul>
+            <li>Studio-flow (salg/support)</li>
+            <li>Dansk TTS</li>
+            <li>Mail ved ubesvaret</li>
+          </ul>
+          <a class="btn btn--block" href="mailto:contact@anyandall.dk?subject=Kom%20i%20gang%20-%20Starter">Kom i gang</a>
+        </div>
+        <div class="price-card price-card--pro">
+          <h3>Pro</h3>
+          <p class="price">Kontakt os</p>
+          <ul>
+            <li>Dialog-tuning &amp; brand-voice</li>
+            <li>Rapporter &amp; optagelser</li>
+            <li>Integrationer (CRM, kalender)</li>
+          </ul>
+          <a class="btn btn--block" href="mailto:contact@anyandall.dk?subject=Book%20demo%20-%20Pro">Book demo</a>
+        </div>
+      </div>
+      <p class="fineprint">Minutpriser fra Twilio afregnes separat (standard takster). Vi hjælper gerne med opsætning.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section section--alt">
+    <div class="container">
+      <h2>Ofte stillede spørgsmål</h2>
+      <details>
+        <summary>Taler Laura ordentligt dansk?</summary>
+        <p>Ja. Vi bruger danske TTS-stemmer, og dine tekster finpudses, så udtale og tone lyder naturlig.</p>
+      </details>
+      <details>
+        <summary>Virker det med vores nuværende nummer?</summary>
+        <p>Ja, via Twilio kan vi pege jeres nummer til Studio-flowet eller porte nummeret ind.</p>
+      </details>
+      <details>
+        <summary>Kan vi få omstilling til flere teams?</summary>
+        <p>Ja. Vi kan udvide med flere valg (fx onboarding, faktura, VIP-linje) eller tale-genkendelse.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div>
+        <div class="footer__brand">
+          <img src="/logo.svg" class="logo" alt="" aria-hidden="true" />
+          <span>Any &amp; All</span>
+        </div>
+        <p class="muted">AI der tager telefonen, kvalificerer og omstiller — på dansk.</p>
+      </div>
+      <div class="footer__links">
+        <a href="#features">Funktioner</a>
+        <a href="#how">Sådan virker det</a>
+        <a href="#pricing">Priser</a>
+        <a href="mailto:contact@anyandall.dk">Kontakt</a>
+      </div>
+    </div>
+    <div class="container footer__legal">
+      <small>© <span id="year"></span> Any &amp; All. Alle rettigheder forbeholdes.</small>
     </div>
   </footer>
 
   <script>
-    document.getElementById('y').textContent = new Date().getFullYear();
+    // Årstal i footer
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>

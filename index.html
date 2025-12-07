@@ -1,215 +1,257 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="da">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Any & All — Laura svarer 24/7</title>
-  <meta name="description" content="Laura tager imod opkald i jeres navn, viderestiller til afdelinger/medarbejdere, tager beskeder og svarer på simple spørgsmål. Døgnet rundt." />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📞%3C/text%3E%3C/svg%3E" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Any & All – Laura, jeres AI-receptionist 24/7</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 </head>
+
 <body>
-  <!-- Topbar -->
-  <header class="topbar">
-    <div class="container nav">
-      <a class="brand" href="/">
-        <span class="brand-mark">Any <span class="amp">&amp;</span> All</span>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <img src="logo.svg" alt="Any & All" />
       </a>
-      <nav class="menu">
+      <nav class="main-nav">
         <a href="#saadan">Sådan virker det</a>
         <a href="#fordele">Fordele</a>
-        <a href="#kontakt" class="btn btn--ghost">Kontakt</a>
+        <a href="#priser">Priser</a>
+        <a href="#kontakt">Kontakt</a>
+        <a href="opret.html" class="btn-nav">Få Laura på jeres nummer</a>
       </nav>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container hero__wrap">
-      <div class="hero__copy">
-        <div class="hero__hello">
-          <div class="hello__badge" id="greet">Goddag</div>
-          <h1>Jeg er Laura — jeres venlige stemme <span class="nowrap">24/7</span></h1>
-          <p class="lead">
-            Jeg byder velkommen i jeres navn, viderestiller til de rigtige afdelinger eller medarbejdere,
-            tager imod beskeder og sender dem på mail eller SMS, når I er optaget.
-            Jeg kan også besvare simple spørgsmål ud fra jeres hjemmeside og den info, I deler med os.
+  <main>
+    <!-- HERO -->
+    <section class="section hero">
+      <div class="section-inner hero-inner">
+        <div class="hero-left">
+          <p class="eyebrow">Godaften 👋</p>
+          <h1>Jeg er Laura — jeres venlige stemme 24/7</h1>
+          <p class="hero-lead">
+            Jeg byder velkommen i jeres navn, viderestiller til de rigtige afdelinger
+            eller medarbejdere, tager imod beskeder og sender dem på mail eller SMS,
+            når I er optaget. Jeg kan også besvare simple spørgsmål ud fra jeres
+            hjemmeside og den info, I deler med os.
+          </p>
+
+          <div class="hero-actions">
+            <a href="tel:+4520925422" class="btn-primary">Kontakt Laura 24/7</a>
+            <a href="#demo-video" class="btn-secondary">Se hvordan det virker</a>
+          </div>
+
+          <ul class="hero-points">
+            <li>Personlig og rolig velkomst på dansk</li>
+            <li>Viderestilling til afdeling/medarbejder efter ønske</li>
+            <li>Beskeder leveret på mail/SMS med det samme</li>
+            <li>Svar på enkle spørgsmål fra jeres offentlige info</li>
+          </ul>
+        </div>
+
+        <div class="hero-right">
+          <div class="laura-card fade-in">
+            <div class="laura-header">
+              <div class="laura-avatar">L</div>
+              <div>
+                <div class="laura-name">Laura</div>
+                <div class="laura-role">Receptionist</div>
+              </div>
+            </div>
+            <div class="laura-bubble">
+              <p class="typewriter-laura">
+                Godaften og velkommen til Any &amp; All — hvordan kan jeg hjælpe jer i dag?
+              </p>
+            </div>
+            <ul class="laura-options typewriter-body">
+              <li>Viderestil til valgt afdeling/medarbejder</li>
+              <li>Tag besked og send til teamet</li>
+              <li>Besvar simple spørgsmål</li>
+            </ul>
+            <p class="laura-note">
+              Opsætningen matcher jeres åbningstider, afdelinger og tone.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SÅDAN VIRKER DET -->
+    <section id="saadan" class="section">
+      <div class="section-inner">
+        <h2>Sådan virker det</h2>
+        <div class="steps-grid typewriter-body">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3>Vi sætter hilsenen op</h3>
+            <p>
+              “Hej, du taler med Laura hos jeres firmanavn…” — vi matcher jeres stil,
+              tone og brand.
+            </p>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3>Smart viderestilling</h3>
+            <p>
+              Opkald går til rette afdeling eller person — eller til besked, hvis der
+              ikke svares.
+            </p>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3>Klar besked tilbage til jer</h3>
+            <p>
+              I modtager mail/SMS med detaljer: hvem ringede, emne og hvad der blev
+              aftalt.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORDELE -->
+    <section id="fordele" class="section">
+      <div class="section-inner">
+        <h2>Hvorfor Any &amp; All?</h2>
+        <div class="benefits-grid typewriter-body">
+          <div class="benefit">
+            <h3>Altid tilgængelig</h3>
+            <p>
+              Kunder bliver taget venligt imod — også uden for åbningstid.
+            </p>
+          </div>
+          <div class="benefit">
+            <h3>Nemt at komme i gang</h3>
+            <p>
+              Del jeres afdelinger, åbningstider og ønsker — vi klarer resten.
+            </p>
+          </div>
+          <div class="benefit">
+            <h3>Personlig oplevelse</h3>
+            <p>
+              Dansk tale, rolig tone og jeres navn. Ingen scripts, bare god kundeservice.
+            </p>
+          </div>
+          <div class="benefit">
+            <h3>Skalerbart</h3>
+            <p>
+              Fra solo til større teams. Laura skalerer med jeres behov.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEMO-VIDEO -->
+    <section id="demo-video" class="section">
+      <div class="section-inner video-wrapper fade-in">
+        <h2>Se hvordan Laura arbejder</h2>
+
+        <div class="video-container">
+          <video
+            src="202511231852.mp4"
+            controls
+            playsinline
+            preload="metadata"
+          ></video>
+        </div>
+
+        <p class="typewriter-body video-caption">
+          Laura tager telefonen i jeres navn – rolig, professionel og altid tilgængelig.
+        </p>
+
+        <a href="opret.html" class="btn-primary">Få Laura på jeres nummer</a>
+      </div>
+    </section>
+
+    <!-- PRISER -->
+    <section id="priser" class="section">
+      <div class="section-inner fade-in">
+        <h2>Priser</h2>
+
+        <div class="typewriter-body">
+          <p><strong>Standardpakke</strong><br />
+            699 kr./måned. Ingen binding. Opsætning er inkluderet.
+          </p>
+
+          <p>
+            Laura svarer jeres opkald 24/7 i jeres navn, viderestiller til de rigtige
+            personer og sender beskeder videre på mail eller SMS.
+          </p>
+
+          <p><strong>Ekstra telefonnummer</strong><br />
+            +99 kr./måned pr. nummer.
+          </p>
+
+          <p><strong>Udvidet vidensbase</strong><br />
+            +199 kr./måned. Laura kan bruge mere detaljeret info, I deler med os
+            (fx interne processer, ekstra FAQ eller interne noter).
           </p>
         </div>
 
-        <div class="hero__cta">
-          <!-- Skift nummeret her, når du er klar -->
-          <a class="btn" href="tel:+4512345678">Kontakt Laura 24/7</a>
-          <a class="btn btn--ghost" href="#saadan">Se hvordan det virker</a>
+        <a href="opret.html" class="btn-primary">
+          Kom i gang med Laura
+        </a>
+      </div>
+    </section>
+
+    <!-- CTA: VIL I HAVE LAURA -->
+    <section class="section">
+      <div class="section-inner">
+        <h2>Vil I have Laura på jeres nummer?</h2>
+        <p class="typewriter-body">
+          Svar på et par spørgsmål, så sætter vi jeres velkomst og rutevej op. Det er enkelt.
+        </p>
+
+        <div class="cta-stack">
+          <a href="opret.html" class="btn-primary">Opret Laura til jeres virksomhed</a>
+          <p class="cta-or">eller</p>
+          <a href="tel:+4520925422" class="btn-secondary">Ring til Laura nu</a>
         </div>
 
-        <ul class="hero__points">
-          <li>Personlig og rolig velkomst på dansk</li>
-          <li>Viderestilling til afdeling/medarbejder efter ønske</li>
-          <li>Beskeder leveret på mail/SMS med det samme</li>
-          <li>Svar på enkle spørgsmål fra jeres offentlige info</li>
-        </ul>
+        <p class="gdpr-note">
+          Ved opkald kan din samtale blive behandlet af en AI-assistent. Vi bruger dine
+          oplysninger til at håndtere din henvendelse og forbedre vores service.
+        </p>
       </div>
+    </section>
 
-      <aside class="hero__card">
-        <div class="card">
-          <div class="card__header">
-            <div class="ava">L</div>
-            <div class="who">
-              <strong>Laura</strong>
-              <span>Receptionist</span>
-            </div>
+    <!-- KONTAKT -->
+    <section id="kontakt" class="section">
+      <div class="section-inner">
+        <h2>Kontakt</h2>
+        <div class="contact-grid typewriter-body">
+          <div>
+            <p><strong>Any &amp; All</strong></p>
+            <p>E-mail: <a href="mailto:support@anyandall.dk">support@anyandall.dk</a></p>
+            <p>Telefon: <a href="tel:+4520925422">+45 20 92 54 22</a></p>
           </div>
-          <div class="bubble">
-            <strong id="greetInline">Goddag</strong> og velkommen til Any <span class="amp">&amp;</span> All — hvordan kan jeg hjælpe jer i dag?
-          </div>
-          <ul class="quick">
-            <li>Viderestil til valgt afdeling/medarbejder</li>
-            <li>Tag besked og send til teamet</li>
-            <li>Besvar simple spørgsmål</li>
-          </ul>
-          <div class="note">Opsætningen matcher jeres åbningstider, afdelinger og tone.</div>
-        </div>
-      </aside>
-    </div>
-  </section>
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 18px; box-shadow: 0 18px 40px rgba(0,0,0,0.25); margin-top: 20px;">
-  <video 
-    src="202511231852.mp4"
-    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 18px; cursor: pointer;"
-    controls
-    playsinline
-  ></video>
-</div>
-
-<div style="text-align: center; margin-top: 20px;">
-  <a href="/book-demo" style="display: inline-block; padding: 14px 32px; border-radius: 999px; background: linear-gradient(135deg, #2563eb, #22c55e); color: #fff; font-size: 16px; font-weight: 600; text-decoration: none; box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35); text-decoration: none;">
-    Book en demo med Laura
-  </a>
-</div>
-
-  <!-- Sådan virker det -->
-  <section id="saadan" class="section">
-    <div class="container">
-      <h2>Sådan virker det</h2>
-      <div class="grid3">
-        <div class="step">
-          <div class="step__no">1</div>
-          <h3>Vi sætter hilsenen op</h3>
-          <p>“Hej, du taler med Laura hos <em>jeres firmanavn</em>…” — vi matcher jeres stil og brand.</p>
-        </div>
-        <div class="step">
-          <div class="step__no">2</div>
-          <h3>Smart viderestilling</h3>
-          <p>Opkald går til rette afdeling eller person — eller til besked, hvis der ikke svares.</p>
-        </div>
-        <div class="step">
-          <div class="step__no">3</div>
-          <h3>Klar besked tilbage til jer</h3>
-          <p>I modtager mail/SMS med detaljer: hvem ringede, emne og hvad der blev aftalt.</p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <!-- Fordele -->
-  <section id="fordele" class="section section--tint">
-    <div class="container">
-      <h2>Hvorfor Any <span class="amp">&amp;</span> All?</h2>
-      <div class="grid2">
-        <div class="box">
-          <h3>Altid tilgængelig</h3>
-          <p>Kunder bliver taget venligt imod — også uden for åbningstid.</p>
-        </div>
-        <div class="box">
-          <h3>Nemt at komme i gang</h3>
-          <p>Del jeres afdelinger, åbningstider og ønsker — vi klarer resten.</p>
-        </div>
-        <div class="box">
-          <h3>Personlig oplevelse</h3>
-          <p>Dansk tale, rolig tone og jeres navn. Ingen scripts, bare god kundeservice.</p>
-        </div>
-        <div class="box">
-          <h3>Skalerbart</h3>
-          <p>Fra solo til større teams. Laura skalerer med jeres behov.</p>
-        </div>
+  <footer class="site-footer">
+    <div class="footer-inner typewriter-body">
+      <div class="footer-left">
+        <p>Any &amp; All</p>
+        <p>
+          <a href="#saadan">Sådan virker det</a> ·
+          <a href="#fordele">Fordele</a> ·
+          <a href="#priser">Priser</a> ·
+          <a href="#kontakt">Kontakt</a>
+        </p>
+      </div>
+      <div class="footer-right">
+        <p><a href="mailto:support@anyandall.dk">support@anyandall.dk</a></p>
+        <p><a href="tel:+4520925422">+45 20 92 54 22</a></p>
       </div>
     </div>
-  </section>
-
-  <!-- Kom i gang / kontakt -->
-  <section id="kontakt" class="section">
-    <div class="container">
-      <h2>Vil I have Laura på jeres nummer?</h2>
-      <p class="lead center">
-        Svar på et par spørgsmål, så sætter vi jeres velkomst og rutevej op. Det er enkelt.
-      </p>
-
-      <form class="form" method="POST" action="mailto:support@anyandall.dk" enctype="text/plain">
-        <div class="grid2">
-          <label>
-            Firmanavn
-            <input name="firmanavn" required placeholder="Jeres firmanavn" />
-          </label>
-          <label>
-            CVR / Org.nr. (valgfrit)
-            <input name="cvr" placeholder="CVR-nummer" />
-          </label>
-          <label>
-            Kontaktperson
-            <input name="kontaktperson" required placeholder="Fulde navn" />
-          </label>
-          <label>
-            E-mail
-            <input name="email" type="email" required placeholder="navn@firma.dk" />
-          </label>
-          <label>
-            Telefonnummer (Laura skal svare på)
-            <input name="telefon" required placeholder="+45 xx xx xx xx" />
-          </label>
-          <label>
-            Afdelinger / rute
-            <input name="rute" placeholder="Fx Reception, Salg, Teknik, Økonomi..." />
-          </label>
-        </div>
-        <label>
-          Besked / ønsker til velkomst
-          <textarea name="besked" rows="5" placeholder="Skriv fx ønsket velkomst, åbningstider, hvor vi skal viderestille, svar vi må give osv."></textarea>
-        </label>
-        <div class="form__actions">
-          <button class="btn" type="submit">Send til os</button>
-          <a class="btn btn--ghost" href="tel:+4512345678">Eller ring til Laura nu</a>
-        </div>
-        <div class="form__hint">Vi vender hurtigt tilbage og kobler Laura på.</div>
-      </form>
+    <div class="footer-bottom">
+      © 2025 Any &amp; All. Alle rettigheder forbeholdes.
     </div>
-  </section>
-
-  <footer class="footer">
-    <div class="container foot">
-      <div class="foot__brand">Any <span class="amp">&amp;</span> All</div>
-      <div class="foot__links">
-        <a href="#saadan">Sådan virker det</a>
-        <a href="#fordele">Fordele</a>
-        <a href="mailto:support@anyandall.dk">support@anyandall.dk</a>
-        <a href="tel:+4512345678">+45 20 92 54 22</a>
-      </div>
-      <div class="foot__copy">© <span id="y"></span> Any & All. Alle rettigheder forbeholdes.</div>
-    </div>
-    <script>
-      // Dynamisk hilsen (Godmorgen/Goddag/Godaften)
-      (function(){
-        var h = new Date().getHours();
-        var txt = (h >= 5 && h < 10) ? "Godmorgen" :
-                  (h >= 10 && h < 18) ? "Goddag" : "Godaften";
-        var el = document.getElementById('greet');
-        var el2 = document.getElementById('greetInline');
-        if (el) el.textContent = txt + " 👋";
-        if (el2) el2.textContent = txt;
-        // Årstal i footer
-        document.getElementById('y').textContent = new Date().getFullYear();
-      })();
-    </script>
   </footer>
 </body>
 </html>

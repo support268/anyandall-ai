@@ -5,77 +5,138 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Opret Laura – Any & All</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 </head>
 
 <body>
-  <header>
-    <a href="index.html" class="logo">Any & All</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <img src="logo.svg" alt="Any & All" />
+      </a>
+      <nav class="main-nav">
+        <a href="index.html#saadan">Sådan virker det</a>
+        <a href="index.html#fordele">Fordele</a>
+        <a href="index.html#priser">Priser</a>
+        <a href="index.html#kontakt">Kontakt</a>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <section class="form-section">
-      <h1>Vil I have Laura på jeres nummer?</h1>
-      <p>Vi sætter hurtigt jeres velkomst og viderestilling op.</p>
+    <section class="section">
+      <div class="section-inner">
+        <h1>Vil I have Laura på jeres nummer?</h1>
+        <p class="typewriter-body">
+          Svar på et par spørgsmål om jeres virksomhed – så sætter vi jeres velkomst,
+          viderestilling og besked-flow op for jer.
+        </p>
 
-      <form action="https://formspree.io/f/xpzvdnve" method="POST" class="setup-form">
+        <form
+          action="https://formspree.io/f/xpzvdnve"
+          method="POST"
+          class="setup-form typewriter-body"
+        >
+          <label for="firmanavn">Firmanavn</label>
+          <input type="text" id="firmanavn" name="firmanavn" required />
 
-        <label for="firmanavn">Firmanavn</label>
-        <input type="text" id="firmanavn" name="firmanavn" required />
+          <label for="cvr">CVR / Org.nr. (valgfrit)</label>
+          <input type="text" id="cvr" name="cvr" />
 
-        <label for="cvr">CVR / Org.nr. (valgfrit)</label>
-        <input type="text" id="cvr" name="cvr" />
+          <label for="kontaktperson">Kontaktperson</label>
+          <input type="text" id="kontaktperson" name="kontaktperson" required />
 
-        <label for="kontaktperson">Kontaktperson</label>
-        <input type="text" id="kontaktperson" name="kontaktperson" required />
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" required />
 
-        <label for="email">E-mail</label>
-        <input type="email" id="email" name="email" required />
+          <label for="tlf">Telefonnummer (Laura skal svare på)</label>
+          <input
+            type="text"
+            id="tlf"
+            name="tlf"
+            placeholder="+45 xx xx xx xx"
+            required
+          />
 
-        <label for="tlf">Telefonnummer (Laura skal svare på)</label>
-        <input type="text" id="tlf" name="tlf" placeholder="+45 xx xx xx xx" required />
+          <label for="afdelinger">Afdelinger / rute</label>
+          <input
+            type="text"
+            id="afdelinger"
+            name="afdelinger"
+            placeholder="Fx: Reception, Salg, Teknik, Økonomi..."
+          />
 
-        <label for="afdelinger">Afdelinger / rute</label>
-        <input type="text" id="afdelinger" name="afdelinger"
-               placeholder="Fx: Reception, Salg, Teknik, Økonomi..." />
+          <!-- Branche-quiz + dynamisk placeholder -->
+          <div id="laura-setup">
+            <label><strong>Besked / ønsker til velkomst</strong></label>
 
-        <!-- 🚀 NY SEKTOR: Branche-quiz + dynamisk placeholder -->
-        <div id="laura-setup">
-          <label><strong>Besked / ønsker til velkomst</strong></label>
-
-          <!-- Branchevalg -->
-          <div class="branch-picker" style="margin: 10px 0 12px;">
-            <p style="margin-bottom: 6px;">Hvilken type virksomhed er I?</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-              <button type="button" class="branch-btn" data-branch="maegler">Ejendomsmægler</button>
-              <button type="button" class="branch-btn" data-branch="klinik">Klinik / psykolog mv.</button>
-              <button type="button" class="branch-btn" data-branch="haandvaerker">Håndværker</button>
-              <button type="button" class="branch-btn" data-branch="restaurant">Restaurant</button>
-              <button type="button" class="branch-btn" data-branch="andet">Andet</button>
+            <div class="branch-picker">
+              <p>Hvilken type virksomhed er I?</p>
+              <div class="branch-btn-row">
+                <button type="button" class="branch-btn" data-branch="maegler">
+                  Ejendomsmægler
+                </button>
+                <button type="button" class="branch-btn" data-branch="klinik">
+                  Klinik / psykolog mv.
+                </button>
+                <button type="button" class="branch-btn" data-branch="haandvaerker">
+                  Håndværker
+                </button>
+                <button type="button" class="branch-btn" data-branch="restaurant">
+                  Restaurant
+                </button>
+                <button type="button" class="branch-btn" data-branch="andet">
+                  Andet
+                </button>
+              </div>
             </div>
+
+            <textarea
+              id="beskedfelt"
+              name="besked"
+              placeholder="Fx: velkomst/tone, interne ruter/numre, særlige svar Laura må give, ekstra info der ikke står på jeres hjemmeside (fx svartider, liggetider, m²-priser, samarbejdspartnere), og hvor beskeder skal sendes."
+            ></textarea>
+
+            <input type="hidden" id="branche-hidden" name="branche" value="" />
           </div>
 
-          <!-- Selve tekstfeltet -->
-          <textarea
-            id="beskedfelt"
-            name="besked"
-            placeholder="Fx: velkomst/tone, interne ruter/numre, særlige svar Laura må give, ekstra info der ikke står på jeres hjemmeside (fx svartider, liggetider, m²-priser, samarbejdspartnere), og hvor beskeder skal sendes."
-            style="width: 100%; min-height: 160px; padding: 12px; resize: vertical;"
-          ></textarea>
+          <button type="submit" class="submit-btn">Send til os</button>
 
-          <!-- Skjult felt til branche -->
-          <input type="hidden" id="branche-hidden" name="branche" value="">
+          <p class="gdpr-note">
+            Vi bruger oplysningerne til at sætte Laura op til jeres virksomhed og
+            kontakte jer. Ved opkald kan din samtale blive behandlet af en AI-assistent.
+          </p>
+        </form>
+
+        <div class="cta-stack" style="margin-top: 24px;">
+          <a href="tel:+4520925422" class="btn-secondary">Eller ring til Laura nu</a>
         </div>
-
-        <button type="submit" class="submit-btn">Send til os</button>
-      </form>
+      </div>
     </section>
   </main>
 
-  <footer>
-    <p>© 2025 Any & All. Alle rettigheder forbeholdes.</p>
+  <footer class="site-footer">
+    <div class="footer-inner typewriter-body">
+      <div class="footer-left">
+        <p>Any &amp; All</p>
+        <p>
+          <a href="index.html#saadan">Sådan virker det</a> ·
+          <a href="index.html#fordele">Fordele</a> ·
+          <a href="index.html#priser">Priser</a> ·
+          <a href="index.html#kontakt">Kontakt</a>
+        </p>
+      </div>
+      <div class="footer-right">
+        <p><a href="mailto:support@anyandall.dk">support@anyandall.dk</a></p>
+        <p><a href="tel:+4520925422">+45 20 92 54 22</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 Any &amp; All. Alle rettigheder forbeholdes.
+    </div>
   </footer>
 
-  <!-- 🚀 JavaScript til branchevalg + placeholder -->
+  <!-- Branche-quiz script -->
   <script>
     function updatePlaceholder(branche) {
       const field = document.querySelector("#beskedfelt");
@@ -122,7 +183,6 @@
 
       buttons.forEach((btn) => {
         btn.addEventListener("click", () => {
-          // Aktiv styling
           buttons.forEach((b) => b.classList.remove("active"));
           btn.classList.add("active");
 

@@ -156,3 +156,24 @@ body{
 .foot__links{display:flex; gap:1rem; flex-wrap:wrap}
 .foot__links a{color:#cdd5e1; text-decoration:none}
 .foot__links a:hover{color:#fff}
+.branch-btn {
+  border-radius: 999px;
+  border: 1px solid #4b5563;
+  background: #020617;
+  color: #e5e7eb;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.branch-btn:hover {
+  background: #111827;
+  border-color: #6366f1;
+}
+
+.branch-btn.active {
+  background: #6366f1;
+  border-color: #6366f1;
+  color: #0b1020;
+}

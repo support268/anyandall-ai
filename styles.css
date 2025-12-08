@@ -14,7 +14,7 @@ body {
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
-  background: #f8fafc; /* lys, imødekommende baggrund */
+  background: #f8fafc;
   color: #0f172a;
 }
 
@@ -88,10 +88,10 @@ main {
   padding-top: 8px;
 }
 
-/* VIGTIGT: luft til sticky header ved ankere (#saadan, #fordele osv.) */
+/* scroll-margin-top sikrer at overskrifter ikke ryger ind under sticky header */
 .section {
   padding: 48px 16px;
-  scroll-margin-top: 80px;
+  scroll-margin-top: 100px;
 }
 
 .section-inner {
@@ -123,7 +123,25 @@ h3 {
 /* ========== HERO ========== */
 
 .hero {
-  padding-top: 72px; /* ekstra luft pga. sticky header på toppen */
+  padding-top: 72px;
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
+  gap: 32px;
+  align-items: center;
+}
+
+.hero-left {
+  /* plads til tekst */
+}
+
+.hero-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  margin-top: 24px;
 }
 
 .eyebrow {
@@ -175,7 +193,6 @@ h3 {
     background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-/* Primær (grøn CTA) – bruges flere steder */
 .btn-primary,
 .submit-btn {
   background: #16a34a;
@@ -190,7 +207,6 @@ h3 {
   transform: translateY(-1px);
 }
 
-/* Sekundær (outline/blå) */
 .btn-secondary {
   background: #ffffff;
   border-color: #2563eb;
@@ -201,7 +217,6 @@ h3 {
   background: #eff6ff;
 }
 
-/* Full-width submit på formular */
 .submit-btn {
   width: 100%;
   margin-top: 12px;
@@ -411,6 +426,15 @@ h3 {
 
   .main-nav {
     flex-wrap: wrap;
+  }
+
+  .hero-inner {
+    grid-template-columns: 1fr; /* én kolonne på mobil */
+  }
+
+  .hero-right {
+    justify-content: center;   /* kortet i midten */
+    margin-top: 12px;
   }
 }
 

@@ -49,17 +49,13 @@ a:hover {
   gap: 16px;
 }
 
-.logo img {
-  height: 32px;
-  display: block;
-}
-
-/* Hvis logoet er ren tekst (index.html's version) */
 .logo {
   font-weight: 700;
   font-size: 1.3rem;
   color: #0f172a;
 }
+
+/* Navigation */
 
 .main-nav {
   display: flex;
@@ -86,7 +82,12 @@ a:hover {
   font-weight: 600;
 }
 
-/* ========== SEKTIONER / LAYOUT ========== */
+/* ========== LAYOUT / SEKTIONER ========== */
+
+main {
+  /* lidt luft under headeren */
+  padding-top: 8px;
+}
 
 .section {
   padding: 48px 16px;
@@ -116,6 +117,44 @@ h2 {
 
 h3 {
   font-size: 1.1rem;
+}
+
+/* ========== HERO ========== */
+
+.hero {
+  padding-top: 72px; /* ekstra luft pga. sticky header */
+}
+
+.eyebrow {
+  font-size: 0.95rem;
+  color: #2563eb;
+  margin-bottom: 4px;
+}
+
+.hero-lead {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #475569;
+  margin-bottom: 16px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.hero-points {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+.hero-points li {
+  margin-bottom: 4px;
 }
 
 /* ========== KNAPPER (GENBRUGT) ========== */
@@ -363,7 +402,7 @@ h3 {
 
 /* ========== RESPONSIV TILPASNING ========== */
 
-@media (max-width: 640px) {
+@media (max-width: 800px) {
   .header-inner {
     flex-direction: column;
     align-items: flex-start;
@@ -372,7 +411,9 @@ h3 {
   .main-nav {
     flex-wrap: wrap;
   }
+}
 
+@media (max-width: 640px) {
   .setup-form {
     padding: 20px 16px;
   }

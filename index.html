@@ -4,319 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Any & All – Laura, jeres AI-receptionist 24/7</title>
-
-  <!-- Alt styling er indbygget her -->
-  <style>
-    /* RESET + BASIS */
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-    }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: #020617;
-      color: #e5e7eb;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    /* HEADER */
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: rgba(2, 6, 23, 0.96);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(51, 65, 85, 0.7);
-    }
-
-    .header-inner {
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 12px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .logo {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #e5e7eb;
-    }
-
-    .main-nav {
-      display: flex;
-      gap: 18px;
-      align-items: center;
-      font-size: 0.95rem;
-    }
-
-    .btn-nav {
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: #6366f1;
-      color: #020617;
-      font-weight: 600;
-      border: 1px solid #6366f1;
-    }
-
-    /* SECTIONS */
-    .section {
-      padding: 48px 16px;
-    }
-
-    .section-inner {
-      max-width: 1040px;
-      margin: 0 auto;
-    }
-
-    /* HERO */
-    .hero-inner {
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2.5fr);
-      gap: 32px;
-      align-items: center;
-      padding-top: 48px;
-    }
-
-    @media (max-width: 800px) {
-      .hero-inner {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .eyebrow {
-      color: #a5b4fc;
-      margin-bottom: 6px;
-      font-size: 0.95rem;
-    }
-
-    h1 {
-      font-size: 2.2rem;
-      margin: 0 0 10px;
-    }
-
-    h2 {
-      font-size: 1.8rem;
-      margin: 0 0 16px;
-    }
-
-    .hero-lead {
-      font-size: 1rem;
-      line-height: 1.5;
-      margin-bottom: 16px;
-    }
-
-    .hero-actions {
-      margin-bottom: 16px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary,
-    .btn-secondary {
-      display: inline-block;
-      padding: 10px 18px;
-      border-radius: 999px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      border: 1px solid transparent;
-      cursor: pointer;
-    }
-
-    .btn-primary {
-      background: #4ade80;
-      border-color: #22c55e;
-      color: #020617;
-      box-shadow: 0 8px 28px rgba(0,0,0,0.5);
-    }
-
-    .btn-secondary {
-      background: transparent;
-      border-color: #6366f1;
-      color: #e5e7eb;
-    }
-
-    .hero-points {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      font-size: 0.95rem;
-    }
-
-    .hero-points li {
-      margin: 0 0 4px;
-    }
-
-    /* LAURA CARD */
-    .laura-card {
-      background: radial-gradient(circle at top left, #1f2937, #020617);
-      border-radius: 18px;
-      padding: 20px;
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      box-shadow: 0 8px 28px rgba(0,0,0,0.6);
-    }
-
-    .laura-header {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 12px;
-      align-items: center;
-    }
-
-    .laura-avatar {
-      height: 36px;
-      width: 36px;
-      border-radius: 999px;
-      background: #6366f1;
-      font-weight: 700;
-      color: #020617;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .laura-role {
-      font-size: 0.8rem;
-      color: #9ca3af;
-    }
-
-    .laura-bubble {
-      padding: 10px 14px;
-      background: #020617;
-      border-radius: 12px;
-      border: 1px solid rgba(148,163,184,0.5);
-      margin-bottom: 10px;
-    }
-
-    .typewriter-laura {
-      font-family: "Courier New", monospace;
-      font-size: 0.95rem;
-      line-height: 1.4;
-    }
-
-    .laura-options {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .laura-options li {
-      font-family: "Courier New", monospace;
-      font-size: 0.9rem;
-      margin-bottom: 4px;
-    }
-
-    /* TYPEWRITER STYLE */
-    .typewriter-body p,
-    .typewriter-body li {
-      font-family: "Courier New", monospace;
-      font-size: 0.95rem;
-      line-height: 1.55;
-    }
-
-    /* VIDEO */
-    .video-wrapper {
-      text-align: center;
-    }
-
-    .video-container {
-      max-width: 720px;
-      margin: 0 auto 20px;
-      border-radius: 16px;
-      overflow: hidden;
-      background: #000;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    }
-
-    video {
-      width: 100%;
-      display: block;
-    }
-
-    .video-caption {
-      margin-top: 10px;
-    }
-
-    /* CTA STACK */
-    .cta-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      text-align: center;
-      margin-top: 12px;
-    }
-
-    .cta-or {
-      font-size: 0.85rem;
-      color: #9ca3af;
-    }
-
-    .gdpr-note {
-      font-size: 0.8rem;
-      color: #9ca3af;
-      margin-top: 10px;
-    }
-
-    /* FOOTER */
-    .site-footer {
-      border-top: 1px solid rgba(51, 65, 85, 0.7);
-      margin-top: 24px;
-      padding: 20px 0;
-      color: #9ca3af;
-      font-size: 0.85rem;
-    }
-
-    .footer-inner {
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 0 20px;
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .footer-bottom {
-      text-align: center;
-      margin-top: 8px;
-      font-size: 0.75rem;
-      color: #6b7280;
-    }
-
-    @media (max-width: 640px) {
-      .header-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .footer-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 </head>
 
 <body>
-
   <!-- HEADER -->
   <header class="site-header">
     <div class="header-inner">
-      <a href="index.html" class="logo">Any &amp; All</a>
+      <a href="index.html" class="logo">
+        <img src="logo.svg" alt="Any & All" />
+      </a>
       <nav class="main-nav">
         <a href="#saadan">Sådan virker det</a>
         <a href="#fordele">Fordele</a>
@@ -330,53 +28,77 @@
   <main>
     <!-- HERO -->
     <section class="section hero">
-      <div class="section-inner hero-inner">
+      <div class="section-inner">
         <div class="hero-left">
           <p class="eyebrow">Godaften 👋</p>
           <h1>Jeg er Laura — jeres venlige stemme 24/7</h1>
           <p class="hero-lead">
-            Jeg byder velkommen i jeres navn, viderestiller til de rigtige afdelinger
-            eller medarbejdere, tager imod beskeder og sender dem på mail eller SMS,
-            når I er optaget. Jeg kan også besvare simple spørgsmål ud fra jeres
-            hjemmeside og den info, I deler med os.
+            Jeg tager telefonen i jeres navn, omstiller til de rigtige mennesker,
+            tager imod beskeder og sender dem videre på mail eller SMS. Jeg kan
+            også svare på simple spørgsmål ud fra jeres hjemmeside.
           </p>
 
           <div class="hero-actions">
-            <a href="tel:+4520925422" class="btn-primary">Kontakt Laura 24/7</a>
+            <a href="tel:+4520925422" class="btn-primary">Ring til Laura nu</a>
             <a href="#demo-video" class="btn-secondary">Se hvordan det virker</a>
           </div>
 
           <ul class="hero-points">
-            <li>Personlig og rolig velkomst på dansk</li>
-            <li>Viderestilling til afdeling/medarbejder efter ønske</li>
+            <li>Venlig velkomst på dansk i jeres navn</li>
+            <li>Viderestilling til afdelinger og medarbejdere</li>
             <li>Beskeder leveret på mail/SMS med det samme</li>
             <li>Svar på enkle spørgsmål fra jeres offentlige info</li>
           </ul>
         </div>
 
-        <div class="hero-right">
-          <div class="laura-card">
-            <div class="laura-header">
-              <div class="laura-avatar">L</div>
+        <div class="hero-right" style="margin-top: 24px;">
+          <div class="laura-card" style="
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 18px 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+            max-width: 360px;
+          ">
+            <div class="laura-header" style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+              <div class="laura-avatar" style="
+                height: 36px;
+                width: 36px;
+                border-radius: 999px;
+                background: #2563eb;
+                color: #ffffff;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              ">
+                L
+              </div>
               <div>
-                <div class="laura-name">Laura</div>
-                <div class="laura-role">Receptionist</div>
+                <div class="laura-name" style="font-weight: 600;">Laura</div>
+                <div class="laura-role" style="font-size: 0.8rem; color: #64748b;">Receptionist</div>
               </div>
             </div>
 
-            <div class="laura-bubble">
+            <div class="laura-bubble" style="
+              border-radius: 12px;
+              border: 1px solid #e2e8f0;
+              background: #f8fafc;
+              padding: 10px 12px;
+              margin-bottom: 10px;
+            ">
               <p class="typewriter-laura">
                 Godaften og velkommen til Any &amp; All — hvordan kan jeg hjælpe jer i dag?
               </p>
             </div>
 
-            <ul class="laura-options typewriter-body">
-              <li>Viderestil til valgt afdeling/medarbejder</li>
+            <ul class="laura-options typewriter-body" style="margin: 0; padding-left: 18px;">
+              <li>Viderestil til afdeling eller medarbejder</li>
               <li>Tag besked og send til teamet</li>
               <li>Besvar simple spørgsmål</li>
             </ul>
 
-            <p class="laura-note typewriter-body">
+            <p class="typewriter-body" style="font-size: 0.8rem; margin-top: 10px; color: #64748b;">
               Opsætningen matcher jeres åbningstider, afdelinger og tone.
             </p>
           </div>
@@ -390,13 +112,16 @@
         <h2>Sådan virker det</h2>
         <div class="typewriter-body">
           <p><strong>1. Vi sætter hilsenen op</strong><br>
-          “Hej, du taler med Laura hos jeres firmanavn…” — vi matcher jeres stil, tone og brand.</p>
+            “Hej, du taler med Laura hos jeres firmanavn…” — vi matcher jeres stil, tone og brand.
+          </p>
 
           <p><strong>2. Smart viderestilling</strong><br>
-          Opkald går til rette afdeling eller person — eller til besked, hvis der ikke svares.</p>
+            Opkald går til rette afdeling eller person — eller til besked, hvis der ikke svares.
+          </p>
 
           <p><strong>3. Klar besked tilbage til jer</strong><br>
-          I modtager mail/SMS med detaljer: hvem ringede, emne og hvad der blev aftalt.</p>
+            I modtager mail/SMS med detaljer: hvem ringede, emne og hvad der blev aftalt.
+          </p>
         </div>
       </div>
     </section>
@@ -407,16 +132,20 @@
         <h2>Hvorfor Any &amp; All?</h2>
         <div class="typewriter-body">
           <p><strong>Altid tilgængelig</strong><br>
-          Kunder bliver taget venligt imod — også uden for åbningstid.</p>
+            Kunder bliver taget venligt imod — også uden for åbningstid.
+          </p>
 
           <p><strong>Nemt at komme i gang</strong><br>
-          Del jeres afdelinger, åbningstider og ønsker — vi klarer resten.</p>
+            Del jeres afdelinger, åbningstider og ønsker — vi klarer resten.
+          </p>
 
           <p><strong>Personlig oplevelse</strong><br>
-          Dansk tale, rolig tone og jeres navn. Ingen scripts, bare god kundeservice.</p>
+            Dansk tale, rolig tone og jeres navn. Ingen scripts, bare god kundeservice.
+          </p>
 
           <p><strong>Skalerbart</strong><br>
-          Fra solo til større teams. Laura skalerer med jeres behov.</p>
+            Fra solo til større teams. Laura skalerer med jeres behov.
+          </p>
         </div>
       </div>
     </section>
@@ -450,7 +179,8 @@
 
         <div class="typewriter-body">
           <p><strong>Standardpakke</strong><br>
-          699 kr./måned. Ingen binding. Opsætning er inkluderet.</p>
+            699 kr./måned. Ingen binding. Opsætning er inkluderet.
+          </p>
 
           <p>
             Laura svarer jeres opkald 24/7 i jeres navn, viderestiller til de rigtige
@@ -458,11 +188,13 @@
           </p>
 
           <p><strong>Ekstra telefonnummer</strong><br>
-          +99 kr./måned pr. nummer.</p>
+            +99 kr./måned pr. nummer.
+          </p>
 
           <p><strong>Udvidet vidensbase</strong><br>
-          +199 kr./måned. Laura kan bruge mere detaljeret info, I deler med os
-          (fx interne processer, ekstra FAQ eller interne noter).</p>
+            +199 kr./måned. Laura kan bruge mere detaljeret info, I deler med os
+            (fx interne processer, ekstra FAQ eller interne noter).
+          </p>
         </div>
 
         <a href="opret.html" class="btn-primary">Kom i gang med Laura</a>
@@ -494,10 +226,12 @@
     <section id="kontakt" class="section">
       <div class="section-inner">
         <h2>Kontakt</h2>
-        <div class="typewriter-body">
-          <p><strong>Any &amp; All</strong></p>
-          <p>E-mail: <a href="mailto:support@anyandall.dk">support@anyandall.dk</a></p>
-          <p>Telefon: <a href="tel:+4520925422">+45 20 92 54 22</a></p>
+        <div class="contact-grid typewriter-body">
+          <div>
+            <p><strong>Any &amp; All</strong></p>
+            <p>E-mail: <a href="mailto:support@anyandall.dk">support@anyandall.dk</a></p>
+            <p>Telefon: <a href="tel:+4520925422">+45 20 92 54 22</a></p>
+          </div>
         </div>
       </div>
     </section>
@@ -524,6 +258,5 @@
       © 2025 Any &amp; All. Alle rettigheder forbeholdes.
     </div>
   </footer>
-
 </body>
 </html>

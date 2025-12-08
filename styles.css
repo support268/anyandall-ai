@@ -117,18 +117,25 @@ h2,
 h3 {
   margin: 0 0 12px;
   color: #0f172a;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 }
 
 h1 {
-  font-size: 2.1rem;
+  font-size: 2.2rem;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 h2 {
   font-size: 1.8rem;
+  font-weight: 650;
 }
 
 h3 {
   font-size: 1.1rem;
+  font-weight: 600;
 }
 
 /* ========== HERO ========== */
@@ -393,7 +400,7 @@ h3 {
   gap: 16px;
 }
 
-/* ========== FORM PÅ OPRET-SIDE (GENBRUGT) ========== */
+/* ========== FORM PÅ OPRET-SIDE ========== */
 
 .setup-form {
   max-width: 520px;
@@ -553,7 +560,7 @@ h3 {
   }
 
   .hero-inner {
-    grid-template-columns: 1fr; /* én kolonne på mobil */
+    grid-template-columns: 1fr;
   }
 
   .hero-right {

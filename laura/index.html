@@ -17,68 +17,98 @@
   <pre id="status" style="background:#f6f6f6; padding:12px; border-radius:10px;">Klar.</pre>
 
   <script src="https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2.17.0/dist/twilio.min.js"></script>
-  <script>
-    const statusEl = document.getElementById("status");
-    const btnCall = document.getElementById("btnCall");
-    const btnHangup = document.getElementById("btnHangup");
+  
+   <script>
+  const statusEl = document.getElementById("status");
+  const btnCall = document.getElementById("btnCall");
+  const btnHangup = document.getElementById("btnHangup");
 
-    let device = null;
-    let connection = null;
+  let device = null;
+  let connection = null;
 
-    function setStatus(s) { statusEl.textContent = s; }
+  function log(line) {
+    const ts = new Date().toLocaleTimeString("da-DK");
+    statusEl.textContent = `[${ts}] ${line}\n` + statusEl.textContent;
+  }
 
-    async function getToken() {
-      const r = await fetch("https://anyandall-laura-mvp.onrender.com/token", { method: "POST" });
-      const data = await r.json();
-      if (!r.ok) throw new Error(JSON.stringify(data));
-      return data.token;
+  window.addEventListener("error", (e) => log("WINDOW ERROR: " + (e.message || "ukendt")));
+  window.addEventListener("unhandledrejection", (e) =>
+    log("UNHANDLED REJECTION: " + (e.reason?.message || JSON.stringify(e.reason) || "ukendt"))
+  );
+
+  async function getToken() {
+    log("Henter token…");
+    const r = await fetch("https://anyandall-laura-mvp.onrender.com/token", { method: "POST" });
+    const text = await r.text();
+    let data = {};
+    try { data = JSON.parse(text); } catch {}
+    if (!r.ok) throw new Error(`TOKEN HTTP ${r.status}: ${text}`);
+    log("Token OK.");
+    return data.token;
+  }
+
+  async function ensureDevice() {
+    if (device) return device;
+
+    if (!window.Twilio || !window.Twilio.Device) {
+      throw new Error("SDK: Twilio.Device findes ikke (twilio.min.js blokeret?)");
     }
 
-    async function ensureDevice() {
-      if (device) return device;
+    const token = await getToken();
 
-      setStatus("Henter token…");
-      const token = await getToken();
+    log("Initialiserer Twilio Device…");
+    device = new Twilio.Device(token, { debug: true });
 
-      setStatus("Initialiserer…");
-      device = new Twilio.Device(token, { debug: false });
+    device.on("ready", () => log("Device ready."));
+    device.on("error", (e) => log(`Device error: ${e.code || ""} ${e.message || JSON.stringify(e)}`));
+    device.on("connect", () => log("Forbundet."));
+    device.on("disconnect", () => {
+      log("Afsluttet.");
+      connection = null;
+      btnHangup.disabled = true;
+      btnCall.disabled = false;
+    });
 
-      device.on("ready", () => setStatus("Klar til opkald."));
-      device.on("error", (e) => setStatus("Fejl: " + (e.message || JSON.stringify(e))));
-      device.on("connect", () => setStatus("Forbundet. Tal nu."));
-      device.on("disconnect", () => {
-        setStatus("Afsluttet.");
-        connection = null;
-        btnHangup.disabled = true;
-        btnCall.disabled = false;
-      });
+    return device;
+  }
 
-      return device;
+  async function callLaura() {
+    try {
+      btnCall.disabled = true;
+      btnHangup.disabled = true;
+
+      log("Klik: Ring til Laura");
+
+      const d = await ensureDevice();
+
+      log("Ringer… (mikrofon: Allow)");
+      connection = await d.connect({});
+
+      log("connect() kaldt OK.");
+      btnHangup.disabled = false;
+    } catch (e) {
+      log("KUNNE IKKE STARTE: " + (e?.message || String(e)));
+      btnCall.disabled = false;
+      btnHangup.disabled = true;
     }
+  }
 
-    async function callLaura() {
-      try {
-        btnCall.disabled = true;
-        setStatus("Ringer… (giv mikrofonadgang hvis du bliver spurgt)");
-        const d = await ensureDevice();
-        connection = await d.connect({});
-        btnHangup.disabled = false;
-      } catch (e) {
-        setStatus("Kunne ikke ringe: " + (e.message || e));
-        btnCall.disabled = false;
-        btnHangup.disabled = true;
-      }
+  function hangup() {
+    try {
+      log("Lægger på…");
+      if (connection) connection.disconnect();
+      if (device) device.disconnectAll();
+    } catch (e) {
+      log("HANGUP FEJL: " + (e?.message || String(e)));
     }
+  }
 
-    function hangup() {
-      try {
-        if (connection) connection.disconnect();
-        if (device) device.disconnectAll();
-      } catch {}
-    }
+  btnCall.addEventListener("click", callLaura);
+  btnHangup.addEventListener("click", hangup);
 
-    btnCall.addEventListener("click", callLaura);
-    btnHangup.addEventListener("click", hangup);
-  </script>
+  statusEl.textContent = "";
+  log("Klar.");
+</script>
+
 </body>
 </html>

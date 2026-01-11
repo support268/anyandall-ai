@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ring til Laura</title>
+</head>
+<body style="font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; padding: 24px;">
+  <h1>Ring til Laura</h1>
+  <p>Tryk ring — giv mikrofonadgang — og sig dit navn.</p>
+
+  <div style="display:flex; gap:12px; align-items:center; margin: 16px 0;">
+    <button id="btnCall" style="padding:10px 14px; font-size:16px;">Ring til Laura</button>
+    <button id="btnHangup" disabled style="padding:10px 14px; font-size:16px;">Læg på</button>
+  </div>
+
+  <pre id="status" style="background:#f6f6f6; padding:12px; border-radius:10px;">Klar.</pre>
+
+  <script src="https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2.17.0/dist/twilio.min.js"></script>
+  <script>
+    const statusEl = document.getElementById("status");
+    const btnCall = document.getElementById("btnCall");
+    const btnHangup = document.getElementById("btnHangup");
+
+    let device = null;
+    let connection = null;
+
+    function setStatus(s) { statusEl.textContent = s; }
+
+    async function getToken() {
+      const r = await fetch("https://anyandall-laura-mvp.onrender.com/token", { method: "POST" });
+      const data = await r.json();
+      if (!r.ok) throw new Error(JSON.stringify(data));
+      return data.token;
+    }
+
+    async function ensureDevice() {
+      if (device) return device;
+
+      setStatus("Henter token…");
+      const token = await getToken();
+
+      setStatus("Initialiserer…");
+      device = new Twilio.Device(token, { debug: false });
+
+      device.on("ready", () => setStatus("Klar til opkald."));
+      device.on("error", (e) => setStatus("Fejl: " + (e.message || JSON.stringify(e))));
+      device.on("connect", () => setStatus("Forbundet. Tal nu."));
+      device.on("disconnect", () => {
+        setStatus("Afsluttet.");
+        connection = null;
+        btnHangup.disabled = true;
+        btnCall.disabled = false;
+      });
+
+      return device;
+    }
+
+    async function callLaura() {
+      try {
+        btnCall.disabled = true;
+        setStatus("Ringer… (giv mikrofonadgang hvis du bliver spurgt)");
+        const d = await ensureDevice();
+        connection = await d.connect({});
+        btnHangup.disabled = false;
+      } catch (e) {
+        setStatus("Kunne ikke ringe: " + (e.message || e));
+        btnCall.disabled = false;
+        btnHangup.disabled = true;
+      }
+    }
+
+    function hangup() {
+      try {
+        if (connection) connection.disconnect();
+        if (device) device.disconnectAll();
+      } catch {}
+    }
+
+    btnCall.addEventListener("click", callLaura);
+    btnHangup.addEventListener("click", hangup);
+  </script>
+</body>
+</html>

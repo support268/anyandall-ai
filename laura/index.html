@@ -122,17 +122,26 @@
     }
 
     log("Initialiserer Twilio Device…");
-    device = new Twilio.Device(token, {
-      edge: "roaming",
-      debug: true,
-      closeProtection: true,
-      // Stabilitet på laptop-mic:
-      audioConstraints: {
-        echoCancellation: true,
-        noiseSuppression: true,
-        autoGainControl: true
-      }
-    });
+device = new Twilio.Device(token, {
+  edge: "roaming",
+  debug: true,
+  closeProtection: true,
+
+  // ⛔ Slå Twilio SDK-lyde FRA (meget vigtigt)
+  sounds: {
+    incoming: null,
+    outgoing: null,
+    disconnect: null
+  },
+
+  // 🎤 Stabilitet på mic
+  audioConstraints: {
+    echoCancellation: true,
+    noiseSuppression: true,
+    autoGainControl: true
+  }
+});
+
 
     device.on("error", (e) => log("Device ERROR:", {
       message: e?.message, code: e?.code, name: e?.name,

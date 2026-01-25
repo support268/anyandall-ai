@@ -22,167 +22,184 @@
   <pre id="log">Klar.</pre>
 
   <script>
-    const logEl = document.getElementById("log");
-    function ts() {
-      const d = new Date();
-      return d.toLocaleTimeString("da-DK", { hour12: false });
-    }
-    function log(msg, obj) {
-      const line = `[${ts()}] ${msg}` + (obj ? `\n${JSON.stringify(obj, null, 2)}` : "");
-      logEl.textContent = line + "\n\n" + logEl.textContent;
-      console.log(msg, obj || "");
+  const statusEl = document.getElementById("log") || document.getElementById("status");
+  const btnCall = document.getElementById("btnCall");
+  const btnHangup = document.getElementById("btnHangup");
+  const btnTest = document.getElementById("btnTest");
+
+  const TOKEN_URL = "https://anyandall-laura-mvp.onrender.com/token";
+
+  let device = null;
+  let call = null;
+  let isDialing = false;
+
+  function ts() {
+    const d = new Date();
+    return d.toLocaleTimeString("da-DK", { hour12: false });
+  }
+  function log(msg, obj) {
+    const line = `[${ts()}] ${msg}` + (obj ? `\n${JSON.stringify(obj, null, 2)}` : "");
+    if (statusEl) statusEl.textContent = line + "\n\n" + statusEl.textContent;
+    console.log(msg, obj || "");
+  }
+
+  // ---- Load Twilio SDK (with fallback) ----
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = src;
+      s.async = true;
+      s.onload = resolve;
+      s.onerror = () => reject(new Error("Kunne ikke loade: " + src));
+      document.head.appendChild(s);
+    });
+  }
+
+  async function ensureTwilioLoaded() {
+    if (window.Twilio && window.Twilio.Device) return;
+
+    try {
+      log("Loader Twilio SDK (Twilio CDN)…");
+      await loadScript("https://sdk.twilio.com/js/voice/releases/2.17.0/twilio.min.js");
+    } catch (e1) {
+      log("Twilio CDN fejlede, prøver fallback…", { message: e1.message });
+      await loadScript("https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2.17.0/dist/twilio.min.js");
     }
 
-    // Loader Twilio SDK med fallback
-    function loadScript(src) {
-      return new Promise((resolve, reject) => {
-        const s = document.createElement("script");
-        s.src = src;
-        s.async = true;
-        s.onload = resolve;
-        s.onerror = () => reject(new Error("Kunne ikke loade: " + src));
-        document.head.appendChild(s);
+    if (!(window.Twilio && window.Twilio.Device)) {
+      throw new Error("Twilio SDK loaded, men Twilio.Device findes ikke");
+    }
+    log("Twilio SDK OK ✅");
+  }
+
+  // ---- HARD STOP: kills ALL browser audio + Twilio ----
+  function hardStopAll() {
+    // Stop alle browser-lyde (sikrer mod gamle mp3 loops)
+    document.querySelectorAll("audio").forEach(a => {
+      try { a.pause(); a.src = ""; a.load(); } catch (e) {}
+    });
+
+    // Stop Twilio call/device brutalt
+    try { if (call) call.disconnect(); } catch (e) {}
+    try { if (device) device.disconnectAll(); } catch (e) {}
+    try { if (device) device.unregister(); } catch (e) {}
+
+    call = null;
+    device = null;
+    isDialing = false;
+
+    if (btnHangup) btnHangup.disabled = true;
+    if (btnCall) btnCall.disabled = false;
+
+    log("Hard stop ✅ (alt lyd + Twilio stoppet)");
+  }
+
+  async function getToken() {
+    log("Henter token…");
+    const r = await fetch(TOKEN_URL, { method: "POST" });
+    const text = await r.text();
+    let data = null;
+    try { data = JSON.parse(text); } catch (e) {}
+    if (!r.ok) throw new Error(`Token HTTP ${r.status}: ${text}`);
+    if (!data || !data.token) throw new Error(`Token svar mangler token: ${text}`);
+    log("Token OK.");
+    return data.token;
+  }
+
+  async function ensureDevice() {
+    if (device) return device;
+
+    await ensureTwilioLoaded();
+    const token = await getToken();
+
+    // Preflight (valgfrit, men godt)
+    try {
+      log("Preflight starter…");
+      const pre = await Twilio.Device.runPreflight(token, { edge: "roaming" });
+      log("Preflight COMPLETED:", pre);
+    } catch (e) {
+      log("Preflight FEJL (fortsætter): " + (e?.message || String(e)));
+    }
+
+    log("Initialiserer Twilio Device…");
+    device = new Twilio.Device(token, {
+      edge: "roaming",
+      debug: true,
+      closeProtection: true,
+      // Stabilitet på laptop-mic:
+      audioConstraints: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true
+      }
+    });
+
+    device.on("error", (e) => log("Device ERROR:", {
+      message: e?.message, code: e?.code, name: e?.name,
+      explanation: e?.explanation, causes: e?.causes
+    }));
+
+    await device.register();
+    log("Device REGISTERED ✅");
+    return device;
+  }
+
+  async function callLaura() {
+    // Idempotent: kan ikke starte to gange
+    if (isDialing || call) {
+      log("Ignorerer: allerede i gang");
+      return;
+    }
+    isDialing = true;
+
+    if (btnCall) btnCall.disabled = true;
+    if (btnHangup) btnHangup.disabled = true;
+
+    try {
+      log("Klik: Ring til Laura");
+
+      // Absolut ren start
+      hardStopAll();
+
+      const d = await ensureDevice();
+
+      log("Ringer…");
+      call = await d.connect({ params: { To: "laura" } });
+
+      if (btnHangup) btnHangup.disabled = false;
+
+      call.on("accept", () => log("Call ACCEPTED ✅"));
+      call.on("disconnect", () => {
+        log("Call DISCONNECT");
+        hardStopAll();
       });
+      call.on("error", (e) => {
+        log("Call ERROR:", { message: e?.message, code: e?.code, name: e?.name });
+        hardStopAll();
+      });
+
+      isDialing = false;
+    } catch (e) {
+      log("RING FEJL:", { message: e?.message || String(e) });
+      hardStopAll();
     }
+  }
 
-    async function ensureTwilioLoaded() {
-      if (window.Twilio && window.Twilio.Device) return true;
-
-      // 1) Primær: officiel Twilio CDN
-      try {
-        log("Loader Twilio SDK (Twilio CDN)…");
-        await loadScript("https://sdk.twilio.com/js/voice/releases/2.17.0/twilio.min.js");
-      } catch (e1) {
-        log("Twilio CDN fejlede, prøver fallback…", { message: e1.message });
-        // 2) Fallback: jsdelivr
-        await loadScript("https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2.17.0/dist/twilio.min.js");
-      }
-
-      if (!(window.Twilio && window.Twilio.Device)) {
-        throw new Error("Twilio SDK loaded, men Twilio.Device findes ikke (CSP/blocked?)");
-      }
-
-      log("Twilio SDK OK ✅", { version: window.Twilio?.Device?.version || "ukendt" });
-      return true;
-    }
-  </script>
-
-  <script>
-    const btnCall = document.getElementById("btnCall");
-    const btnHangup = document.getElementById("btnHangup");
-    const btnTest = document.getElementById("btnTest");
-
-    const TOKEN_URL = "https://anyandall-laura-mvp.onrender.com/token";
-
-    let device = null;
-    let call = null;
-
-    async function getToken() {
-      log("Henter token…");
-      const r = await fetch(TOKEN_URL, { method: "POST" });
-      const text = await r.text();
-      let data = null;
-      try { data = JSON.parse(text); } catch (e) {}
-      if (!r.ok) throw new Error(`Token HTTP ${r.status}: ${text}`);
-      if (!data || !data.token) throw new Error(`Token svar mangler token: ${text}`);
-      log("Token OK.");
-      return data.token;
-    }
-
-    async function ensureDevice() {
-      if (device) return device;
-
+  async function runTest() {
+    try {
       await ensureTwilioLoaded();
-
       const token = await getToken();
-
-      try {
-        log("Preflight starter…");
-        const pre = await Twilio.Device.runPreflight(token, { edge: "roaming" });
-        log("Preflight COMPLETED:", pre);
-      } catch (e) {
-        log("Preflight FEJL (fortsætter): " + (e?.message || String(e)));
-      }
-
-      log("Initialiserer Twilio Device…");
-      device = new Twilio.Device(token, {
-        edge: "roaming",
-        closeProtection: true,
-        debug: true,
-      });
-
-      device.on("registered", () => log("Device REGISTERED ✅"));
-      device.on("unregistered", () => log("Device UNREGISTERED"));
-      device.on("error", (e) => log("Device ERROR:", {
-        message: e?.message, code: e?.code, name: e?.name,
-        explanation: e?.explanation, causes: e?.causes
-      }));
-
-      await device.register();
-      log("device.register() kaldt");
-
-      return device;
+      log("Preflight starter…");
+      const pre = await Twilio.Device.runPreflight(token, { edge: "roaming" });
+      log("Preflight COMPLETED:", pre);
+    } catch (e) {
+      log("Preflight TEST FEJL:", { message: e?.message || String(e) });
     }
+  }
 
-    async function callLaura() {
-      btnCall.disabled = true;
-      btnHangup.disabled = true;
+  if (btnCall) btnCall.addEventListener("click", callLaura);
+  if (btnHangup) btnHangup.addEventListener("click", hardStopAll);
+  if (btnTest) btnTest.addEventListener("click", runTest);
 
-      try {
-        log("Klik: Ring til Laura");
-        const d = await ensureDevice();
-
-        log("Ringer…");
-        call = await d.connect({ params: { To: "laura" } });
-
-        btnHangup.disabled = false;
-
-        call.on("accept", () => log("Call ACCEPTED ✅"));
-        call.on("disconnect", () => {
-          log("Call DISCONNECT");
-          call = null;
-          btnHangup.disabled = true;
-          btnCall.disabled = false;
-        });
-        call.on("error", (e) => log("Call ERROR:", {
-          message: e?.message, code: e?.code, name: e?.name
-        }));
-
-      } catch (e) {
-        log("RING FEJL:", { message: e?.message || String(e) });
-        btnCall.disabled = false;
-        btnHangup.disabled = true;
-      }
-    }
-
-    function hangup() {
-      log("Læg på");
-      try {
-        if (call) call.disconnect();
-        if (device) device.disconnectAll();
-      } catch (e) {}
-      call = null;
-      btnHangup.disabled = true;
-      btnCall.disabled = false;
-    }
-
-    async function runTest() {
-      try {
-        await ensureTwilioLoaded();
-        const token = await getToken();
-        log("Preflight starter…");
-        const pre = await Twilio.Device.runPreflight(token, { edge: "roaming" });
-        log("Preflight COMPLETED:", pre);
-      } catch (e) {
-        log("Preflight TEST FEJL:", { message: e?.message || String(e) });
-      }
-    }
-
-    btnCall.addEventListener("click", callLaura);
-    btnHangup.addEventListener("click", hangup);
-    btnTest.addEventListener("click", runTest);
-
-    log("Klar.");
-  </script>
-</body>
-</html>
+  log("Klar.");
+</script>

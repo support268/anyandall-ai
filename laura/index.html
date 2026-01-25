@@ -141,7 +141,19 @@ device = new Twilio.Device(token, {
     autoGainControl: true
   }
 });
-
+// ⛔ Sluk Twilio SDK-lyde (ringetone/outgoing/disconnect) — virker selv når "sounds:" ikke gør
+try {
+  if (device && device.audio && device.audio.sounds) {
+    device.audio.sounds.incoming = () => {};
+    device.audio.sounds.outgoing = () => {};
+    device.audio.sounds.disconnect = () => {};
+    log("SDK-lyde slukket ✅");
+  } else {
+    log("Kunne ikke finde device.audio.sounds (springer over)");
+  }
+} catch (e) {
+  log("Kunne ikke slukke SDK-lyde:", { message: e?.message || String(e) });
+}
 
     device.on("error", (e) => log("Device ERROR:", {
       message: e?.message, code: e?.code, name: e?.name,

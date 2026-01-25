@@ -4,49 +4,54 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ring til Laura</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; padding: 18px; }
+    button { padding: 10px 14px; margin-right: 10px; }
+    pre { background: #f6f6f6; padding: 12px; border-radius: 10px; overflow: auto; }
+  </style>
 </head>
-<body style="font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; padding: 24px;">
-
+<body>
   <h1>Ring til Laura</h1>
+  <p><b>Build:</b> v3</p>
   <p>Tryk ring — giv mikrofonadgang — og sig dit navn.</p>
 
-  <div style="display:flex; gap:12px; margin-bottom:12px;">
-    <button id="btnCall">Ring til Laura</button>
-    <button id="btnHangup" disabled>Læg på</button>
-    <button id="btnPreflight">Kør netværkstest</button>
-  </div>
+  <button id="btnCall">Ring til Laura</button>
+  <button id="btnHangup" disabled>Læg på</button>
+  <button id="btnTest">Kør netværkstest</button>
 
-  <pre id="status" style="background:#f6f6f6; padding:12px; border-radius:8px; height:260px; overflow:auto;"></pre>
+  <pre id="log">Klar.</pre>
 
-  <!-- Twilio Voice SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2.17.0/dist/twilio.min.js"></script>
+  <script src="https://sdk.twilio.com/js/voice/releases/2.17.0/twilio.min.js"></script>
 
   <script>
-    const statusEl = document.getElementById("status");
+    const logEl = document.getElementById("log");
     const btnCall = document.getElementById("btnCall");
     const btnHangup = document.getElementById("btnHangup");
-    const btnPreflight = document.getElementById("btnPreflight");
+    const btnTest = document.getElementById("btnTest");
+
+    const TOKEN_URL = "https://anyandall-laura-mvp.onrender.com/token";
 
     let device = null;
-    let connection = null;
+    let call = null;
 
-    function log(msg) {
-      const ts = new Date().toLocaleTimeString("da-DK");
-      statusEl.textContent = `[${ts}] ${msg}\n` + statusEl.textContent;
+    function ts() {
+      const d = new Date();
+      return d.toLocaleTimeString("da-DK", { hour12: false });
     }
-
-    window.addEventListener("error", e => log("WINDOW ERROR: " + (e.message || e)));
-    window.addEventListener("unhandledrejection", e =>
-      log("UNHANDLED REJECTION: " + (e.reason?.message || JSON.stringify(e.reason)))
-    );
+    function log(msg, obj) {
+      const line = `[${ts()}] ${msg}` + (obj ? `\n${JSON.stringify(obj, null, 2)}` : "");
+      logEl.textContent = line + "\n\n" + logEl.textContent;
+      console.log(msg, obj || "");
+    }
 
     async function getToken() {
       log("Henter token…");
-      const r = await fetch("https://anyandall-laura-mvp.onrender.com/token", { method: "POST" });
+      const r = await fetch(TOKEN_URL, { method: "POST" });
       const text = await r.text();
-      let data = {};
-      try { data = JSON.parse(text); } catch {}
-      if (!r.ok) throw new Error("TOKEN HTTP " + r.status + ": " + text);
+      let data = null;
+      try { data = JSON.parse(text); } catch (e) {}
+      if (!r.ok) throw new Error(`Token HTTP ${r.status}: ${text}`);
+      if (!data || !data.token) throw new Error(`Token svar mangler token: ${text}`);
       log("Token OK.");
       return data.token;
     }
@@ -54,84 +59,94 @@
     async function ensureDevice() {
       if (device) return device;
 
-      if (!window.Twilio || !Twilio.Device) {
-        throw new Error("Twilio SDK ikke loaded");
-      }
-
       const token = await getToken();
 
+      // Preflight (skal ikke blokere opkald)
+      try {
+        log("Preflight starter…");
+        const pre = await Twilio.Device.runPreflight(token, { edge: "roaming" });
+        log("Preflight COMPLETED:", pre);
+      } catch (e) {
+        log("Preflight FEJL (fortsætter): " + (e?.message || String(e)));
+      }
+
       log("Initialiserer Twilio Device…");
-      device = new Twilio.Device(token, { debug: true });
-
-      device.on("ready", () => log("Device READY."));
-      device.on("error", e => log("Device ERROR: " + (e.code || "") + " " + (e.message || e)));
-      device.on("offline", () => log("Device OFFLINE (netværk?)"));
-      device.on("connect", () => log("Device CONNECT."));
-      device.on("disconnect", () => {
-        log("Device DISCONNECT.");
-        connection = null;
-        btnCall.disabled = false;
-        btnHangup.disabled = true;
+      device = new Twilio.Device(token, {
+        edge: "roaming",
+        closeProtection: true,
+        debug: true,
       });
 
-      await new Promise((resolve, reject) => {
-        const t = setTimeout(() => reject(new Error("Device blev ikke ready (WebRTC blokeret)")), 7000);
-        device.once("ready", () => { clearTimeout(t); resolve(); });
-        device.once("error", e => { clearTimeout(t); reject(e); });
-      });
+      device.on("registered", () => log("Device REGISTERED ✅"));
+      device.on("unregistered", () => log("Device UNREGISTERED"));
+      device.on("error", (e) => log("Device ERROR:", {
+        message: e?.message, code: e?.code, name: e?.name,
+        explanation: e?.explanation, causes: e?.causes
+      }));
+
+      await device.register();
+      log("device.register() kaldt");
 
       return device;
     }
 
-    btnCall.onclick = async () => {
-      try {
-        btnCall.disabled = true;
-        btnHangup.disabled = true;
-        log("Klik: Ring til Laura");
+    async function callLaura() {
+      btnCall.disabled = true;
+      btnHangup.disabled = true;
 
+      try {
+        log("Klik: Ring til Laura");
         const d = await ensureDevice();
 
-        log("Ringer…");
-        connection = await d.connect({});
-        log("connect() kaldt OK.");
+        // VIGTIGT: Send altid et To-param (Twilio Client forventer det)
+        log("Ringer… (mikrofon: Allow)");
+        call = await d.connect({ params: { To: "laura" } });
 
         btnHangup.disabled = false;
+
+        call.on("accept", () => log("Call ACCEPTED ✅"));
+        call.on("disconnect", () => {
+          log("Call DISCONNECT");
+          call = null;
+          btnHangup.disabled = true;
+          btnCall.disabled = false;
+        });
+        call.on("error", (e) => log("Call ERROR:", {
+          message: e?.message, code: e?.code, name: e?.name
+        }));
+
       } catch (e) {
-        log("KUNNE IKKE STARTE: " + (e.message || e));
+        log("RING FEJL:", { message: e?.message || String(e) });
         btnCall.disabled = false;
         btnHangup.disabled = true;
       }
-    };
+    }
 
-    btnHangup.onclick = () => {
+    function hangup() {
+      log("Læg på");
       try {
-        log("Lægger på…");
-        if (connection) connection.disconnect();
+        if (call) call.disconnect();
         if (device) device.disconnectAll();
-      } catch (e) {
-        log("HANGUP FEJL: " + (e.message || e));
-      }
-    };
+      } catch (e) {}
+      call = null;
+      btnHangup.disabled = true;
+      btnCall.disabled = false;
+    }
 
-    btnPreflight.onclick = async () => {
+    async function runTest() {
       try {
-        log("Preflight starter…");
-        if (!Twilio.Device.runPreflight) {
-          throw new Error("runPreflight findes ikke i SDK");
-        }
         const token = await getToken();
-        const test = Twilio.Device.runPreflight(token, { debug: true });
-
-        test.on("progress", n => log("Preflight: " + n));
-        test.on("failed", e => log("Preflight FAILED: " + (e.message || e)));
-        test.on("completed", r => {
-          log("Preflight COMPLETED:");
-          log(JSON.stringify(r, null, 2));
-        });
+        log("Preflight starter…");
+        const pre = await Twilio.Device.runPreflight(token, { edge: "roaming" });
+        log("Preflight COMPLETED:", pre);
       } catch (e) {
-        log("Preflight ERROR: " + (e.message || e));
+        log("Preflight TEST FEJL:", { message: e?.message || String(e) });
       }
-    };
+    }
+
+    btnCall.addEventListener("click", callLaura);
+    btnHangup.addEventListener("click", hangup);
+    btnTest.addEventListener("click", runTest);
 
     log("Klar.");
   </script>

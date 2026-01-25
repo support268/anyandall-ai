@@ -1,410 +1,195 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="da">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Any & All – Laura, jeres AI-receptionist 24/7</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ring til Laura</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; padding: 18px; }
+    button { padding: 10px 14px; margin-right: 10px; }
+    pre { background: #f6f6f6; padding: 12px; border-radius: 10px; overflow: auto; }
+  </style>
 </head>
-
 <body>
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="logo">Any &amp; All</a>
-      <nav class="main-nav">
-        <a href="#saadan">Sådan virker det</a>
-        <a href="#fordele">Fordele</a>
-        <a href="#priser">Priser</a>
-        <a href="#faq">FAQ</a>
-        <a href="#data">Data &amp; sikkerhed</a>
-        <a href="#kontakt">Kontakt</a>
-        <a href="opret.html" class="btn-nav">Kom i gang med Laura</a>
-      </nav>
-    </div>
-  </header>
+  <h1>Ring til Laura</h1>
+  <p>Tryk ring — giv mikrofonadgang — og sig dit navn.</p>
 
-  <main>
-    <!-- HERO -->
-    <section class="section hero">
-      <div class="section-inner hero-inner">
-        <div class="hero-left">
-          <h1>Jeg er Laura — jeres venlige stemme 24/7</h1>
-          <p class="hero-lead">
-            Jeg tager telefonen i jeres navn, omstiller til de rigtige mennesker,
-            tager imod beskeder og sender dem videre på mail eller SMS. Jeg kan
-            også svare på simple spørgsmål ud fra jeres hjemmeside.
-          </p>
+  <button id="btnCall">Ring til Laura</button>
+  <button id="btnHangup" disabled>Læg på</button>
+  <button id="btnTest">Kør netværkstest</button>
 
-          <div class="hero-actions">
-            <a href="tel:+4520925422" class="btn-primary">Ring til Laura nu</a>
-            <a href="#demo-video" class="btn-secondary">Se hvordan det virker</a>
-          </div>
+  <pre id="status">Klar.</pre>
 
-          <ul class="hero-points">
-            <li>Venlig velkomst på dansk i jeres navn</li>
-            <li>Viderestilling til afdelinger og medarbejdere</li>
-            <li>Beskeder leveret på mail/SMS med det samme</li>
-            <li>Svar på enkle spørgsmål fra jeres offentlige info</li>
-          </ul>
-        </div>
+  <!-- Twilio Voice JS SDK (officiel CDN) -->
+  <script src="https://sdk.twilio.com/js/voice/releases/2.17.0/twilio.min.js"></script>
 
-        <div class="hero-right">
-          <div class="laura-card">
-            <div class="laura-header">
-              <div class="laura-avatar">L</div>
-              <div>
-                <div class="laura-name">Laura</div>
-                <div class="laura-role">Receptionist</div>
-              </div>
-            </div>
+  <script>
+    const statusEl = document.getElementById("status");
+    const btnCall = document.getElementById("btnCall");
+    const btnHangup = document.getElementById("btnHangup");
+    const btnTest = document.getElementById("btnTest");
 
-            <div class="laura-bubble">
-              <p class="typewriter-laura">
-                Goddag og velkommen til Any &amp; All — hvordan kan jeg hjælpe jer i dag?
-              </p>
-            </div>
+    const TOKEN_URL = "https://anyandall-laura-mvp.onrender.com/token";
 
-            <ul class="laura-options typewriter-body">
-              <li>Viderestil til afdeling eller medarbejder</li>
-              <li>Tag besked og send til teamet</li>
-              <li>Besvar simple spørgsmål</li>
-            </ul>
+    let device = null;
+    let activeCall = null;
 
-            <p class="laura-note typewriter-body">
-              Opsætningen matcher jeres åbningstider, afdelinger og tone.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+    function ts() {
+      const d = new Date();
+      return d.toLocaleTimeString("da-DK", { hour12: false });
+    }
+    function log(line, obj) {
+      const s = `[${ts()}] ${line}` + (obj ? `\n${JSON.stringify(obj, null, 2)}` : "");
+      statusEl.textContent = s + "\n\n" + statusEl.textContent;
+      console.log(line, obj || "");
+    }
+    function setTop(line) {
+      statusEl.textContent = `[${ts()}] ${line}\n\n` + statusEl.textContent;
+    }
 
-    <!-- TRUST / BRUGT AF -->
-    <section class="section section-alt">
-      <div class="section-inner">
-        <p class="eyebrow" style="margin-bottom:4px;">Brugt af virksomheder som</p>
-        <p class="trust-text">
-          Vi starter småt – og bygger videre løbende med jeres logo og case.
-        </p>
-        <div class="trust-chips">
-          <span class="trust-chip">Plads til jeres logo</span>
-          <span class="trust-chip">Ejendomsmægler</span>
-          <span class="trust-chip">Klinik / psykolog</span>
-          <span class="trust-chip">Håndværker</span>
-          <span class="trust-chip">Restaurant</span>
-        </div>
-      </div>
-    </section>
+    async function fetchToken() {
+      log("Henter token…");
+      const r = await fetch(TOKEN_URL, { method: "POST" });
+      const text = await r.text();
+      let data = null;
+      try { data = JSON.parse(text); } catch (e) {}
+      if (!r.ok) {
+        throw new Error(`Token HTTP ${r.status}: ${text}`);
+      }
+      if (!data || !data.token) {
+        throw new Error(`Token svar mangler token: ${text}`);
+      }
+      log("Token OK.");
+      return data.token;
+    }
 
-    <!-- SÅDAN VIRKER DET -->
-    <section id="saadan" class="section">
-      <div class="section-inner">
-        <h2>Sådan virker det</h2>
-        <div class="typewriter-body">
-          <p><strong>1. Vi sætter hilsenen op</strong><br>
-            “Hej, du taler med Laura hos jeres firmanavn…” — vi matcher jeres stil, tone og brand.
-          </p>
+    async function ensureDevice() {
+      if (device) return device;
 
-          <p><strong>2. Smart viderestilling</strong><br>
-            Opkald går til rette afdeling eller person — eller til besked, hvis der ikke svares.
-          </p>
+      const token = await fetchToken();
 
-          <p><strong>3. Klar besked tilbage til jer</strong><br>
-            I modtager mail/SMS med detaljer: hvem ringede, emne og hvad der blev aftalt.
-          </p>
-        </div>
-      </div>
-    </section>
+      // Preflight først (giver os klar diagnose, men bør ikke blokere)
+      try {
+        setTop("Preflight starter…");
+        const pre = await Twilio.Device.runPreflight(token, { edge: "roaming" });
+        log("Preflight COMPLETED:", pre);
+      } catch (e) {
+        log("Preflight FEJL (fortsætter alligevel): " + (e && e.message ? e.message : String(e)));
+      }
 
-    <!-- FORDELE -->
-    <section id="fordele" class="section section-alt">
-      <div class="section-inner">
-        <h2>Hvorfor Any &amp; All?</h2>
-        <div class="typewriter-body">
-          <p><strong>Altid tilgængelig</strong><br>
-            Kunder bliver taget venligt imod — også uden for åbningstid.
-          </p>
+      setTop("Initialiserer Twilio Device…");
 
-          <p><strong>Nemt at komme i gang</strong><br>
-            Del jeres afdelinger, åbningstider og ønsker — vi klarer resten.
-          </p>
+      device = new Twilio.Device(token, {
+        edge: "roaming",
+        closeProtection: true,
+        debug: true,
+        // Allow specifying preferred codecs can help some setups, but keep default for now.
+      });
 
-          <p><strong>Personlig oplevelse</strong><br>
-            Dansk tale, rolig tone og jeres navn. Ingen scripts, bare god kundeservice.
-          </p>
+      // VIGTIGT: Voice SDK v2 bruger "registered" som stærk indikator
+      device.on("registered", () => log("Device REGISTERED ✅ (ready til opkald)"));
+      device.on("unregistered", () => log("Device UNREGISTERED"));
+      device.on("error", (e) => log("Device ERROR:", {
+        message: e?.message,
+        code: e?.code,
+        name: e?.name,
+        explanation: e?.explanation,
+        causes: e?.causes,
+      }));
 
-          <p><strong>Skalerbart</strong><br>
-            Fra solo til større teams. Laura skalerer med jeres behov.
-          </p>
-        </div>
-      </div>
-    </section>
+      device.on("incoming", (call) => {
+        log("INCOMING call (burde ikke ske i outgoing-only setup)", { from: call?.parameters?.From });
+      });
 
-    <!-- DEMO-VIDEO -->
-    <section id="demo-video" class="section">
-      <div class="section-inner video-wrapper">
-        <h2>Se hvordan Laura arbejder</h2>
+      // Nogle browsere får først registered efter register()
+      try {
+        await device.register();
+        log("device.register() kaldt");
+      } catch (e) {
+        log("device.register() FEJL:", { message: e?.message, code: e?.code });
+      }
 
-        <div class="video-container">
-          <video
-            src="202511231852.mp4"
-            controls
-            playsinline
-            preload="metadata"
-          ></video>
-        </div>
+      return device;
+    }
 
-        <p class="typewriter-body video-caption">
-          Laura tager telefonen i jeres navn – rolig, professionel og altid tilgængelig.
-        </p>
+    async function waitForRegistered(timeoutMs = 8000) {
+      const start = Date.now();
+      while (Date.now() - start < timeoutMs) {
+        if (device && device.state === "registered") return true;
+        await new Promise(r => setTimeout(r, 150));
+      }
+      return false;
+    }
 
-        <a href="opret.html" class="btn-primary">Kom i gang med Laura</a>
-      </div>
-    </section>
+    async function callLaura() {
+      btnCall.disabled = true;
+      btnHangup.disabled = true;
 
-    <!-- PRISER -->
-    <section id="priser" class="section section-alt">
-      <div class="section-inner">
-        <h2>Priser</h2>
+      try {
+        log("Klik: Ring til Laura");
 
-        <div class="typewriter-body">
-          <p><strong>Standardpakke – fra 699 kr./måned</strong><br>
-            Passer typisk til mindre og mellemstore virksomheder med op til ca. 300 opkald om måneden.
-          </p>
+        const d = await ensureDevice();
 
-          <p>
-            Har I markant flere opkald (fx kundecenter eller kæde), laver vi en fast pris,
-            der matcher jeres volumen. Ingen binding og ingen opstartsgebyrer.
-          </p>
+        setTop("Venter på REGISTERED…");
+        const ok = await waitForRegistered(9000);
+        if (!ok) {
+          throw new Error("Device blev ikke registered (mulig race / token / SDK state)");
+        }
 
-          <p><strong>Ekstra telefonnummer</strong><br>
-            +99 kr./måned pr. nummer.
-          </p>
+        setTop("Ringer… (mikrofon: Allow)");
+        // Bemærk: Vi sender ingen params; TwiML App håndterer /twilio/client-voice
+        activeCall = await d.connect({});
 
-          <p><strong>Udvidet vidensbase</strong><br>
-            +199 kr./måned. Laura kan bruge mere detaljeret info, I deler med os
-            (fx interne processer, ekstra FAQ eller interne noter).
-          </p>
-        </div>
+        btnHangup.disabled = false;
 
-        <a href="opret.html" class="btn-primary">Kom i gang med Laura</a>
-      </div>
-    </section>
+        activeCall.on("accept", () => log("Call ACCEPTED ✅"));
+        activeCall.on("disconnect", () => {
+          log("Call DISCONNECT");
+          activeCall = null;
+          btnHangup.disabled = true;
+          btnCall.disabled = false;
+        });
+        activeCall.on("error", (e) => {
+          log("Call ERROR:", { message: e?.message, code: e?.code, name: e?.name });
+        });
 
-    <!-- FAQ -->
-    <section id="faq" class="section">
-      <div class="section-inner">
-        <h2>FAQ – ofte stillede spørgsmål</h2>
+      } catch (e) {
+        log("KUNNE IKKE STARTE:", { message: e?.message || String(e) });
+        btnCall.disabled = false;
+        btnHangup.disabled = true;
+      }
+    }
 
-        <div class="faq-list">
-          <div class="faq-item typewriter-body">
-            <h3>Hvad kræver det at komme i gang?</h3>
-            <p>
-              Du udfylder formularen med firmanavn, nummer, afdelinger og ønsker til velkomst.
-              Vi sætter Laura op og sender en kort bekræftelse, før vi går live.
-            </p>
-          </div>
+    function hangup() {
+      try {
+        log("Læg på");
+        if (activeCall) activeCall.disconnect();
+        if (device) device.disconnectAll();
+      } catch (e) {
+        log("Hangup FEJL:", { message: e?.message || String(e) });
+      } finally {
+        activeCall = null;
+        btnHangup.disabled = true;
+        btnCall.disabled = false;
+      }
+    }
 
-          <div class="faq-item typewriter-body">
-            <h3>Hvor hurtigt kan vi være i luften?</h3>
-            <p>
-              Typisk inden for 24 timer. Har I særlige ønsker til opsætning eller vidensbase,
-              aftaler vi dem, inden vi tænder for Laura.
-            </p>
-          </div>
+    async function runTest() {
+      try {
+        const token = await fetchToken();
+        setTop("Preflight starter…");
+        const pre = await Twilio.Device.runPreflight(token, { edge: "roaming" });
+        log("Preflight COMPLETED:", pre);
+      } catch (e) {
+        log("Preflight TEST FEJL:", { message: e?.message || String(e) });
+      }
+    }
 
-          <div class="faq-item typewriter-body">
-            <h3>Hvordan kobler I Laura på vores nummer?</h3>
-            <p>
-              Enten peger vi jeres nuværende nummer over på vores løsning, eller vi sætter et
-              nyt nummer op til Laura. Der ændres ikke noget, før I har godkendt opsætningen.
-            </p>
-          </div>
+    btnCall.addEventListener("click", callLaura);
+    btnHangup.addEventListener("click", hangup);
+    btnTest.addEventListener("click", runTest);
 
-          <div class="faq-item typewriter-body">
-            <h3>Hvad gør Laura, hvis ingen tager telefonen?</h3>
-            <p>
-              Hvis der ikke bliver svaret, tager Laura imod en besked og sender den til jer
-              på mail eller SMS med navn, nummer og hvad opkaldet drejede sig om.
-            </p>
-          </div>
-
-          <div class="faq-item typewriter-body">
-            <h3>Hvilke typer spørgsmål kan Laura svare på?</h3>
-            <p>
-              Laura kan svare på simple spørgsmål ud fra jeres offentlige info – fx åbningstider,
-              adresse, ydelser og kontaktveje. Med udvidet vidensbase kan hun også bruge ekstra info,
-              I deler direkte med os.
-            </p>
-          </div>
-
-          <div class="faq-item typewriter-body">
-            <h3>Er der binding eller oprettelsesgebyrer?</h3>
-            <p>
-              Nej. Abonnementet er månedsbaseret uden binding og uden oprettelsesgebyrer.
-            </p>
-          </div>
-
-          <div class="faq-item typewriter-body">
-            <h3>Kan vi ændre velkomst eller opsætning senere?</h3>
-            <p>
-              Ja. Hvis I vil justere velkomst, opkaldsfordeling eller besked-flow, skriver I bare til os –
-              så opdaterer vi opsætningen, så den matcher jeres nuværende behov.
-            </p>
-          </div>
-
-          <div class="faq-item typewriter-body">
-            <h3>Kan Laura tale engelsk?</h3>
-            <p>
-              Ja. Laura kan også svare på engelsk, hvis I ønsker det, eller hvis kunden taler engelsk.
-            </p>
-          </div>
-
-          <div class="faq-item typewriter-body">
-            <h3>Hvem passer løsningen til?</h3>
-            <p>
-              Løsningen passer både til solo-selvstændige, mindre teams og større virksomheder.
-              Forskellen er primært antallet af opkald – prisen matcher jeres volumen.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- DATA & SIKKERHED -->
-    <section id="data" class="section section-alt">
-      <div class="section-inner">
-        <h2>Data &amp; sikkerhed (GDPR)</h2>
-        <p class="typewriter-body" style="margin-bottom: 12px;">
-          Vi behandler jeres og jeres kunders data, som vi selv ville ønske, at vores data blev behandlet.
-          Ingen videregivelse, ingen unødig lagring og fuld gennemsigtighed.
-        </p>
-
-        <div class="data-grid">
-          <div class="faq-item typewriter-body">
-            <h3>Vi deler ikke data med andre</h3>
-            <p>
-              Oplysninger fra jeres opkald bruges kun til to ting: at håndtere henvendelsen
-              og til at drive og forbedre selve løsningen. Vi sælger ikke data og deler den ikke
-              med andre virksomheder.
-            </p>
-          </div>
-
-          <div class="faq-item typewriter-body">
-            <h3>Vi gemmer kun det nødvendige</h3>
-            <p>
-              Typisk gemmer vi tidspunkt for opkaldet, hvem der ringede, og den besked,
-              Laura har taget. Vi gemmer ikke mere, end der er nødvendigt for at kunne hjælpe jer.
-            </p>
-          </div>
-
-          <div class="faq-item typewriter-body">
-            <h3>Ingen lydoptagelser som standard</h3>
-            <p>
-              Som udgangspunkt arbejder vi med tekst-log og beskeder, ikke lydoptagelser.
-              Hvis I på et tidspunkt ønsker optagelser, kræver det en særskilt aftale.
-            </p>
-          </div>
-
-          <div class="faq-item typewriter-body">
-            <h3>Data opbevares inden for EU</h3>
-            <p>
-              Systemet er designet til, at data opbevares på servere placeret inden for EU
-              og underlagt EU’s databeskyttelseslovgivning (GDPR).
-            </p>
-          </div>
-
-          <div class="faq-item typewriter-body">
-            <h3>Indsigt, sletning og databehandleraftale</h3>
-            <p>
-              Som virksomhed kan I altid få indsigt i, hvilke data der ligger,
-              få slettet data og få en databehandleraftale, hvis det er nødvendigt
-              i forhold til jeres egen compliance.
-            </p>
-          </div>
-
-          <div class="faq-item typewriter-body">
-            <h3>Laura siger aldrig mere end hun må</h3>
-            <p>
-              Laura er sat op til ikke at dele fortrolige oplysninger, ikke at give juridiske
-              eller økonomiske råd og ikke at opfinde produkter, aftaler eller priser.
-              Hvis hun er i tvivl, giver hun beskeden videre i stedet.
-            </p>
-          </div>
-        </div>
-
-        <p class="typewriter-body" style="margin-top: 16px;">
-          Har I særlige krav til databehandling eller opbevaring, kan vi tilpasse opsætningen,
-          så den passer til jeres interne politikker.
-        </p>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="section">
-      <div class="section-inner">
-        <h2>Vil I have en receptionist, der aldrig holder fri?</h2>
-        <p class="typewriter-body">
-          Svar på et par spørgsmål, så sætter vi jeres velkomst og opkaldsfordeling op. Det er enkelt.
-        </p>
-
-        <div class="cta-stack">
-          <a href="opret.html" class="btn-primary">Opret Laura til jeres virksomhed</a>
-          <p class="cta-or">eller</p>
-          <a href="tel:+4520925422" class="btn-secondary">Ring til Laura nu</a>
-        </div>
-
-        <p class="gdpr-note">
-          Ved opkald kan din samtale blive behandlet af en AI-assistent. Vi bruger dine
-          oplysninger til at håndtere din henvendelse og forbedre vores service.
-        </p>
-      </div>
-    </section>
-
-    <!-- KONTAKT -->
-    <section id="kontakt" class="section section-alt">
-      <div class="section-inner">
-        <h2>Kontakt</h2>
-        <div class="contact-grid typewriter-body">
-          <div>
-            <p><strong>Any &amp; All</strong></p>
-            <p>E-mail: <a href="mailto:support@anyandall.dk">support@anyandall.dk</a></p>
-            <p>Telefon: <a href="tel:+4520925422">+45 20 92 54 22</a></p>
-            <div class="laura-badge">
-  <span class="laura-badge-dot"></span>
-  Telefonpasning leveres af Laura, digital receptionist.
-</div>
-
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-left">
-        <p>Any &amp; All</p>
-        <p>
-          <a href="#saadan">Sådan virker det</a> ·
-          <a href="#fordele">Fordele</a> ·
-          <a href="#priser">Priser</a> ·
-          <a href="#faq">FAQ</a> ·
-          <a href="#data">Data &amp; sikkerhed</a> ·
-          <a href="#kontakt">Kontakt</a>
-        </p>
-      </div>
-      <div class="footer-right">
-        <p><a href="mailto:support@anyandall.dk">support@anyandall.dk</a></p>
-        <p><a href="tel:+4520925422">+45 20 92 54 22</a></p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      © 2025 Any &amp; All. Alle rettigheder forbeholdes.
-    </div>
-  </footer>
+    log("Klar.");
+  </script>
 </body>
 </html>
-· <a href="data.html">Databehandling ved opkald</a>

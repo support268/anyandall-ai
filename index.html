@@ -7,31 +7,31 @@
   <style>
     body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; padding: 18px; }
     button { padding: 10px 14px; margin-right: 10px; }
-    pre { background: #f6f6f6; padding: 12px; border-radius: 10px; overflow: auto; white-space: pre-wrap; }
-    .tag { display:inline-block; padding:4px 8px; border-radius:999px; background:#eee; margin-left:8px; font-size:12px; }
+    pre { background: #f6f6f6; padding: 12px; border-radius: 10px; overflow: auto; }
   </style>
 </head>
 <body>
-  <h1>Ring til Laura <span class="tag">vA-STOPLOOP-001</span></h1>
+  <h1>Ring til Laura</h1>
   <p>Tryk ring — giv mikrofonadgang — og sig dit navn.</p>
 
   <button id="btnCall">Ring til Laura</button>
   <button id="btnHangup" disabled>Læg på</button>
+  <button id="btnTest">Kør netværkstest</button>
 
   <pre id="log">Klar.</pre>
 
-  <!-- Twilio Voice JS SDK (officiel CDN) -->
   <script src="https://sdk.twilio.com/js/voice/releases/2.17.0/twilio.min.js"></script>
 
   <script>
-    const TOKEN_URL = "https://anyandall-laura-mvp.onrender.com/token";
     const logEl = document.getElementById("log");
     const btnCall = document.getElementById("btnCall");
     const btnHangup = document.getElementById("btnHangup");
+    const btnTest = document.getElementById("btnTest");
+
+    const TOKEN_URL = "https://anyandall-laura-mvp.onrender.com/token";
 
     let device = null;
     let call = null;
-    let inFlight = false; // <-- forhindrer dobbelt-klik/auto-loop
 
     function ts() {
       const d = new Date();
@@ -46,19 +46,28 @@
     async function getToken() {
       log("Henter token…");
       const r = await fetch(TOKEN_URL, { method: "POST" });
-      const t = await r.text();
-      let j = null;
-      try { j = JSON.parse(t); } catch {}
-      if (!r.ok) throw new Error(`Token HTTP ${r.status}: ${t}`);
-      if (!j?.token) throw new Error(`Token mangler: ${t}`);
+      const text = await r.text();
+      let data = null;
+      try { data = JSON.parse(text); } catch (e) {}
+      if (!r.ok) throw new Error(`Token HTTP ${r.status}: ${text}`);
+      if (!data || !data.token) throw new Error(`Token svar mangler token: ${text}`);
       log("Token OK.");
-      return j.token;
+      return data.token;
     }
 
-    async function setupDeviceOnce() {
+    async function ensureDevice() {
       if (device) return device;
 
       const token = await getToken();
+
+      // Preflight (skal ikke blokere opkald)
+      try {
+        log("Preflight starter…");
+        const pre = await Twilio.Device.runPreflight(token, { edge: "roaming" });
+        log("Preflight COMPLETED:", pre);
+      } catch (e) {
+        log("Preflight FEJL (fortsætter): " + (e?.message || String(e)));
+      }
 
       log("Initialiserer Twilio Device…");
       device = new Twilio.Device(token, {
@@ -69,49 +78,29 @@
 
       device.on("registered", () => log("Device REGISTERED ✅"));
       device.on("unregistered", () => log("Device UNREGISTERED"));
-      device.on("error", (e) => log("Device ERROR", {
-        message: e?.message, code: e?.code, name: e?.name, explanation: e?.explanation, causes: e?.causes
+      device.on("error", (e) => log("Device ERROR:", {
+        message: e?.message, code: e?.code, name: e?.name,
+        explanation: e?.explanation, causes: e?.causes
       }));
 
-      // VIGTIG: register() kræves ofte før connect
-      try {
-        await device.register();
-        log("device.register() kaldt");
-      } catch (e) {
-        log("device.register() FEJL", { message: e?.message, code: e?.code });
-      }
+      await device.register();
+      log("device.register() kaldt");
 
       return device;
     }
 
-    async function waitRegistered(ms = 9000) {
-      const start = Date.now();
-      while (Date.now() - start < ms) {
-        if (device && device.state === "registered") return true;
-        await new Promise(r => setTimeout(r, 150));
-      }
-      return false;
-    }
-
-    async function startCall() {
-      // STOP LOOP: kun ét forsøg ad gangen
-      if (inFlight) { log("Ignorerer klik: allerede i gang"); return; }
-      inFlight = true;
-
+    async function callLaura() {
       btnCall.disabled = true;
       btnHangup.disabled = true;
 
       try {
         log("Klik: Ring til Laura");
+        const d = await ensureDevice();
 
-        await setupDeviceOnce();
+        // VIGTIGT: Send altid et To-param (Twilio Client forventer det)
+        log("Ringer… (mikrofon: Allow)");
+        call = await d.connect({ params: { To: "laura" } });
 
-        log("Venter på REGISTERED…");
-        const ok = await waitRegistered(9000);
-        if (!ok) throw new Error("Device blev ikke registered (ikke WebRTC-test – det er Device state)");
-
-        log("Ringer…");
-        call = await device.connect({}); // ingen params
         btnHangup.disabled = false;
 
         call.on("accept", () => log("Call ACCEPTED ✅"));
@@ -121,31 +110,42 @@
           btnHangup.disabled = true;
           btnCall.disabled = false;
         });
-        call.on("error", (e) => log("Call ERROR", { message: e?.message, code: e?.code, name: e?.name }));
+        call.on("error", (e) => log("Call ERROR:", {
+          message: e?.message, code: e?.code, name: e?.name
+        }));
 
       } catch (e) {
-        log("KUNNE IKKE STARTE:", { message: e?.message || String(e) });
+        log("RING FEJL:", { message: e?.message || String(e) });
         btnCall.disabled = false;
         btnHangup.disabled = true;
-      } finally {
-        // vigtigt: slip låsen når forsøget er færdigt (ellers “hænger” knappen)
-        inFlight = false;
       }
     }
 
     function hangup() {
-      log("Lægger på…");
+      log("Læg på");
       try {
         if (call) call.disconnect();
         if (device) device.disconnectAll();
-      } catch {}
+      } catch (e) {}
       call = null;
       btnHangup.disabled = true;
       btnCall.disabled = false;
     }
 
-    btnCall.addEventListener("click", startCall);
+    async function runTest() {
+      try {
+        const token = await getToken();
+        log("Preflight starter…");
+        const pre = await Twilio.Device.runPreflight(token, { edge: "roaming" });
+        log("Preflight COMPLETED:", pre);
+      } catch (e) {
+        log("Preflight TEST FEJL:", { message: e?.message || String(e) });
+      }
+    }
+
+    btnCall.addEventListener("click", callLaura);
     btnHangup.addEventListener("click", hangup);
+    btnTest.addEventListener("click", runTest);
 
     log("Klar.");
   </script>

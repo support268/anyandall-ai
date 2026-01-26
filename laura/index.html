@@ -12,7 +12,7 @@
 </head>
 <body>
   <h1>Ring til Laura</h1>
-  <p><b>Build:</b> v3</p>
+  <p><b>Build:</b> v4</p>
   <p>Tryk ring — giv mikrofonadgang — og sig dit navn.</p>
 
   <button id="btnCall">Ring til Laura</button>
@@ -22,205 +22,191 @@
   <pre id="log">Klar.</pre>
 
   <script>
-  const statusEl = document.getElementById("log") || document.getElementById("status");
-  const btnCall = document.getElementById("btnCall");
-  const btnHangup = document.getElementById("btnHangup");
-  const btnTest = document.getElementById("btnTest");
+    const statusEl = document.getElementById("log");
+    const btnCall = document.getElementById("btnCall");
+    const btnHangup = document.getElementById("btnHangup");
+    const btnTest = document.getElementById("btnTest");
 
-  const TOKEN_URL = "https://anyandall-laura-mvp.onrender.com/token";
+    const TOKEN_URL = "https://anyandall-laura-mvp.onrender.com/token";
 
-  let device = null;
-  let call = null;
-  let isDialing = false;
+    // Twilio Voice SDK sources (CDN + fallback)
+    const TWILIO_SDK_PRIMARY = "https://sdk.twilio.com/js/voice/releases/2.17.0/twilio.min.js";
+    const TWILIO_SDK_FALLBACK = "https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2.17.0/dist/twilio.min.js";
 
-  function ts() {
-    const d = new Date();
-    return d.toLocaleTimeString("da-DK", { hour12: false });
-  }
-  function log(msg, obj) {
-    const line = `[${ts()}] ${msg}` + (obj ? `\n${JSON.stringify(obj, null, 2)}` : "");
-    if (statusEl) statusEl.textContent = line + "\n\n" + statusEl.textContent;
-    console.log(msg, obj || "");
-  }
+    let device = null;
+    let activeCall = null;
 
-  // ---- Load Twilio SDK (with fallback) ----
-  function loadScript(src) {
-    return new Promise((resolve, reject) => {
-      const s = document.createElement("script");
-      s.src = src;
-      s.async = true;
-      s.onload = resolve;
-      s.onerror = () => reject(new Error("Kunne ikke loade: " + src));
-      document.head.appendChild(s);
-    });
-  }
-
-  async function ensureTwilioLoaded() {
-    if (window.Twilio && window.Twilio.Device) return;
-
-    try {
-      log("Loader Twilio SDK (Twilio CDN)…");
-      await loadScript("https://sdk.twilio.com/js/voice/releases/2.17.0/twilio.min.js");
-    } catch (e1) {
-      log("Twilio CDN fejlede, prøver fallback…", { message: e1.message });
-      await loadScript("https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2.17.0/dist/twilio.min.js");
+    function ts() {
+      const d = new Date();
+      return d.toLocaleTimeString("da-DK", { hour12: false });
     }
 
-    if (!(window.Twilio && window.Twilio.Device)) {
-      throw new Error("Twilio SDK loaded, men Twilio.Device findes ikke");
-    }
-    log("Twilio SDK OK ✅");
-  }
-
-  // ---- HARD STOP: kills ALL browser audio + Twilio ----
-  function hardStopAll() {
-    // Stop alle browser-lyde (sikrer mod gamle mp3 loops)
-    document.querySelectorAll("audio").forEach(a => {
-      try { a.pause(); a.src = ""; a.load(); } catch (e) {}
-    });
-
-    // Stop Twilio call/device brutalt
-    try { if (call) call.disconnect(); } catch (e) {}
-    try { if (device) device.disconnectAll(); } catch (e) {}
-    try { if (device) device.unregister(); } catch (e) {}
-
-    call = null;
-    device = null;
-    isDialing = false;
-
-    if (btnHangup) btnHangup.disabled = true;
-    if (btnCall) btnCall.disabled = false;
-
-    log("Hard stop ✅ (alt lyd + Twilio stoppet)");
-  }
-
-  async function getToken() {
-    log("Henter token…");
-    const r = await fetch(TOKEN_URL, { method: "POST" });
-    const text = await r.text();
-    let data = null;
-    try { data = JSON.parse(text); } catch (e) {}
-    if (!r.ok) throw new Error(`Token HTTP ${r.status}: ${text}`);
-    if (!data || !data.token) throw new Error(`Token svar mangler token: ${text}`);
-    log("Token OK.");
-    return data.token;
-  }
-
-  async function ensureDevice() {
-    if (device) return device;
-
-    await ensureTwilioLoaded();
-    const token = await getToken();
-
-    // Preflight (valgfrit, men godt)
-    try {
-      log("Preflight starter…");
-      const pre = await Twilio.Device.runPreflight(token, { edge: "roaming" });
-      log("Preflight COMPLETED:", pre);
-    } catch (e) {
-      log("Preflight FEJL (fortsætter): " + (e?.message || String(e)));
+    function log(msg, obj) {
+      const line = "[" + ts() + "] " + msg + (obj ? "\n" + JSON.stringify(obj, null, 2) : "");
+      statusEl.textContent = line + "\n\n" + statusEl.textContent;
+      console.log(msg, obj || "");
     }
 
-    log("Initialiserer Twilio Device…");
-device = new Twilio.Device(token, {
-  edge: "roaming",
-  debug: true,
-  closeProtection: true,
-
-  // ⛔ Slå Twilio SDK-lyde FRA (meget vigtigt)
-  sounds: {
-    incoming: null,
-    outgoing: null,
-    disconnect: null
-  },
-
-  // 🎤 Stabilitet på mic
-  audioConstraints: {
-    echoCancellation: true,
-    noiseSuppression: true,
-    autoGainControl: true
-  }
-});
-// ⛔ Sluk Twilio SDK-lyde (ringetone/outgoing/disconnect) — virker selv når "sounds:" ikke gør
-try {
-  if (device && device.audio && device.audio.sounds) {
-    device.audio.sounds.incoming = () => {};
-    device.audio.sounds.outgoing = () => {};
-    device.audio.sounds.disconnect = () => {};
-    log("SDK-lyde slukket ✅");
-  } else {
-    log("Kunne ikke finde device.audio.sounds (springer over)");
-  }
-} catch (e) {
-  log("Kunne ikke slukke SDK-lyde:", { message: e?.message || String(e) });
-}
-
-    device.on("error", (e) => log("Device ERROR:", {
-      message: e?.message, code: e?.code, name: e?.name,
-      explanation: e?.explanation, causes: e?.causes
-    }));
-
-    await device.register();
-    log("Device REGISTERED ✅");
-    return device;
-  }
-
-  async function callLaura() {
-    // Idempotent: kan ikke starte to gange
-    if (isDialing || call) {
-      log("Ignorerer: allerede i gang");
-      return;
+    function errToString(e) {
+      if (!e) return "Ukendt fejl";
+      if (typeof e === "string") return e;
+      if (e instanceof Error) return (e.name || "Error") + ": " + (e.message || "");
+      try { return JSON.stringify(e); } catch (_) { return String(e); }
     }
-    isDialing = true;
 
-    if (btnCall) btnCall.disabled = true;
-    if (btnHangup) btnHangup.disabled = true;
+    function hardStop() {
+      try {
+        if (activeCall) {
+          activeCall.disconnect();
+          activeCall = null;
+        }
+      } catch (_) {}
+      try {
+        if (device) {
+          device.destroy();
+          device = null;
+        }
+      } catch (_) {}
+      btnHangup.disabled = true;
+      log("Hard stop ✅ (alt lyd + Twilio stoppet)");
+    }
 
-    try {
-      log("Klik: Ring til Laura");
-
-      // Absolut ren start
-      hardStopAll();
-
-      const d = await ensureDevice();
-
-      log("Ringer…");
-      call = await d.connect({ params: { To: "laura" } });
-
-      if (btnHangup) btnHangup.disabled = false;
-
-      call.on("accept", () => log("Call ACCEPTED ✅"));
-      call.on("disconnect", () => {
-        log("Call DISCONNECT");
-        hardStopAll();
+    async function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.async = true;
+        s.onload = () => resolve(true);
+        s.onerror = () => reject(new Error("Kunne ikke loade: " + src));
+        document.head.appendChild(s);
       });
-      call.on("error", (e) => {
-        log("Call ERROR:", { message: e?.message, code: e?.code, name: e?.name });
-        hardStopAll();
-      });
-
-      isDialing = false;
-    } catch (e) {
-      log("RING FEJL:", { message: e?.message || String(e) });
-      hardStopAll();
     }
-  }
 
-  async function runTest() {
-    try {
-      await ensureTwilioLoaded();
+    function getVoiceSdk() {
+      // Voice SDK 2.x eksponerer typisk TwilioVoice globalt
+      if (window.TwilioVoice && window.TwilioVoice.Device) return window.TwilioVoice;
+      // Nogle setups kan have Twilio.Device
+      if (window.Twilio && window.Twilio.Device) return window.Twilio;
+      return null;
+    }
+
+    async function ensureTwilioSdk() {
+      const already = getVoiceSdk();
+      if (already) {
+        log("Twilio SDK allerede loaded ✅");
+        return already;
+      }
+
+      log("Loader Twilio SDK (CDN)…");
+      try {
+        await loadScript(TWILIO_SDK_PRIMARY);
+      } catch (e1) {
+        log("Twilio CDN fejlede, prøver fallback…", { message: errToString(e1) });
+        await loadScript(TWILIO_SDK_FALLBACK);
+      }
+
+      const sdk = getVoiceSdk();
+      if (!sdk) throw new Error("Twilio SDK loaded, men global ikke fundet (hverken TwilioVoice eller Twilio).");
+
+      log("Twilio SDK OK ✅");
+      return sdk;
+    }
+
+    async function getToken() {
+      log("Henter token…");
+      const r = await fetch(TOKEN_URL, { method: "GET" });
+      const text = await r.text();
+      let data = null;
+      try { data = JSON.parse(text); } catch (_) {}
+      if (!r.ok) throw new Error("Token HTTP " + r.status + ": " + text);
+      if (!data || !data.token) throw new Error("Token svar mangler token: " + text);
+      log("Token OK.");
+      return data.token;
+    }
+
+    async function ensureDevice() {
+      const sdk = await ensureTwilioSdk();
       const token = await getToken();
-      log("Preflight starter…");
-      const pre = await Twilio.Device.runPreflight(token, { edge: "roaming" });
-      log("Preflight COMPLETED:", pre);
-    } catch (e) {
-      log("Preflight TEST FEJL:", { message: e?.message || String(e) });
+
+      log("Initialiserer Twilio Device…");
+
+      // Bemærk: i TwilioVoice hedder klassen Device også Device.
+      // Vi bruger sdk.Device så det virker uanset TwilioVoice vs Twilio.
+      device = new sdk.Device(token, {
+        logLevel: "error",
+        // Hvis du vil tvinge audio devices senere, kan vi udvide.
+      });
+
+      device.on("registered", () => log("Device registered ✅"));
+      device.on("error", (e) => log("Device error ❌", { message: errToString(e) }));
+
+      device.on("incoming", (c) => {
+        log("Incoming call (ikke forventet i denne demo).");
+        activeCall = c;
+      });
+
+      // I Voice SDK 2.x skal man registrere
+      await device.register();
+      return device;
     }
-  }
 
-  if (btnCall) btnCall.addEventListener("click", callLaura);
-  if (btnHangup) btnHangup.addEventListener("click", hardStopAll);
-  if (btnTest) btnTest.addEventListener("click", runTest);
+    async function callLaura() {
+      try {
+        hardStop();
 
-  log("Klar.");
-</script>
+        const dev = await ensureDevice();
+
+        btnHangup.disabled = false;
+
+        // Params kan være tomt for TwiML App outgoing.
+        // Hvis du bruger To: sæt fx { To: "+4512345678" }
+        const params = {};
+
+        log("Ringer op…");
+        activeCall = await dev.connect({ params: params });
+
+        activeCall.on("disconnect", () => {
+          log("Call disconnected.");
+          hardStop();
+        });
+
+        activeCall.on("error", (e) => {
+          log("Call error ❌", { message: errToString(e) });
+          hardStop();
+        });
+
+        log("Call connected ✅");
+      } catch (e) {
+        log("RING FEJL:", { message: errToString(e) });
+        hardStop();
+      }
+    }
+
+    async function runTest() {
+      try {
+        log("Netværkstest: starter…");
+        await ensureTwilioSdk();
+        await getToken();
+        log("Netværkstest: OK ✅");
+      } catch (e) {
+        log("Netværkstest FEJL ❌", { message: errToString(e) });
+      }
+    }
+
+    btnCall.addEventListener("click", () => {
+      log("Klik: Ring til Laura");
+      callLaura();
+    });
+
+    btnHangup.addEventListener("click", () => {
+      log("Klik: Læg på");
+      hardStop();
+    });
+
+    btnTest.addEventListener("click", () => {
+      log("Klik: Kør netværkstest");
+      runTest();
+    });
+  </script>
+</body>
+</html>

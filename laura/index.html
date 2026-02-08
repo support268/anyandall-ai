@@ -1,4 +1,3 @@
-<p><b>Build:</b> LAURA-v99</p>
 <!doctype html>
 <html lang="da">
 <head>
@@ -13,7 +12,7 @@
 </head>
 <body>
   <h1>Ring til Laura</h1>
-  <p><b>Build:</b> v4</p>
+  <p><b>Build:</b> v6</p>
   <p>Tryk ring — giv mikrofonadgang — og sig dit navn.</p>
 
   <button id="btnCall">Ring til Laura</button>
@@ -30,9 +29,9 @@
 
     const TOKEN_URL = "https://anyandall-laura-mvp.onrender.com/token";
 
-    // Twilio Voice SDK sources (CDN + fallback)
-    const TWILIO_SDK_PRIMARY = "https://sdk.twilio.com/js/voice/releases/2.17.0/twilio.min.js";
-    const TWILIO_SDK_FALLBACK = "https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2.17.0/dist/twilio.min.js";
+    // VIGTIGT: Voice JS SDK 2.x loader vi fra unpkg/jsDelivr (ikke sdk.twilio.com)
+    const TWILIO_SDK_PRIMARY  = "https://unpkg.com/@twilio/voice-sdk@2.18.0/dist/twilio.min.js";
+    const TWILIO_SDK_FALLBACK = "https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2.18.0/dist/twilio.min.js";
 
     let device = null;
     let activeCall = null;
@@ -98,11 +97,11 @@
         return already;
       }
 
-      log("Loader Twilio SDK (CDN)…");
+      log("Loader Twilio SDK…", { primary: TWILIO_SDK_PRIMARY });
       try {
         await loadScript(TWILIO_SDK_PRIMARY);
       } catch (e1) {
-        log("Twilio CDN fejlede, prøver fallback…", { message: errToString(e1) });
+        log("Primary fejlede, prøver fallback…", { message: errToString(e1), fallback: TWILIO_SDK_FALLBACK });
         await loadScript(TWILIO_SDK_FALLBACK);
       }
 
@@ -114,7 +113,7 @@
     }
 
     async function getToken() {
-      log("Henter token…");
+      log("Henter token…", { url: TOKEN_URL });
       const r = await fetch(TOKEN_URL, { method: "GET" });
       const text = await r.text();
       let data = null;
@@ -131,11 +130,8 @@
 
       log("Initialiserer Twilio Device…");
 
-      // Bemærk: i TwilioVoice hedder klassen Device også Device.
-      // Vi bruger sdk.Device så det virker uanset TwilioVoice vs Twilio.
       device = new sdk.Device(token, {
         logLevel: "error",
-        // Hvis du vil tvinge audio devices senere, kan vi udvide.
       });
 
       device.on("registered", () => log("Device registered ✅"));
@@ -146,7 +142,6 @@
         activeCall = c;
       });
 
-      // I Voice SDK 2.x skal man registrere
       await device.register();
       return device;
     }
@@ -156,11 +151,8 @@
         hardStop();
 
         const dev = await ensureDevice();
-
         btnHangup.disabled = false;
 
-        // Params kan være tomt for TwiML App outgoing.
-        // Hvis du bruger To: sæt fx { To: "+4512345678" }
         const params = {};
 
         log("Ringer op…");

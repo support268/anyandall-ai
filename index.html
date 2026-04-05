@@ -4,21 +4,22 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ring til Laura | Any & All</title>
-  <meta name="description" content="Prøv at ringe til Laura – en AI front desk, der forsøger at stille videre, tager imod henvendelser og ved hvornår den ikke må træffe beslutninger." />
+  <meta name="description" content="Prøv at ringe til Laura – en kontrolleret AI front desk, der stiller videre, håndterer henvendelser og arbejder med tydelige rammer for data og ansvar." />
   <style>
     :root{
-      --bg:#f6f7fb;
+      --bg:#f5f7fb;
       --card:#ffffff;
       --text:#1f2937;
-      --muted:#6b7280;
-      --line:#e5e7eb;
+      --muted:#667085;
+      --line:#e6e8ef;
       --brand:#4f46e5;
       --brand-dark:#3730a3;
+      --brand-soft:#eef2ff;
       --ok:#166534;
       --warn:#92400e;
-      --shadow:0 10px 30px rgba(15,23,42,.08);
-      --radius:18px;
-      --max:1120px;
+      --shadow:0 16px 40px rgba(15,23,42,.08);
+      --radius:20px;
+      --max:1160px;
     }
 
     * { box-sizing: border-box; }
@@ -32,62 +33,51 @@
       line-height: 1.5;
     }
 
-    a { color: inherit; }
+    body {
+      padding: 24px 18px 56px;
+    }
 
     .wrap {
       max-width: var(--max);
       margin: 0 auto;
-      padding: 24px 18px 56px;
     }
 
     .topbar {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 24px;
+      gap: 18px;
+      margin-bottom: 26px;
     }
 
     .brand {
       display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .brand img {
-      width: 44px;
-      height: 44px;
-      display: block;
-    }
-
-    .brand-text {
-      display: flex;
       flex-direction: column;
-      min-width: 0;
+      gap: 4px;
     }
 
-    .brand-text strong {
-      font-size: 18px;
-      font-weight: 700;
+    .brand strong {
+      font-size: 30px;
+      line-height: 1;
+      letter-spacing: -0.02em;
     }
 
-    .brand-text span {
+    .brand span {
       color: var(--muted);
-      font-size: 14px;
+      font-size: 15px;
     }
 
     .build {
       font-size: 12px;
       color: var(--muted);
       white-space: nowrap;
+      padding-top: 6px;
     }
 
     .hero {
       display: grid;
-      grid-template-columns: 1.1fr .9fr;
+      grid-template-columns: 1.15fr .85fr;
       gap: 22px;
-      align-items: stretch;
       margin-bottom: 22px;
     }
 
@@ -98,42 +88,42 @@
       box-shadow: var(--shadow);
     }
 
-    .hero-copy {
-      padding: 28px;
+    .hero-main {
+      padding: 34px 30px 30px;
     }
 
     .eyebrow {
       display: inline-block;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: .04em;
-      text-transform: uppercase;
+      margin-bottom: 12px;
       color: var(--brand);
-      margin-bottom: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .05em;
+      text-transform: uppercase;
     }
 
     h1 {
       margin: 0 0 14px;
-      font-size: clamp(34px, 5vw, 54px);
-      line-height: 1.03;
-      letter-spacing: -.02em;
+      font-size: clamp(38px, 6vw, 64px);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
     }
 
     .lead {
-      font-size: 18px;
-      color: var(--muted);
       margin: 0 0 22px;
       max-width: 60ch;
+      color: var(--muted);
+      font-size: 19px;
     }
 
     .cta-row {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
-    button, .button-link {
+    button {
       appearance: none;
       border: 0;
       border-radius: 999px;
@@ -142,7 +132,6 @@
       font-weight: 700;
       cursor: pointer;
       transition: .18s ease;
-      text-decoration: none;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -157,47 +146,106 @@
     .btn-primary:hover { background: var(--brand-dark); }
 
     .btn-secondary {
-      background: #eef2ff;
-      color: var(--brand-dark);
-      border: 1px solid #c7d2fe;
-    }
-
-    .btn-secondary:hover { background: #e0e7ff; }
-
-    .btn-ghost {
       background: #fff;
       color: var(--text);
       border: 1px solid var(--line);
     }
 
-    .btn-ghost:hover { background: #f9fafb; }
+    .btn-secondary:hover { background: #fafafa; }
+
+    .btn-soft {
+      background: var(--brand-soft);
+      color: var(--brand-dark);
+      border: 1px solid #c7d2fe;
+    }
+
+    .btn-soft:hover { background: #e0e7ff; }
 
     .helper {
+      margin: 0;
       color: var(--muted);
       font-size: 14px;
-      margin: 0;
     }
 
     .hero-side {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
+      padding: 22px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .mini {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      background: #fbfcff;
+    }
+
+    .mini h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .mini p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .section {
+      margin-bottom: 22px;
+      padding: 28px;
+    }
+
+    .section h2 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+    }
+
+    .section-intro {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 70ch;
+    }
+
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: 16px;
     }
 
-    .mini-block {
-      padding: 18px;
+    .flow-step {
       border: 1px solid var(--line);
-      border-radius: 14px;
-      background: #fafafa;
+      border-radius: 18px;
+      background: #fff;
+      padding: 18px;
+      position: relative;
+      min-height: 220px;
     }
 
-    .mini-block h3 {
+    .flow-step .num {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--brand-soft);
+      color: var(--brand-dark);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .flow-step h3 {
       margin: 0 0 8px;
-      font-size: 16px;
+      font-size: 18px;
+      line-height: 1.15;
     }
 
-    .mini-block p {
+    .flow-step p {
       margin: 0;
       color: var(--muted);
       font-size: 15px;
@@ -210,74 +258,53 @@
       margin-bottom: 22px;
     }
 
-    .section {
-      padding: 26px;
-    }
-
-    .section h2 {
-      margin: 0 0 12px;
-      font-size: 28px;
-      line-height: 1.1;
-    }
-
-    .section p {
-      margin: 0 0 14px;
-      color: var(--muted);
-      font-size: 16px;
-    }
-
-    .points {
+    .bullets {
       display: grid;
       gap: 12px;
       margin-top: 14px;
     }
 
-    .point {
+    .bullet {
       padding: 14px 16px;
       border: 1px solid var(--line);
-      border-radius: 14px;
+      border-radius: 16px;
       background: #fff;
     }
 
-    .point strong {
+    .bullet strong {
       display: block;
       margin-bottom: 4px;
       font-size: 15px;
     }
 
-    .point span {
+    .bullet span {
       color: var(--muted);
       font-size: 15px;
     }
 
-    .video-shell {
-      overflow: hidden;
-      border-radius: 16px;
-      border: 1px solid var(--line);
-      background: #000;
-    }
-
-    video {
-      display: block;
-      width: 100%;
-      height: auto;
-      background: #000;
-    }
-
     .call-panel {
       margin-bottom: 22px;
-      padding: 24px;
+      padding: 28px;
     }
 
     .call-panel h2 {
       margin: 0 0 8px;
-      font-size: 28px;
+      font-size: 30px;
     }
 
     .call-panel p {
       margin: 0 0 16px;
       color: var(--muted);
+      max-width: 72ch;
     }
+
+    .status-note {
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .ok { color: var(--ok); }
+    .warn { color: var(--warn); }
 
     .log {
       margin-top: 16px;
@@ -295,17 +322,18 @@
 
     .feedback {
       margin-bottom: 22px;
-      padding: 24px;
+      padding: 28px;
     }
 
     .feedback h2 {
       margin: 0 0 8px;
-      font-size: 28px;
+      font-size: 30px;
     }
 
     .feedback p {
       margin: 0 0 14px;
       color: var(--muted);
+      max-width: 68ch;
     }
 
     .feedback-row {
@@ -322,10 +350,10 @@
 
     textarea {
       width: 100%;
-      min-height: 110px;
+      min-height: 120px;
       resize: vertical;
       border: 1px solid var(--line);
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 14px;
       font: inherit;
       color: var(--text);
@@ -342,26 +370,22 @@
       text-align: center;
       color: var(--muted);
       font-size: 13px;
-      padding-top: 6px;
+      padding-top: 4px;
     }
 
-    .status-note {
-      font-size: 14px;
-      margin-top: 10px;
-    }
-
-    .ok { color: var(--ok); }
-    .warn { color: var(--warn); }
-
-    @media (max-width: 900px) {
+    @media (max-width: 980px) {
       .hero,
-      .grid-2 {
+      .grid-2,
+      .flow-grid {
         grid-template-columns: 1fr;
       }
 
       .topbar {
         flex-direction: column;
-        align-items: flex-start;
+      }
+
+      .flow-step {
+        min-height: unset;
       }
     }
   </style>
@@ -369,54 +393,93 @@
 <body>
   <div class="wrap">
     <div class="topbar">
-     <div class="brand">
-  <div class="brand-text">
-    <strong>Any & All</strong>
-    <span>Laura – AI front desk</span>
-  </div>
-</div>
-      <div class="build">Build: LAURA-v100</div>
+      <div class="brand">
+        <strong>Any &amp; All</strong>
+        <span>Laura – AI front desk</span>
+      </div>
+      <div class="build">Build: LAURA-v101</div>
     </div>
 
     <section class="hero">
-      <div class="card hero-copy">
+      <div class="card hero-main">
         <div class="eyebrow">Prøv Laura</div>
         <h1>Ring til Laura</h1>
         <p class="lead">
-          Laura tager imod henvendelser, forsøger at stille videre til den rigtige medarbejder og samler op,
-          når en henvendelse ikke kan løses med det samme.
+          Laura stiller videre til den rigtige funktion i åbningstiden, håndterer henvendelser uden telefonkø
+          og samler op, når virksomheden ikke er tilgængelig.
         </p>
 
         <div class="cta-row">
           <button id="btnCall" class="btn-primary">Ring til Laura</button>
-          <button id="btnHangup" class="btn-ghost" disabled>Læg på</button>
-          <button id="btnTest" class="btn-secondary">Kør netværkstest</button>
+          <button id="btnHangup" class="btn-secondary" disabled>Læg på</button>
+          <button id="btnTest" class="btn-soft">Kør netværkstest</button>
         </div>
 
         <p class="helper">
-          Når du ringer, kan du prøve både almindelige henvendelser, omstilling til salg/support og enkle spørgsmål om fx pakker og priser.
+          Du kan fx bede om salg, support eller stille et spørgsmål om pakker og priser.
         </p>
       </div>
 
       <div class="card hero-side">
-        <div class="mini-block">
-          <h3>Sådan arbejder Laura</h3>
+        <div class="mini">
+          <h3>Ingen telefonkø</h3>
           <p>
-            Hun forsøger først at stille videre til den rigtige funktion. Hvis det ikke er muligt, tager hun imod henvendelsen og sikrer, at kunden kan kontaktes igen.
+            Alle opkald bliver taget med det samme, så kunder ikke møder ventetid som første oplevelse.
           </p>
         </div>
 
-        <div class="mini-block">
-          <h3>Hvad får du med Laura</h3>
+        <div class="mini">
+          <h3>Kontakt kan samles op igen</h3>
           <p>
-            Ingen telefonkø, struktureret opsamling af henvendelser og et klart overblik over, hvad der skal følges op på.
+            Hvis virksomheden ikke er tilgængelig, bliver henvendelsen registreret, så kunden kan kontaktes igen.
           </p>
         </div>
 
-        <div class="mini-block">
-          <h3>Designet til at hjælpe – ikke til at beslutte</h3>
+        <div class="mini">
+          <h3>Struktureret opfølgning</h3>
           <p>
-            Laura håndterer henvendelser og sender dem videre korrekt. Hun er bygget til at støtte jeres drift, ikke til at træffe beslutninger på jeres vegne.
+            Henvendelser bliver samlet op på en måde, der gør det tydeligt, hvad der skal følges op på – og af hvem.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card section">
+      <h2>Sådan arbejder Laura</h2>
+      <p class="section-intro">
+        Laura er bygget som et kontrolleret front desk-flow. Hun håndterer opkald i en fast rækkefølge, så kunder bliver mødt ensartet og virksomheden bevarer kontrollen.
+      </p>
+
+      <div class="flow-grid">
+        <div class="flow-step">
+          <div class="num">1</div>
+          <h3>Opkald kommer ind</h3>
+          <p>
+            Laura tager imod alle opkald med det samme og identificerer, hvad den der ringer ønsker.
+          </p>
+        </div>
+
+        <div class="flow-step">
+          <div class="num">2</div>
+          <h3>Laura finder det rigtige spor</h3>
+          <p>
+            I åbningstiden stiller Laura videre til den rigtige funktion. Hvis virksomheden har lukket, samler hun henvendelsen op i stedet.
+          </p>
+        </div>
+
+        <div class="flow-step">
+          <div class="num">3</div>
+          <h3>AI bruges inden for klare rammer</h3>
+          <p>
+            Laura bruger AI til at forstå henvendelsen, finde det rigtige spor og formulere en struktureret opsummering til opfølgning.
+          </p>
+        </div>
+
+        <div class="flow-step">
+          <div class="num">4</div>
+          <h3>Henvendelsen bliver samlet op</h3>
+          <p>
+            Hvis kunden ikke kan stilles videre med det samme, bliver kontakt og henvendelse registreret struktureret, så virksomheden kan følge op.
           </p>
         </div>
       </div>
@@ -424,33 +487,55 @@
 
     <section class="grid-2">
       <div class="card section">
-        <h2>Sådan fungerer Laura i praksis</h2>
-        <div class="points">
-          <div class="point">
-            <strong>1. Hun forsøger først at stille videre</strong>
-            <span>Når en kunde ringer, er første opgave at finde den rigtige medarbejder eller funktion og forsøge at stille videre.</span>
+        <h2>Hvordan AI bruges i Laura</h2>
+        <p class="section-intro">
+          AI er en del af Laura, men kun i de dele af flowet, hvor det giver mening og kan styres.
+        </p>
+
+        <div class="bullets">
+          <div class="bullet">
+            <strong>AI bruges til at forstå henvendelser</strong>
+            <span>Laura bruger AI til at forstå, hvad kunden ønsker, og til at vælge det rigtige spor.</span>
           </div>
-          <div class="point">
-            <strong>2. Hun samler op, hvis omstilling ikke er mulig</strong>
-            <span>Hvis der er optaget eller uden for åbningstid, tager Laura imod henvendelsen og sørger for, at kunden kan kontaktes igen.</span>
+
+          <div class="bullet">
+            <strong>AI bruges til at finde det rigtige svar</strong>
+            <span>Hvis Laura svarer på et spørgsmål, hentes svaret fra virksomhedens officielle hjemmeside og/eller fra en Q&amp;A, som virksomheden selv har sendt og godkendt.</span>
           </div>
-          <div class="point">
-            <strong>3. Hun svarer selv, når svaret allerede er kendt</strong>
-            <span>Hvis spørgsmålet handler om noget, Laura allerede ved, som fx pakker, priser eller åbningstider, kan hun svare med det samme.</span>
+
+          <div class="bullet">
+            <strong>AI bruges til struktureret opsummering</strong>
+            <span>Når en henvendelse skal følges op, hjælper AI med at opsummere den, så opfølgning bliver enkel og ensartet.</span>
           </div>
         </div>
       </div>
 
       <div class="card section">
-        <h2>Se hvordan Laura fungerer</h2>
-        <p>
-          Videoen viser, hvordan Laura tager imod et opkald, håndterer henvendelsen og sender den videre i praksis.
+        <h2>Data og kontrol</h2>
+        <p class="section-intro">
+          Laura er ikke lagt ind i virksomhedens interne systemer som udgangspunkt. Hun arbejder i et kontrolleret front desk-lag foran virksomheden.
         </p>
-        <div class="video-shell">
-          <video controls playsinline preload="metadata">
-            <source src="202511231852.mp4" type="video/mp4" />
-            Din browser understøtter ikke videoafspilning.
-          </video>
+
+        <div class="bullets">
+          <div class="bullet">
+            <strong>Ingen fri adgang til virksomheden</strong>
+            <span>Laura får ikke automatisk adgang til interne systemer eller virksomhedens data.</span>
+          </div>
+
+          <div class="bullet">
+            <strong>Kontrolleret datagrundlag</strong>
+            <span>Svar bygger på virksomhedens officielle hjemmeside og/eller en Q&amp;A, som virksomheden selv har sendt til os.</span>
+          </div>
+
+          <div class="bullet">
+            <strong>Struktureret håndtering</strong>
+            <span>Når Laura samler en henvendelse op, bliver de nødvendige oplysninger registreret kontrolleret og brugbart til opfølgning.</span>
+          </div>
+
+          <div class="bullet">
+            <strong>Klare grænser</strong>
+            <span>Laura håndterer henvendelser og sender dem videre korrekt. Hun er ikke designet til at overtage virksomhedens ansvar.</span>
+          </div>
         </div>
       </div>
     </section>
@@ -458,12 +543,12 @@
     <section class="card call-panel">
       <h2>Test Laura nu</h2>
       <p>
-        Tryk ring, giv mikrofonadgang og prøv et almindeligt opkaldsforløb. Du kan fx bede om salg, support eller stille et spørgsmål om pakker og priser.
+        Tryk ring, giv mikrofonadgang og prøv et almindeligt opkaldsforløb. Du kan bede om salg eller support, eller stille et spørgsmål om fx pakker og priser.
       </p>
 
       <div class="cta-row">
         <button id="btnCall2" class="btn-primary">Ring til Laura</button>
-        <button id="btnHangup2" class="btn-ghost" disabled>Læg på</button>
+        <button id="btnHangup2" class="btn-secondary" disabled>Læg på</button>
       </div>
 
       <div id="statusNote" class="status-note tiny">Klar.</div>
@@ -473,13 +558,13 @@
     <section class="card feedback">
       <h2>Giv feedback</h2>
       <p>
-        Har du lige testet Laura, må du meget gerne sende en kort tilbagemelding. Det hjælper os med at forbedre hende hurtigt og konkret.
+        Har du lige testet Laura, må du meget gerne sende en kort tilbagemelding. Det hjælper os med at forbedre flow, svar og opfølgning hurtigt og konkret.
       </p>
 
       <div class="feedback-row">
-        <button type="button" class="btn-ghost feedback-choice" data-value="Fungerede godt">👍 Fungerede godt</button>
-        <button type="button" class="btn-ghost feedback-choice" data-value="Lidt uklart">🤔 Lidt uklart</button>
-        <button type="button" class="btn-ghost feedback-choice" data-value="Fungerede ikke">👎 Fungerede ikke</button>
+        <button type="button" class="btn-secondary feedback-choice" data-value="Fungerede godt">👍 Fungerede godt</button>
+        <button type="button" class="btn-secondary feedback-choice" data-value="Lidt uklart">🤔 Lidt uklart</button>
+        <button type="button" class="btn-secondary feedback-choice" data-value="Fungerede ikke">👎 Fungerede ikke</button>
       </div>
 
       <textarea id="feedbackText" placeholder="Hvad skete der?"></textarea>
@@ -489,12 +574,12 @@
       </div>
 
       <p class="tiny">
-        Feedback sendes som mail i denne version. Hvis du senere vil, kan vi koble den på et endpoint eller et regneark.
+        Feedback sendes som mail i denne version.
       </p>
     </section>
 
     <div class="footer">
-      Any & All · Laura demo
+      Any &amp; All · Laura demo
     </div>
   </div>
 
@@ -600,7 +685,10 @@
       try {
         await loadScript(TWILIO_SDK_PRIMARY);
       } catch (e1) {
-        log("Primary fejlede, prøver fallback…", { message: errToString(e1), fallback: TWILIO_SDK_FALLBACK });
+        log("Primary fejlede, prøver fallback…", {
+          message: errToString(e1),
+          fallback: TWILIO_SDK_FALLBACK
+        });
         await loadScript(TWILIO_SDK_FALLBACK);
       }
 

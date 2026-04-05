@@ -1,49 +1,537 @@
-<p><b>Build:</b> LAURA-v99</p>
 <!doctype html>
 <html lang="da">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ring til Laura</title>
+  <title>Ring til Laura | Any & All</title>
+  <meta name="description" content="Prøv at ringe til Laura – en AI front desk, der forsøger at stille videre, tager imod henvendelser og ved hvornår den ikke må træffe beslutninger." />
   <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; padding: 18px; }
-    button { padding: 10px 14px; margin-right: 10px; }
-    pre { background: #f6f6f6; padding: 12px; border-radius: 10px; overflow: auto; }
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --brand:#4f46e5;
+      --brand-dark:#3730a3;
+      --ok:#166534;
+      --warn:#92400e;
+      --shadow:0 10px 30px rgba(15,23,42,.08);
+      --radius:18px;
+      --max:1120px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    a { color: inherit; }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 24px 18px 56px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand img {
+      width: 44px;
+      height: 44px;
+      display: block;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .brand-text strong {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .brand-text span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .build {
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 22px;
+      align-items: stretch;
+      margin-bottom: 22px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-copy {
+      padding: 28px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(34px, 5vw, 54px);
+      line-height: 1.03;
+      letter-spacing: -.02em;
+    }
+
+    .lead {
+      font-size: 18px;
+      color: var(--muted);
+      margin: 0 0 22px;
+      max-width: 60ch;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    button, .button-link {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .18s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .btn-primary:hover { background: var(--brand-dark); }
+
+    .btn-secondary {
+      background: #eef2ff;
+      color: var(--brand-dark);
+      border: 1px solid #c7d2fe;
+    }
+
+    .btn-secondary:hover { background: #e0e7ff; }
+
+    .btn-ghost {
+      background: #fff;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .btn-ghost:hover { background: #f9fafb; }
+
+    .helper {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .hero-side {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .mini-block {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fafafa;
+    }
+
+    .mini-block h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .mini-block p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      margin-bottom: 22px;
+    }
+
+    .section {
+      padding: 26px;
+    }
+
+    .section h2 {
+      margin: 0 0 12px;
+      font-size: 28px;
+      line-height: 1.1;
+    }
+
+    .section p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .points {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .point {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .point strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 15px;
+    }
+
+    .point span {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .video-shell {
+      overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #000;
+    }
+
+    video {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #000;
+    }
+
+    .call-panel {
+      margin-bottom: 22px;
+      padding: 24px;
+    }
+
+    .call-panel h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .call-panel p {
+      margin: 0 0 16px;
+      color: var(--muted);
+    }
+
+    .log {
+      margin-top: 16px;
+      background: #0f172a;
+      color: #e5e7eb;
+      border-radius: 16px;
+      padding: 14px;
+      min-height: 140px;
+      max-height: 280px;
+      overflow: auto;
+      white-space: pre-wrap;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .feedback {
+      margin-bottom: 22px;
+      padding: 24px;
+    }
+
+    .feedback h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    .feedback p {
+      margin: 0 0 14px;
+      color: var(--muted);
+    }
+
+    .feedback-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .feedback-row button.active {
+      outline: 2px solid var(--brand);
+      outline-offset: 2px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 110px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      font: inherit;
+      color: var(--text);
+      background: #fff;
+      margin-bottom: 12px;
+    }
+
+    .tiny {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      padding-top: 6px;
+    }
+
+    .status-note {
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .ok { color: var(--ok); }
+    .warn { color: var(--warn); }
+
+    @media (max-width: 900px) {
+      .hero,
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>Ring til Laura</h1>
-  <p><b>Build:</b> v5</p>
-  <p>Tryk ring — giv mikrofonadgang — og sig dit navn.</p>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <img src="logo.svg" alt="Any & All logo" />
+        <div class="brand-text">
+          <strong>Any & All</strong>
+          <span>Laura – AI front desk</span>
+        </div>
+      </div>
+      <div class="build">Build: LAURA-v100</div>
+    </div>
 
-  <button id="btnCall">Ring til Laura</button>
-  <button id="btnHangup" disabled>Læg på</button>
-  <button id="btnTest">Kør netværkstest</button>
+    <section class="hero">
+      <div class="card hero-copy">
+        <div class="eyebrow">Prøv Laura</div>
+        <h1>Ring til Laura</h1>
+        <p class="lead">
+          Laura tager imod henvendelser, forsøger at stille videre til den rigtige medarbejder og samler op,
+          når en henvendelse ikke kan løses med det samme.
+        </p>
 
-  <pre id="log">Klar.</pre>
+        <div class="cta-row">
+          <button id="btnCall" class="btn-primary">Ring til Laura</button>
+          <button id="btnHangup" class="btn-ghost" disabled>Læg på</button>
+          <button id="btnTest" class="btn-secondary">Kør netværkstest</button>
+        </div>
+
+        <p class="helper">
+          Når du ringer, kan du prøve både almindelige henvendelser, omstilling til salg/support og enkle spørgsmål om fx pakker og priser.
+        </p>
+      </div>
+
+      <div class="card hero-side">
+        <div class="mini-block">
+          <h3>Sådan arbejder Laura</h3>
+          <p>
+            Hun forsøger først at stille videre til den rigtige funktion. Hvis det ikke er muligt, tager hun imod henvendelsen og sikrer, at kunden kan kontaktes igen.
+          </p>
+        </div>
+
+        <div class="mini-block">
+          <h3>Hvad får du med Laura</h3>
+          <p>
+            Ingen telefonkø, struktureret opsamling af henvendelser og et klart overblik over, hvad der skal følges op på.
+          </p>
+        </div>
+
+        <div class="mini-block">
+          <h3>Designet til at hjælpe – ikke til at beslutte</h3>
+          <p>
+            Laura håndterer henvendelser og sender dem videre korrekt. Hun er bygget til at støtte jeres drift, ikke til at træffe beslutninger på jeres vegne.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="card section">
+        <h2>Sådan fungerer Laura i praksis</h2>
+        <div class="points">
+          <div class="point">
+            <strong>1. Hun forsøger først at stille videre</strong>
+            <span>Når en kunde ringer, er første opgave at finde den rigtige medarbejder eller funktion og forsøge at stille videre.</span>
+          </div>
+          <div class="point">
+            <strong>2. Hun samler op, hvis omstilling ikke er mulig</strong>
+            <span>Hvis der er optaget eller uden for åbningstid, tager Laura imod henvendelsen og sørger for, at kunden kan kontaktes igen.</span>
+          </div>
+          <div class="point">
+            <strong>3. Hun svarer selv, når svaret allerede er kendt</strong>
+            <span>Hvis spørgsmålet handler om noget, Laura allerede ved, som fx pakker, priser eller åbningstider, kan hun svare med det samme.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card section">
+        <h2>Se hvordan Laura fungerer</h2>
+        <p>
+          Videoen viser, hvordan Laura tager imod et opkald, håndterer henvendelsen og sender den videre i praksis.
+        </p>
+        <div class="video-shell">
+          <video controls playsinline preload="metadata">
+            <source src="202511231852.mp4" type="video/mp4" />
+            Din browser understøtter ikke videoafspilning.
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section class="card call-panel">
+      <h2>Test Laura nu</h2>
+      <p>
+        Tryk ring, giv mikrofonadgang og prøv et almindeligt opkaldsforløb. Du kan fx bede om salg, support eller stille et spørgsmål om pakker og priser.
+      </p>
+
+      <div class="cta-row">
+        <button id="btnCall2" class="btn-primary">Ring til Laura</button>
+        <button id="btnHangup2" class="btn-ghost" disabled>Læg på</button>
+      </div>
+
+      <div id="statusNote" class="status-note tiny">Klar.</div>
+      <pre id="log" class="log">Klar.</pre>
+    </section>
+
+    <section class="card feedback">
+      <h2>Giv feedback</h2>
+      <p>
+        Har du lige testet Laura, må du meget gerne sende en kort tilbagemelding. Det hjælper os med at forbedre hende hurtigt og konkret.
+      </p>
+
+      <div class="feedback-row">
+        <button type="button" class="btn-ghost feedback-choice" data-value="Fungerede godt">👍 Fungerede godt</button>
+        <button type="button" class="btn-ghost feedback-choice" data-value="Lidt uklart">🤔 Lidt uklart</button>
+        <button type="button" class="btn-ghost feedback-choice" data-value="Fungerede ikke">👎 Fungerede ikke</button>
+      </div>
+
+      <textarea id="feedbackText" placeholder="Hvad skete der?"></textarea>
+
+      <div class="cta-row">
+        <button id="btnSendFeedback" class="btn-primary" type="button">Send feedback</button>
+      </div>
+
+      <p class="tiny">
+        Feedback sendes som mail i denne version. Hvis du senere vil, kan vi koble den på et endpoint eller et regneark.
+      </p>
+    </section>
+
+    <div class="footer">
+      Any & All · Laura demo
+    </div>
+  </div>
 
   <script>
     const statusEl = document.getElementById("log");
+    const statusNoteEl = document.getElementById("statusNote");
+
     const btnCall = document.getElementById("btnCall");
     const btnHangup = document.getElementById("btnHangup");
     const btnTest = document.getElementById("btnTest");
 
-    // Token hentes fra din Render-service
-    const TOKEN_URL = "https://anyandall-laura-mvp.onrender.com/token";
+    const btnCall2 = document.getElementById("btnCall2");
+    const btnHangup2 = document.getElementById("btnHangup2");
 
-    // VIGTIGT:
-    // Twilio Voice JS SDK 2.x bliver ikke længere hostet på Twilios egen CDN som før,
-    // så vi bruger unpkg/jsDelivr i stedet.
-    // (Filerne ligger i /dist/twilio(.min).js i @twilio/voice-sdk pakken)
+    const feedbackChoices = Array.from(document.querySelectorAll(".feedback-choice"));
+    const feedbackTextEl = document.getElementById("feedbackText");
+    const btnSendFeedback = document.getElementById("btnSendFeedback");
+
+    const TOKEN_URL = "https://anyandall-laura-mvp.onrender.com/token";
+    const FEEDBACK_EMAIL = "support@anyandall.dk";
+
     const TWILIO_SDK_PRIMARY  = "https://unpkg.com/@twilio/voice-sdk@2.18.0/dist/twilio.min.js";
     const TWILIO_SDK_FALLBACK = "https://cdn.jsdelivr.net/npm/@twilio/voice-sdk@2.18.0/dist/twilio.min.js";
 
     let device = null;
     let activeCall = null;
+    let selectedFeedback = "";
 
     function ts() {
       const d = new Date();
       return d.toLocaleTimeString("da-DK", { hour12: false });
+    }
+
+    function setStatusNote(text, type = "") {
+      statusNoteEl.textContent = text;
+      statusNoteEl.className = "status-note tiny " + type;
     }
 
     function log(msg, obj) {
@@ -59,6 +547,11 @@
       try { return JSON.stringify(e); } catch (_) { return String(e); }
     }
 
+    function syncHangupButtons(disabled) {
+      btnHangup.disabled = disabled;
+      btnHangup2.disabled = disabled;
+    }
+
     function hardStop() {
       try {
         if (activeCall) {
@@ -66,13 +559,16 @@
           activeCall = null;
         }
       } catch (_) {}
+
       try {
         if (device) {
           device.destroy();
           device = null;
         }
       } catch (_) {}
-      btnHangup.disabled = true;
+
+      syncHangupButtons(true);
+      setStatusNote("Opkald afsluttet.", "warn");
       log("Hard stop ✅ (alt lyd + Twilio stoppet)");
     }
 
@@ -88,9 +584,7 @@
     }
 
     function getVoiceSdk() {
-      // Voice SDK 2.x eksponerer typisk TwilioVoice globalt
       if (window.TwilioVoice && window.TwilioVoice.Device) return window.TwilioVoice;
-      // Nogle setups kan have Twilio.Device
       if (window.Twilio && window.Twilio.Device) return window.Twilio;
       return null;
     }
@@ -112,7 +606,7 @@
       }
 
       const sdk = getVoiceSdk();
-      if (!sdk) throw new Error("Twilio SDK loaded, men global ikke fundet (hverken TwilioVoice eller Twilio).");
+      if (!sdk) throw new Error("Twilio SDK loaded, men global ikke fundet.");
 
       log("Twilio SDK OK ✅");
       return sdk;
@@ -124,8 +618,10 @@
       const text = await r.text();
       let data = null;
       try { data = JSON.parse(text); } catch (_) {}
+
       if (!r.ok) throw new Error("Token HTTP " + r.status + ": " + text);
       if (!data || !data.token) throw new Error("Token svar mangler token: " + text);
+
       log("Token OK.");
       return data.token;
     }
@@ -137,18 +633,24 @@
       log("Initialiserer Twilio Device…");
 
       device = new sdk.Device(token, {
-        logLevel: "error",
+        logLevel: "error"
       });
 
-      device.on("registered", () => log("Device registered ✅"));
-      device.on("error", (e) => log("Device error ❌", { message: errToString(e) }));
+      device.on("registered", () => {
+        log("Device registered ✅");
+        setStatusNote("Forbundet og klar til opkald.", "ok");
+      });
+
+      device.on("error", (e) => {
+        log("Device error ❌", { message: errToString(e) });
+        setStatusNote("Der opstod en teknisk fejl i opkaldsforbindelsen.", "warn");
+      });
 
       device.on("incoming", (c) => {
         log("Incoming call (ikke forventet i denne demo).");
         activeCall = c;
       });
 
-      // I Voice SDK 2.x skal man registrere
       await device.register();
       return device;
     }
@@ -156,15 +658,15 @@
     async function callLaura() {
       try {
         hardStop();
+        setStatusNote("Forbinder til Laura…");
 
         const dev = await ensureDevice();
-
-        btnHangup.disabled = false;
+        syncHangupButtons(false);
 
         const params = {};
 
         log("Ringer op…");
-        activeCall = await dev.connect({ params: params });
+        activeCall = await dev.connect({ params });
 
         activeCall.on("disconnect", () => {
           log("Call disconnected.");
@@ -173,29 +675,68 @@
 
         activeCall.on("error", (e) => {
           log("Call error ❌", { message: errToString(e) });
+          setStatusNote("Opkaldet blev afbrudt af en teknisk fejl.", "warn");
           hardStop();
         });
 
         log("Call connected ✅");
+        setStatusNote("Opkaldet er i gang.", "ok");
       } catch (e) {
         log("RING FEJL:", { message: errToString(e) });
+        setStatusNote("Kunne ikke starte opkaldet.", "warn");
         hardStop();
       }
     }
 
     async function runTest() {
       try {
+        setStatusNote("Kører netværkstest…");
         log("Netværkstest: starter…");
         await ensureTwilioSdk();
         await getToken();
         log("Netværkstest: OK ✅");
+        setStatusNote("Netværkstest gennemført.", "ok");
       } catch (e) {
         log("Netværkstest FEJL ❌", { message: errToString(e) });
+        setStatusNote("Netværkstesten fejlede.", "warn");
       }
+    }
+
+    function setFeedback(value) {
+      selectedFeedback = value;
+      feedbackChoices.forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.value === value);
+      });
+    }
+
+    function sendFeedback() {
+      const note = (feedbackTextEl.value || "").trim();
+      const rating = selectedFeedback || "Ikke valgt";
+
+      const subject = encodeURIComponent("Feedback på Laura demo");
+      const body = encodeURIComponent(
+`Feedbacktype: ${rating}
+
+Kommentar:
+${note || "(ingen kommentar)"}
+
+Tidspunkt:
+${new Date().toISOString()}
+
+Side:
+${location.href}`
+      );
+
+      window.location.href = `mailto:${FEEDBACK_EMAIL}?subject=${subject}&body=${body}`;
     }
 
     btnCall.addEventListener("click", () => {
       log("Klik: Ring til Laura");
+      callLaura();
+    });
+
+    btnCall2.addEventListener("click", () => {
+      log("Klik: Ring til Laura (sektion 2)");
       callLaura();
     });
 
@@ -204,10 +745,25 @@
       hardStop();
     });
 
+    btnHangup2.addEventListener("click", () => {
+      log("Klik: Læg på (sektion 2)");
+      hardStop();
+    });
+
     btnTest.addEventListener("click", () => {
       log("Klik: Kør netværkstest");
       runTest();
     });
+
+    feedbackChoices.forEach(btn => {
+      btn.addEventListener("click", () => setFeedback(btn.dataset.value));
+    });
+
+    btnSendFeedback.addEventListener("click", () => {
+      sendFeedback();
+    });
+
+    setStatusNote("Klar.");
   </script>
 </body>
 </html>

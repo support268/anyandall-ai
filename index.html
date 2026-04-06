@@ -4,25 +4,25 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ring til Laura | Any & All</title>
-  <meta name="description" content="Prøv at ringe til Laura – en AI front desk, der tager imod opkald, stiller videre og samler op, når virksomheden ikke er tilgængelig." />
+  <meta name="description" content="Prøv Laura – en kontrolleret demo af en AI front desk, der tager imod opkald, stiller videre og samler op, når virksomheden ikke er tilgængelig." />
   <style>
-    :root{
-      --bg:#f4f6fb;
-      --surface:#ffffff;
-      --surface-soft:#f8faff;
-      --text:#172033;
-      --muted:#667085;
-      --line:#e6eaf2;
-      --brand:#2f5bff;
-      --brand-dark:#1f45d8;
-      --brand-soft:#eef3ff;
-      --ok:#166534;
-      --warn:#92400e;
-      --shadow:0 16px 44px rgba(16,24,40,.08);
-      --radius-xl:24px;
-      --radius-lg:18px;
-      --radius-md:14px;
-      --max:1180px;
+    :root {
+      --bg: #f4f6fb;
+      --surface: #ffffff;
+      --surface-soft: #f8faff;
+      --text: #172033;
+      --muted: #667085;
+      --line: #e6eaf2;
+      --brand: #2f5bff;
+      --brand-dark: #1f45d8;
+      --brand-soft: #eef3ff;
+      --shadow: 0 16px 44px rgba(16, 24, 40, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --max: 1180px;
+      --ok: #166534;
+      --warn: #92400e;
     }
 
     * { box-sizing: border-box; }
@@ -86,14 +86,14 @@
 
     .hero {
       display: grid;
-      grid-template-columns: 1.05fr .95fr;
+      grid-template-columns: 1.05fr 0.95fr;
       gap: 24px;
       margin-bottom: 24px;
       overflow: hidden;
     }
 
     .hero-copy {
-      padding: 36px 34px 34px;
+      padding: 38px 34px 34px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -110,10 +110,11 @@
     }
 
     h1 {
-      margin: 0 0 14px;
-      font-size: clamp(40px, 6vw, 66px);
-      line-height: 0.98;
-      letter-spacing: -0.05em;
+      font-size: 36px;
+      font-weight: 600;
+      margin: 0 0 12px;
+      line-height: 1.02;
+      letter-spacing: -0.04em;
     }
 
     .lead {
@@ -130,20 +131,22 @@
       margin-bottom: 14px;
     }
 
-    button, .button-link {
-      appearance: none;
-      border: 0;
-      border-radius: 999px;
-      padding: 14px 18px;
+    button {
+      padding: 12px 18px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
       font-size: 15px;
       font-weight: 700;
-      cursor: pointer;
       transition: .18s ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      text-decoration: none;
+    }
+
+    button:active {
+      transform: scale(0.97);
     }
 
     .btn-primary {
@@ -151,7 +154,9 @@
       color: #fff;
     }
 
-    .btn-primary:hover { background: var(--brand-dark); }
+    .btn-primary:hover {
+      background: var(--brand-dark);
+    }
 
     .btn-secondary {
       background: #fff;
@@ -159,7 +164,9 @@
       border: 1px solid var(--line);
     }
 
-    .btn-secondary:hover { background: #fafcff; }
+    .btn-secondary:hover {
+      background: #fafcff;
+    }
 
     .btn-soft {
       background: var(--brand-soft);
@@ -167,7 +174,9 @@
       border: 1px solid #d8e2ff;
     }
 
-    .btn-soft:hover { background: #e4ecff; }
+    .btn-soft:hover {
+      background: #e4ecff;
+    }
 
     .helper {
       margin: 0;
@@ -175,59 +184,56 @@
       color: var(--muted);
     }
 
-    .hero-visual {
-      min-height: 420px;
-      background:
-        linear-gradient(180deg, rgba(22,33,66,.06), rgba(22,33,66,.02)),
-        #e9eef9;
+    .hero-side {
+      min-height: 320px;
       position: relative;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(47, 91, 255, .12), transparent 30%),
+        radial-gradient(circle at 80% 80%, rgba(47, 91, 255, .08), transparent 25%),
+        linear-gradient(135deg, #f6f9ff 0%, #edf2ff 45%, #f8faff 100%);
       overflow: hidden;
     }
 
-    .hero-visual img {
-      display: block;
+    .hero-side img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
     }
 
-    .hero-visual-fallback {
+    .hero-fallback {
       position: absolute;
       inset: 0;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
       padding: 28px;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(47,91,255,.18), transparent 30%),
-        radial-gradient(circle at 80% 80%, rgba(47,91,255,.12), transparent 28%),
-        linear-gradient(135deg, #f5f8ff 0%, #edf2ff 45%, #f7f9fd 100%);
     }
 
-    .fallback-frame {
+    .hero-fallback-shell {
       width: 100%;
-      max-width: 520px;
+      max-width: 480px;
+      background: rgba(255,255,255,.78);
       border: 1px solid rgba(47,91,255,.14);
-      border-radius: 24px;
-      background: rgba(255,255,255,.72);
+      border-radius: 22px;
       backdrop-filter: blur(10px);
       box-shadow: 0 20px 50px rgba(31,69,216,.08);
       padding: 22px;
     }
 
-    .fallback-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #1f45d8;
+    .hero-fallback-shell strong {
+      display: block;
       margin-bottom: 12px;
+      color: var(--brand-dark);
+      font-size: 15px;
     }
 
-    .fallback-grid {
+    .hero-fallback-grid {
       display: grid;
       gap: 10px;
     }
 
-    .fallback-box {
+    .hero-fallback-box {
       border: 1px solid rgba(23,32,51,.08);
       border-radius: 16px;
       background: rgba(255,255,255,.86);
@@ -238,7 +244,7 @@
 
     .section {
       padding: 30px;
-      margin-bottom: 24px;
+      margin-bottom: 32px;
     }
 
     .section h2 {
@@ -255,11 +261,66 @@
       color: var(--muted);
     }
 
+    .demo {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .demo-left,
+    .demo-right {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--surface-soft);
+      padding: 22px;
+    }
+
+    .demo-left h3,
+    .demo-right h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .demo-left p,
+    .demo-right p {
+      margin: 0 0 14px;
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .status-note {
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .ok { color: var(--ok); }
+    .warn { color: var(--warn); }
+
+    .log {
+      background: #f6f6f6;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.6;
+      border: 1px solid var(--line);
+      min-height: 280px;
+      max-height: 420px;
+      overflow: auto;
+    }
+
+    .log-line {
+      margin-bottom: 6px;
+      color: #334155;
+    }
+
     .flow {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 16px;
-      align-items: stretch;
+      margin-bottom: 20px;
     }
 
     .flow-step {
@@ -268,7 +329,7 @@
       border-radius: 20px;
       padding: 18px;
       position: relative;
-      min-height: 200px;
+      min-height: 188px;
     }
 
     .flow-step::after {
@@ -294,7 +355,7 @@
       display: none;
     }
 
-    .step-no {
+    .flow-step .step-no {
       width: 34px;
       height: 34px;
       border-radius: 999px;
@@ -311,19 +372,53 @@
       margin: 0 0 8px;
       font-size: 19px;
       line-height: 1.12;
+      font-weight: 600;
     }
 
     .flow-step p {
-      margin: 0;
-      font-size: 15px;
+      margin-top: 6px;
+      margin-bottom: 0;
       color: var(--muted);
+      font-size: 15px;
+    }
+
+    .flow-visual {
+      overflow: hidden;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(47,91,255,.12), transparent 30%),
+        radial-gradient(circle at 80% 80%, rgba(47,91,255,.08), transparent 25%),
+        linear-gradient(135deg, #f6f9ff 0%, #edf2ff 45%, #f8faff 100%);
+      min-height: 320px;
+      position: relative;
+    }
+
+    .flow-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .flow-visual-fallback {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 26px;
+    }
+
+    .flow-visual-fallback .hero-fallback-shell {
+      max-width: 540px;
     }
 
     .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 24px;
-      margin-bottom: 24px;
+      margin-bottom: 32px;
     }
 
     .text-blocks {
@@ -348,47 +443,6 @@
     .text-block span {
       color: var(--muted);
       font-size: 15px;
-    }
-
-    .call-panel {
-      padding: 30px;
-      margin-bottom: 24px;
-    }
-
-    .call-panel h2 {
-      margin: 0 0 8px;
-      font-size: 32px;
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-    }
-
-    .call-panel p {
-      margin: 0 0 16px;
-      color: var(--muted);
-      max-width: 70ch;
-      font-size: 16px;
-    }
-
-    .status-note {
-      font-size: 14px;
-      margin-top: 10px;
-    }
-
-    .ok { color: var(--ok); }
-    .warn { color: var(--warn); }
-
-    .log {
-      margin-top: 16px;
-      background: #0f172a;
-      color: #e5e7eb;
-      border-radius: 16px;
-      padding: 14px;
-      min-height: 140px;
-      max-height: 280px;
-      overflow: auto;
-      white-space: pre-wrap;
-      font-size: 13px;
-      line-height: 1.45;
     }
 
     .feedback {
@@ -449,6 +503,7 @@
 
     @media (max-width: 980px) {
       .hero,
+      .demo,
       .grid-2,
       .flow {
         grid-template-columns: 1fr;
@@ -467,8 +522,9 @@
         flex-direction: column;
       }
 
-      .hero-visual {
-        min-height: 320px;
+      .hero-side,
+      .flow-visual {
+        min-height: 260px;
       }
     }
   </style>
@@ -480,43 +536,43 @@
         <strong>Any &amp; All</strong>
         <span>Laura – AI front desk</span>
       </div>
-      <div class="build">Build: LAURA-v102</div>
+      <div class="build">Build: LAURA-v103</div>
     </div>
 
     <section class="card hero">
       <div class="hero-copy">
         <div class="eyebrow">Prøv Laura</div>
-        <h1>Alle opkald bliver håndteret.</h1>
+        <h1>Alle opkald bliver taget</h1>
         <p class="lead">
-          Laura tager imod opkald med det samme, stiller videre når det er muligt og samler op,
-          når det ikke er. Så dialogen ikke stopper, bare fordi virksomheden ikke er tilgængelig i øjeblikket.
+          Laura tager telefonen med det samme, stiller videre når det er muligt og tager imod henvendelsen, når det ikke er.
+        </p>
+        <p class="lead" style="margin-top:-6px;">
+          Der er en klar håndtering – også når virksomheden ikke er tilgængelig.
         </p>
 
         <div class="cta-row">
           <button id="btnCall" class="btn-primary">Ring til Laura</button>
-          <button id="btnHangup" class="btn-secondary" disabled>Læg på</button>
-          <button id="btnTest" class="btn-soft">Kør netværkstest</button>
         </div>
 
         <p class="helper">
-          Du kan fx bede om salg eller support, eller stille et spørgsmål om pakker og priser.
+          Prøv fx salg, support eller et spørgsmål om pakker og priser.
         </p>
       </div>
 
-      <div class="hero-visual">
+      <div class="hero-side">
         <img
           src="hero-laura.jpg"
-          alt="Visualisering af Laura som et roligt og kontrolleret front desk-lag mellem opkald og virksomhed"
+          alt="Professionel visualisering af Laura som et kontrolleret lag mellem opkald og virksomhed"
           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
         />
-        <div class="hero-visual-fallback" style="display:none;">
-          <div class="fallback-frame">
-            <div class="fallback-title">Laura som front desk-lag</div>
-            <div class="fallback-grid">
-              <div class="fallback-box">Opkald kommer ind og bliver mødt med det samme.</div>
-              <div class="fallback-box">Laura vælger spor: videre, svar eller opsamling.</div>
-              <div class="fallback-box">Svar bygger på officielle kilder og godkendt Q&amp;A.</div>
-              <div class="fallback-box">Henvendelser bliver samlet op, så der kan følges op efterfølgende.</div>
+        <div class="hero-fallback">
+          <div class="hero-fallback-shell">
+            <strong>Laura som et kontrolleret lag</strong>
+            <div class="hero-fallback-grid">
+              <div class="hero-fallback-box">Opkald bliver taget med det samme.</div>
+              <div class="hero-fallback-box">Laura vurderer, hvad den der ringer ønsker.</div>
+              <div class="hero-fallback-box">Der bliver stillet videre, svaret eller taget imod en besked.</div>
+              <div class="hero-fallback-box">Virksomheden modtager kontaktoplysninger, emne og besked.</div>
             </div>
           </div>
         </div>
@@ -524,42 +580,86 @@
     </section>
 
     <section class="card section">
+      <h2>Live demo</h2>
+      <p class="section-intro">
+        Her kan du ringe til Laura og følge, hvordan opkaldet bevæger sig gennem systemet.
+      </p>
+
+      <div class="demo">
+        <div class="demo-left">
+          <h3>Prøv Laura</h3>
+          <p>
+            Start et opkald, læg på igen eller kør en hurtig netværkstest.
+          </p>
+
+          <div class="cta-row">
+            <button id="btnCall2" class="btn-primary">Ring til Laura</button>
+            <button id="btnHangup" class="btn-secondary" disabled>Læg på</button>
+            <button id="btnTest" class="btn-soft">Kør netværkstest</button>
+          </div>
+
+          <div id="statusNote" class="status-note tiny">Klar.</div>
+        </div>
+
+        <div class="demo-right">
+          <h3>Sådan oplever Laura opkaldet</h3>
+          <p>
+            Loggen viser opkaldet som et forløb – ikke som en teknisk konsol.
+          </p>
+
+          <div id="log" class="log"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card section">
       <h2>Sådan arbejder Laura</h2>
       <p class="section-intro">
-        Laura er bygget som et fast front desk-flow. Hun møder opkald ensartet, leder dem i den rigtige retning og sørger for, at dialogen kan fortsætte, også når virksomheden ikke er tilgængelig.
+        Laura tager imod opkald, forstår henvendelsen, handler på den og sørger for, at virksomheden kan tage over, når det er nødvendigt.
       </p>
 
       <div class="flow">
         <div class="flow-step">
           <div class="step-no">1</div>
-          <h3>Opkald bliver taget</h3>
-          <p>
-            Laura tager imod alle opkald med det samme og skaber et klart første møde med virksomheden.
-          </p>
+          <h3>Opkald besvares</h3>
+          <p>Laura tager telefonen med det samme.</p>
         </div>
 
         <div class="flow-step">
           <div class="step-no">2</div>
-          <h3>Det rigtige spor bliver valgt</h3>
-          <p>
-            I åbningstiden stiller Laura videre til den relevante funktion. Hvis virksomheden har lukket, går hun i stedet videre til opsamling.
-          </p>
+          <h3>Henvendelsen forstås</h3>
+          <p>Hun vurderer, hvad den der ringer ønsker.</p>
         </div>
 
         <div class="flow-step">
           <div class="step-no">3</div>
-          <h3>Kendte spørgsmål kan besvares</h3>
-          <p>
-            Når svaret allerede findes inden for de rammer, virksomheden har sat, kan Laura give det med det samme.
-          </p>
+          <h3>Der handles</h3>
+          <p>Opkaldet stilles videre eller der tages imod en besked.</p>
         </div>
 
         <div class="flow-step">
           <div class="step-no">4</div>
-          <h3>Henvendelsen bliver samlet op</h3>
-          <p>
-            Hvis ingen kan tage over med det samme, bliver kontakt og indhold registreret, så virksomheden kan følge op bagefter.
-          </p>
+          <h3>Opfølgning sikres</h3>
+          <p>Virksomheden modtager kontaktoplysninger, emne og besked.</p>
+        </div>
+      </div>
+
+      <div class="flow-visual">
+        <img
+          src="hero-laura.jpg"
+          alt="Visualisering af Lauras struktur og flow"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        />
+        <div class="flow-visual-fallback">
+          <div class="hero-fallback-shell">
+            <strong>Fra opkald til opfølgning</strong>
+            <div class="hero-fallback-grid">
+              <div class="hero-fallback-box">📞 Opkald kommer ind</div>
+              <div class="hero-fallback-box">🧭 Laura vurderer, hvad der skal ske</div>
+              <div class="hero-fallback-box">↗ Der stilles videre eller svares direkte</div>
+              <div class="hero-fallback-box">📬 Ellers bliver oplysningerne sendt videre til opfølgning</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -568,23 +668,23 @@
       <section class="card section">
         <h2>Hvordan AI indgår</h2>
         <p class="section-intro">
-          AI er en del af Laura, men kun dér, hvor det giver mening. Den bruges til at forstå henvendelser, vælge det rigtige spor og formulere svar inden for tydelige rammer.
+          AI bruges til at forstå henvendelser og formulere svar.
         </p>
 
         <div class="text-blocks">
           <div class="text-block">
-            <strong>AI bruges til at forstå det, der bliver sagt</strong>
-            <span>Laura bruger AI til at forstå, hvad den der ringer ønsker, og til at føre samtalen i den rigtige retning.</span>
+            <strong>Forståelse af henvendelsen</strong>
+            <span>AI bruges til at forstå, hvad den der ringer ønsker, og til at føre dialogen i den rigtige retning.</span>
           </div>
 
           <div class="text-block">
-            <strong>AI bruges til at formulere svar inden for faste rammer</strong>
-            <span>Når Laura besvarer spørgsmål, sker det på baggrund af virksomhedens officielle hjemmeside og/eller en Q&amp;A, som virksomheden selv har sendt og godkendt.</span>
+            <strong>Svar inden for faste kilder</strong>
+            <span>Svar tager udgangspunkt i virksomhedens officielle materiale og den viden, der er lagt ind på forhånd.</span>
           </div>
 
           <div class="text-block">
-            <strong>AI bruges til at samle op på henvendelser</strong>
-            <span>Når et opkald skal følges op, hjælper AI med at omsætte samtalen til en kort og brugbar opsummering.</span>
+            <strong>Ingen fri improvisation</strong>
+            <span>AI har ikke adgang til virksomhedens systemer og opfinder ikke selv svar.</span>
           </div>
         </div>
       </section>
@@ -592,52 +692,32 @@
       <section class="card section">
         <h2>Data og ansvar</h2>
         <p class="section-intro">
-          Laura er ikke et åbent AI-lag inde i virksomheden. Hun arbejder foran virksomheden i et separat og kontrolleret flow, hvor kilder, datagrundlag og opfølgning er tydeligt afgrænset.
+          Der gemmes kun de oplysninger, der er nødvendige for at følge op på en henvendelse.
         </p>
 
         <div class="text-blocks">
           <div class="text-block">
-            <strong>Ingen fri adgang til virksomhedens systemer</strong>
-            <span>Laura får ikke automatisk adgang til interne systemer eller virksomhedens data som udgangspunkt.</span>
+            <strong>Kun det nødvendige</strong>
+            <span>Samtaler bruges til at registrere kontaktoplysninger og indhold – ikke til at træne eller gemme unødvendig data.</span>
           </div>
 
           <div class="text-block">
-            <strong>Kontrolleret datagrundlag</strong>
-            <span>Svar hentes fra virksomhedens officielle materiale og den viden, der på forhånd er afleveret og godkendt.</span>
+            <strong>Adskilte roller</strong>
+            <span>Det betyder, at data, ansvar og opfølgning er tydeligt adskilt – fra første kontakt til opfølgning.</span>
           </div>
 
           <div class="text-block">
-            <strong>Kun det nødvendige bliver samlet op</strong>
-            <span>Når en henvendelse skal følges op, bliver de nødvendige oplysninger registreret, så virksomheden kan arbejde videre uden støj.</span>
-          </div>
-
-          <div class="text-block">
-            <strong>Ansvar er tydeligt afgrænset</strong>
-            <span>Laura håndterer opkald og sender dem videre korrekt. Hun er ikke designet til at overtage virksomhedens ansvar.</span>
+            <strong>Kontrol over grundlaget</strong>
+            <span>Virksomheden bestemmer selv det materiale og den viden, Laura må tage udgangspunkt i.</span>
           </div>
         </div>
       </section>
     </section>
 
-    <section class="card call-panel">
-      <h2>Test Laura nu</h2>
-      <p>
-        Tryk ring, giv mikrofonadgang og prøv et almindeligt opkaldsforløb. Bede om salg eller support, eller stil et spørgsmål om fx pakker og priser.
-      </p>
-
-      <div class="cta-row">
-        <button id="btnCall2" class="btn-primary">Ring til Laura</button>
-        <button id="btnHangup2" class="btn-secondary" disabled>Læg på</button>
-      </div>
-
-      <div id="statusNote" class="status-note tiny">Klar.</div>
-      <pre id="log" class="log">Klar.</pre>
-    </section>
-
     <section class="card feedback">
       <h2>Giv feedback</h2>
       <p>
-        Vi forbedrer Laura løbende. Hvis noget var uklart, overraskende eller bare ikke fungerede, vil vi gerne høre det.
+        Vi forbedrer Laura løbende. Hvis noget ikke fungerede, som du forventede, vil vi gerne høre det.
       </p>
 
       <div class="feedback-row">
@@ -667,11 +747,9 @@
     const statusNoteEl = document.getElementById("statusNote");
 
     const btnCall = document.getElementById("btnCall");
+    const btnCall2 = document.getElementById("btnCall2");
     const btnHangup = document.getElementById("btnHangup");
     const btnTest = document.getElementById("btnTest");
-
-    const btnCall2 = document.getElementById("btnCall2");
-    const btnHangup2 = document.getElementById("btnHangup2");
 
     const feedbackChoices = Array.from(document.querySelectorAll(".feedback-choice"));
     const feedbackTextEl = document.getElementById("feedbackText");
@@ -687,20 +765,21 @@
     let activeCall = null;
     let selectedFeedback = "";
 
-    function ts() {
-      const d = new Date();
-      return d.toLocaleTimeString("da-DK", { hour12: false });
-    }
-
     function setStatusNote(text, type = "") {
       statusNoteEl.textContent = text;
       statusNoteEl.className = "status-note tiny " + type;
     }
 
-    function log(msg, obj) {
-      const line = "[" + ts() + "] " + msg + (obj ? "\n" + JSON.stringify(obj, null, 2) : "");
-      statusEl.textContent = line + "\n\n" + statusEl.textContent;
-      console.log(msg, obj || "");
+    function log(msg) {
+      const el = document.createElement("div");
+      el.className = "log-line";
+      el.textContent = msg;
+      statusEl.prepend(el);
+      console.log(msg);
+    }
+
+    function clearLog() {
+      statusEl.innerHTML = "";
     }
 
     function errToString(e) {
@@ -710,9 +789,8 @@
       try { return JSON.stringify(e); } catch (_) { return String(e); }
     }
 
-    function syncHangupButtons(disabled) {
-      btnHangup.disabled = disabled;
-      btnHangup2.disabled = disabled;
+    function syncButtons(inCall) {
+      btnHangup.disabled = !inCall;
     }
 
     function hardStop() {
@@ -730,9 +808,9 @@
         }
       } catch (_) {}
 
-      syncHangupButtons(true);
+      syncButtons(false);
       setStatusNote("Opkald afsluttet.", "warn");
-      log("Hard stop ✅ (alt lyd + Twilio stoppet)");
+      log("📴 Opkald afsluttet");
     }
 
     async function loadScript(src) {
@@ -754,32 +832,23 @@
 
     async function ensureTwilioSdk() {
       const already = getVoiceSdk();
-      if (already) {
-        log("Twilio SDK allerede loaded ✅");
-        return already;
-      }
+      if (already) return already;
 
-      log("Loader Twilio SDK…", { primary: TWILIO_SDK_PRIMARY });
-
+      log("🧩 Loader opkaldskomponenten");
       try {
         await loadScript(TWILIO_SDK_PRIMARY);
-      } catch (e1) {
-        log("Primary fejlede, prøver fallback…", {
-          message: errToString(e1),
-          fallback: TWILIO_SDK_FALLBACK
-        });
+      } catch (_) {
         await loadScript(TWILIO_SDK_FALLBACK);
       }
 
       const sdk = getVoiceSdk();
       if (!sdk) throw new Error("Twilio SDK loaded, men global ikke fundet.");
 
-      log("Twilio SDK OK ✅");
       return sdk;
     }
 
     async function getToken() {
-      log("Henter token…", { url: TOKEN_URL });
+      log("🔑 Opretter sikker opkaldsforbindelse");
       const r = await fetch(TOKEN_URL, { method: "GET" });
       const text = await r.text();
       let data = null;
@@ -788,7 +857,6 @@
       if (!r.ok) throw new Error("Token HTTP " + r.status + ": " + text);
       if (!data || !data.token) throw new Error("Token svar mangler token: " + text);
 
-      log("Token OK.");
       return data.token;
     }
 
@@ -796,25 +864,17 @@
       const sdk = await ensureTwilioSdk();
       const token = await getToken();
 
-      log("Initialiserer Twilio Device…");
-
-      device = new sdk.Device(token, {
-        logLevel: "error"
-      });
+      device = new sdk.Device(token, { logLevel: "error" });
 
       device.on("registered", () => {
-        log("Device registered ✅");
         setStatusNote("Forbundet og klar til opkald.", "ok");
+        log("✅ Forbindelsen er klar");
       });
 
       device.on("error", (e) => {
-        log("Device error ❌", { message: errToString(e) });
         setStatusNote("Der opstod en teknisk fejl i opkaldsforbindelsen.", "warn");
-      });
-
-      device.on("incoming", (c) => {
-        log("Incoming call (ikke forventet i denne demo).");
-        activeCall = c;
+        log("⚠️ Teknisk fejl i opkaldsforbindelsen");
+        console.error(e);
       });
 
       await device.register();
@@ -823,47 +883,74 @@
 
     async function callLaura() {
       try {
-        hardStop();
+        clearLog();
+        log("📞 Opkald startet");
         setStatusNote("Forbinder til Laura…");
 
+        try {
+          if (activeCall) activeCall.disconnect();
+        } catch (_) {}
+        try {
+          if (device) device.destroy();
+        } catch (_) {}
+
+        activeCall = null;
+        device = null;
+
         const dev = await ensureDevice();
-        syncHangupButtons(false);
+        syncButtons(true);
 
-        const params = {};
+        log("🎙️ Mikrofon er klar");
+        log("🧭 Forbinder til Laura");
 
-        log("Ringer op…");
-        activeCall = await dev.connect({ params });
+        activeCall = await dev.connect({ params: {} });
 
         activeCall.on("disconnect", () => {
-          log("Call disconnected.");
-          hardStop();
+          setStatusNote("Opkald afsluttet.", "warn");
+          log("📬 Klar til opfølgning");
+          syncButtons(false);
+
+          try {
+            if (device) {
+              device.destroy();
+              device = null;
+            }
+          } catch (_) {}
+
+          activeCall = null;
         });
 
         activeCall.on("error", (e) => {
-          log("Call error ❌", { message: errToString(e) });
           setStatusNote("Opkaldet blev afbrudt af en teknisk fejl.", "warn");
+          log("⚠️ Opkaldet blev afbrudt");
+          console.error(e);
           hardStop();
         });
 
-        log("Call connected ✅");
         setStatusNote("Opkaldet er i gang.", "ok");
+        log("👤 Navn registreres under samtalen");
+        log("🧭 Finder den rigtige medarbejder");
+        log("📩 Besked registreres ved behov");
       } catch (e) {
-        log("RING FEJL:", { message: errToString(e) });
         setStatusNote("Kunne ikke starte opkaldet.", "warn");
-        hardStop();
+        log("⚠️ Opkaldet kunne ikke startes");
+        console.error(e);
+        syncButtons(false);
       }
     }
 
     async function runTest() {
       try {
+        clearLog();
         setStatusNote("Kører netværkstest…");
-        log("Netværkstest: starter…");
+        log("🧪 Netværkstest startet");
         await ensureTwilioSdk();
         await getToken();
-        log("Netværkstest: OK ✅");
+        log("✅ Netværkstest gennemført");
         setStatusNote("Netværkstest gennemført.", "ok");
       } catch (e) {
-        log("Netværkstest FEJL ❌", { message: errToString(e) });
+        log("⚠️ Netværkstesten fejlede");
+        console.error(e);
         setStatusNote("Netværkstesten fejlede.", "warn");
       }
     }
@@ -896,39 +983,24 @@ ${location.href}`
       window.location.href = `mailto:${FEEDBACK_EMAIL}?subject=${subject}&body=${body}`;
     }
 
-    btnCall.addEventListener("click", () => {
-      log("Klik: Ring til Laura");
-      callLaura();
-    });
-
-    btnCall2.addEventListener("click", () => {
-      log("Klik: Ring til Laura (sektion 2)");
-      callLaura();
-    });
+    btnCall.addEventListener("click", callLaura);
+    btnCall2.addEventListener("click", callLaura);
 
     btnHangup.addEventListener("click", () => {
-      log("Klik: Læg på");
+      log("📴 Opkald stoppet manuelt");
       hardStop();
     });
 
-    btnHangup2.addEventListener("click", () => {
-      log("Klik: Læg på (sektion 2)");
-      hardStop();
-    });
-
-    btnTest.addEventListener("click", () => {
-      log("Klik: Kør netværkstest");
-      runTest();
-    });
+    btnTest.addEventListener("click", runTest);
 
     feedbackChoices.forEach(btn => {
       btn.addEventListener("click", () => setFeedback(btn.dataset.value));
     });
 
-    btnSendFeedback.addEventListener("click", () => {
-      sendFeedback();
-    });
+    btnSendFeedback.addEventListener("click", sendFeedback);
 
+    clearLog();
+    log("Klar.");
     setStatusNote("Klar.");
   </script>
 </body>

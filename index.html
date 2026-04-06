@@ -119,7 +119,7 @@
     }
 
     .lead {
-      margin: 0 0 22px;
+      margin: 0 0 16px;
       font-size: 19px;
       color: var(--muted);
       max-width: 40ch;
@@ -148,6 +148,12 @@
 
     button:active {
       transform: scale(0.97);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
     }
 
     .btn-primary {
@@ -183,6 +189,33 @@
       margin: 0;
       font-size: 14px;
       color: var(--muted);
+    }
+
+    .mini-guide {
+      margin-top: 10px;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface-soft);
+      max-width: 520px;
+    }
+
+    .mini-guide strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .mini-guide ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .mini-guide li + li {
+      margin-top: 6px;
     }
 
     .hero-side {
@@ -565,7 +598,7 @@
         <strong>Any &amp; All</strong>
         <span>Laura – AI front desk</span>
       </div>
-      <div class="build">Build: LAURA-v106</div>
+      <div class="build">Build: LAURA-v107</div>
     </div>
 
     <section class="card hero">
@@ -575,18 +608,27 @@
         <p class="lead">
           Laura tager telefonen med det samme, stiller videre når det er muligt og tager imod henvendelsen, når det ikke er.
         </p>
-        <p class="lead" style="margin-top:-6px;">
+        <p class="lead" style="margin-top:-4px;">
           Der er en klar håndtering – også når virksomheden ikke er tilgængelig.
         </p>
 
         <div class="cta-row">
           <button id="btnCall" class="btn-primary">Ring til Laura</button>
+          <button id="btnHangupTop" class="btn-secondary" disabled>Læg på</button>
           <button id="btnFeedbackTop" class="btn-secondary">Giv feedback</button>
         </div>
 
-        <p class="helper">
-          Ring til Laura og giv din feedback bagefter.
-        </p>
+        <p class="helper">Ring – prøv at få den til at stille dig videre.</p>
+        <p class="helper" style="margin-top:6px;">Du kan altid lægge på igen.</p>
+
+        <div class="mini-guide">
+          <strong>Prøv fx at sige:</strong>
+          <ul>
+            <li>“Jeg vil gerne tale med salg”</li>
+            <li>“Jeg har brug for support”</li>
+            <li>“Hvad koster det?”</li>
+          </ul>
+        </div>
       </div>
 
       <div class="hero-side">
@@ -778,6 +820,7 @@
     const statusNoteEl = document.getElementById("statusNote");
 
     const btnCall = document.getElementById("btnCall");
+    const btnHangupTop = document.getElementById("btnHangupTop");
     const btnHangup = document.getElementById("btnHangup");
     const btnTest = document.getElementById("btnTest");
 
@@ -828,6 +871,8 @@
 
     function syncButtons(inCall) {
       btnHangup.disabled = !inCall;
+      btnHangupTop.disabled = !inCall;
+      btnCall.disabled = inCall;
     }
 
     function hardStop() {
@@ -1021,10 +1066,17 @@ ${location.href}`
     }
 
     btnCall.addEventListener("click", callLaura);
+
+    btnHangupTop.addEventListener("click", () => {
+      log("📴 Opkald stoppet manuelt");
+      hardStop();
+    });
+
     btnHangup.addEventListener("click", () => {
       log("📴 Opkald stoppet manuelt");
       hardStop();
     });
+
     btnTest.addEventListener("click", runTest);
 
     btnFeedbackTop.addEventListener("click", openFeedbackModal);
@@ -1047,6 +1099,7 @@ ${location.href}`
     clearLog();
     log("Klar.");
     setStatusNote("Klar.");
+    syncButtons(false);
   </script>
 </body>
 </html>

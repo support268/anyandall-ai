@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ring til Laura | Any & All</title>
-  <meta name="description" content="Prøv Laura – en kontrolleret demo af en AI front desk, der tager imod opkald, stiller videre og samler op, når virksomheden ikke er tilgængelig." />
+  <meta name="description" content="Prøv Laura og giv feedback. En kontrolleret demo af en AI front desk, der tager imod opkald, stiller videre og samler op, når virksomheden ikke er tilgængelig." />
   <style>
     :root {
       --bg: #f4f6fb;
@@ -88,7 +88,7 @@
       display: grid;
       grid-template-columns: 1.05fr 0.95fr;
       gap: 24px;
-      margin-bottom: 24px;
+      margin-bottom: 32px;
       overflow: hidden;
     }
 
@@ -121,7 +121,7 @@
       margin: 0 0 22px;
       font-size: 19px;
       color: var(--muted);
-      max-width: 38ch;
+      max-width: 40ch;
     }
 
     .cta-row {
@@ -536,7 +536,7 @@
         <strong>Any &amp; All</strong>
         <span>Laura – AI front desk</span>
       </div>
-      <div class="build">Build: LAURA-v103</div>
+      <div class="build">Build: LAURA-v104</div>
     </div>
 
     <section class="card hero">
@@ -555,7 +555,7 @@
         </div>
 
         <p class="helper">
-          Prøv fx salg, support eller et spørgsmål om pakker og priser.
+          Ring til Laura og giv din feedback bagefter.
         </p>
       </div>
 
@@ -582,18 +582,17 @@
     <section class="card section">
       <h2>Live demo</h2>
       <p class="section-intro">
-        Her kan du ringe til Laura og følge, hvordan opkaldet bevæger sig gennem systemet.
+        Ring til Laura og følg, hvordan opkaldet bevæger sig gennem systemet.
       </p>
 
       <div class="demo">
         <div class="demo-left">
-          <h3>Prøv Laura</h3>
+          <h3>Opkald</h3>
           <p>
-            Start et opkald, læg på igen eller kør en hurtig netværkstest.
+            Start eller afslut opkaldet her. Netværkstesten kan bruges, hvis du vil kontrollere forbindelsen.
           </p>
 
           <div class="cta-row">
-            <button id="btnCall2" class="btn-primary">Ring til Laura</button>
             <button id="btnHangup" class="btn-secondary" disabled>Læg på</button>
             <button id="btnTest" class="btn-soft">Kør netværkstest</button>
           </div>
@@ -604,7 +603,7 @@
         <div class="demo-right">
           <h3>Sådan oplever Laura opkaldet</h3>
           <p>
-            Loggen viser opkaldet som et forløb – ikke som en teknisk konsol.
+            Loggen viser forløbet som en oplevelse – ikke som en teknisk konsol.
           </p>
 
           <div id="log" class="log"></div>
@@ -747,7 +746,6 @@
     const statusNoteEl = document.getElementById("statusNote");
 
     const btnCall = document.getElementById("btnCall");
-    const btnCall2 = document.getElementById("btnCall2");
     const btnHangup = document.getElementById("btnHangup");
     const btnTest = document.getElementById("btnTest");
 
@@ -984,7 +982,6 @@ ${location.href}`
     }
 
     btnCall.addEventListener("click", callLaura);
-    btnCall2.addEventListener("click", callLaura);
 
     btnHangup.addEventListener("click", () => {
       log("📴 Opkald stoppet manuelt");

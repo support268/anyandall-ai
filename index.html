@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ring til Laura | Any & All</title>
+  <title>Laura – Demo</title>
   <meta name="description" content="Prøv Laura og giv feedback. En kontrolleret demo af en AI front desk, der tager imod opkald, stiller videre og samler op, når virksomheden ikke er tilgængelig." />
+
   <style>
     :root {
       --bg: #f4f6fb;
@@ -501,6 +502,53 @@
       padding-top: 4px;
     }
 
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 999;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 640px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 24px 60px rgba(16,24,40,.18);
+      padding: 24px;
+    }
+
+    .modal-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+
+    .modal-top h3 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .modal-close {
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--text);
+      padding: 10px 12px;
+    }
+
     @media (max-width: 980px) {
       .hero,
       .demo,
@@ -536,7 +584,7 @@
         <strong>Any &amp; All</strong>
         <span>Laura – AI front desk</span>
       </div>
-      <div class="build">Build: LAURA-v104</div>
+      <div class="build">Build: LAURA-v105</div>
     </div>
 
     <section class="card hero">
@@ -552,6 +600,7 @@
 
         <div class="cta-row">
           <button id="btnCall" class="btn-primary">Ring til Laura</button>
+          <button id="btnFeedbackTop" class="btn-secondary">Giv feedback</button>
         </div>
 
         <p class="helper">
@@ -714,9 +763,30 @@
     </section>
 
     <section class="card feedback">
-      <h2>Giv feedback</h2>
+      <h2>Feedback</h2>
       <p>
         Vi forbedrer Laura løbende. Hvis noget ikke fungerede, som du forventede, vil vi gerne høre det.
+      </p>
+
+      <div class="cta-row">
+        <button id="btnFeedbackInline" class="btn-secondary">Giv feedback</button>
+      </div>
+    </section>
+
+    <div class="footer">
+      Any &amp; All · Laura demo
+    </div>
+  </div>
+
+  <div id="feedbackModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="feedbackTitle">
+      <div class="modal-top">
+        <h3 id="feedbackTitle">Giv feedback</h3>
+        <button id="btnCloseModal" class="modal-close">Luk</button>
+      </div>
+
+      <p class="tiny" style="margin:0 0 14px;">
+        Hvad fungerede – og hvad gjorde ikke?
       </p>
 
       <div class="feedback-row">
@@ -725,19 +795,11 @@
         <button type="button" class="btn-secondary feedback-choice" data-value="Fungerede ikke">👎 Fungerede ikke</button>
       </div>
 
-      <textarea id="feedbackText" placeholder="Hvad skete der?"></textarea>
+      <textarea id="feedbackText" placeholder="Skriv din feedback her..."></textarea>
 
-      <div class="cta-row">
+      <div class="cta-row" style="margin-bottom:0;">
         <button id="btnSendFeedback" class="btn-primary" type="button">Send feedback</button>
       </div>
-
-      <p class="tiny">
-        Feedback sendes som mail i denne version.
-      </p>
-    </section>
-
-    <div class="footer">
-      Any &amp; All · Laura demo
     </div>
   </div>
 
@@ -748,6 +810,11 @@
     const btnCall = document.getElementById("btnCall");
     const btnHangup = document.getElementById("btnHangup");
     const btnTest = document.getElementById("btnTest");
+
+    const btnFeedbackTop = document.getElementById("btnFeedbackTop");
+    const btnFeedbackInline = document.getElementById("btnFeedbackInline");
+    const feedbackModal = document.getElementById("feedbackModal");
+    const btnCloseModal = document.getElementById("btnCloseModal");
 
     const feedbackChoices = Array.from(document.querySelectorAll(".feedback-choice"));
     const feedbackTextEl = document.getElementById("feedbackText");
@@ -762,6 +829,16 @@
     let device = null;
     let activeCall = null;
     let selectedFeedback = "";
+
+    function openFeedbackModal() {
+      feedbackModal.classList.add("open");
+      feedbackModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeFeedbackModal() {
+      feedbackModal.classList.remove("open");
+      feedbackModal.setAttribute("aria-hidden", "true");
+    }
 
     function setStatusNote(text, type = "") {
       statusNoteEl.textContent = text;
@@ -778,13 +855,6 @@
 
     function clearLog() {
       statusEl.innerHTML = "";
-    }
-
-    function errToString(e) {
-      if (!e) return "Ukendt fejl";
-      if (typeof e === "string") return e;
-      if (e instanceof Error) return (e.name || "Error") + ": " + (e.message || "");
-      try { return JSON.stringify(e); } catch (_) { return String(e); }
     }
 
     function syncButtons(inCall) {
@@ -982,13 +1052,23 @@ ${location.href}`
     }
 
     btnCall.addEventListener("click", callLaura);
-
     btnHangup.addEventListener("click", () => {
       log("📴 Opkald stoppet manuelt");
       hardStop();
     });
-
     btnTest.addEventListener("click", runTest);
+
+    btnFeedbackTop.addEventListener("click", openFeedbackModal);
+    btnFeedbackInline.addEventListener("click", openFeedbackModal);
+    btnCloseModal.addEventListener("click", closeFeedbackModal);
+
+    feedbackModal.addEventListener("click", (e) => {
+      if (e.target === feedbackModal) closeFeedbackModal();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeFeedbackModal();
+    });
 
     feedbackChoices.forEach(btn => {
       btn.addEventListener("click", () => setFeedback(btn.dataset.value));

@@ -4,22 +4,25 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ring til Laura | Any & All</title>
-  <meta name="description" content="Prøv at ringe til Laura – en kontrolleret AI front desk, der stiller videre, håndterer henvendelser og arbejder med tydelige rammer for data og ansvar." />
+  <meta name="description" content="Prøv at ringe til Laura – en AI front desk, der tager imod opkald, stiller videre og samler op, når virksomheden ikke er tilgængelig." />
   <style>
     :root{
-      --bg:#f5f7fb;
-      --card:#ffffff;
-      --text:#1f2937;
+      --bg:#f4f6fb;
+      --surface:#ffffff;
+      --surface-soft:#f8faff;
+      --text:#172033;
       --muted:#667085;
-      --line:#e6e8ef;
-      --brand:#4f46e5;
-      --brand-dark:#3730a3;
-      --brand-soft:#eef2ff;
+      --line:#e6eaf2;
+      --brand:#2f5bff;
+      --brand-dark:#1f45d8;
+      --brand-soft:#eef3ff;
       --ok:#166534;
       --warn:#92400e;
-      --shadow:0 16px 40px rgba(15,23,42,.08);
-      --radius:20px;
-      --max:1160px;
+      --shadow:0 16px 44px rgba(16,24,40,.08);
+      --radius-xl:24px;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --max:1180px;
     }
 
     * { box-sizing: border-box; }
@@ -29,7 +32,7 @@
       padding: 0;
       background: var(--bg);
       color: var(--text);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
       line-height: 1.5;
     }
 
@@ -44,10 +47,10 @@
 
     .topbar {
       display: flex;
-      align-items: flex-start;
       justify-content: space-between;
-      gap: 18px;
-      margin-bottom: 26px;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 28px;
     }
 
     .brand {
@@ -59,12 +62,12 @@
     .brand strong {
       font-size: 30px;
       line-height: 1;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
     }
 
     .brand span {
-      color: var(--muted);
       font-size: 15px;
+      color: var(--muted);
     }
 
     .build {
@@ -74,56 +77,60 @@
       padding-top: 6px;
     }
 
-    .hero {
-      display: grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 22px;
-      margin-bottom: 22px;
-    }
-
     .card {
-      background: var(--card);
+      background: var(--surface);
       border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-radius: var(--radius-xl);
       box-shadow: var(--shadow);
     }
 
-    .hero-main {
-      padding: 34px 30px 30px;
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 24px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .hero-copy {
+      padding: 36px 34px 34px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .eyebrow {
       display: inline-block;
       margin-bottom: 12px;
-      color: var(--brand);
       font-size: 12px;
       font-weight: 800;
-      letter-spacing: .05em;
       text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--brand);
     }
 
     h1 {
       margin: 0 0 14px;
-      font-size: clamp(38px, 6vw, 64px);
-      line-height: 1.02;
-      letter-spacing: -0.03em;
+      font-size: clamp(40px, 6vw, 66px);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
     }
 
     .lead {
       margin: 0 0 22px;
-      max-width: 60ch;
-      color: var(--muted);
       font-size: 19px;
+      color: var(--muted);
+      max-width: 38ch;
     }
 
     .cta-row {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
-    button {
+    button, .button-link {
       appearance: none;
       border: 0;
       border-radius: 999px;
@@ -136,6 +143,7 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
+      text-decoration: none;
     }
 
     .btn-primary {
@@ -151,82 +159,142 @@
       border: 1px solid var(--line);
     }
 
-    .btn-secondary:hover { background: #fafafa; }
+    .btn-secondary:hover { background: #fafcff; }
 
     .btn-soft {
       background: var(--brand-soft);
       color: var(--brand-dark);
-      border: 1px solid #c7d2fe;
+      border: 1px solid #d8e2ff;
     }
 
-    .btn-soft:hover { background: #e0e7ff; }
+    .btn-soft:hover { background: #e4ecff; }
 
     .helper {
       margin: 0;
-      color: var(--muted);
       font-size: 14px;
-    }
-
-    .hero-side {
-      padding: 22px;
-      display: grid;
-      gap: 14px;
-      align-content: start;
-    }
-
-    .mini {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 18px;
-      background: #fbfcff;
-    }
-
-    .mini h3 {
-      margin: 0 0 8px;
-      font-size: 17px;
-    }
-
-    .mini p {
-      margin: 0;
       color: var(--muted);
+    }
+
+    .hero-visual {
+      min-height: 420px;
+      background:
+        linear-gradient(180deg, rgba(22,33,66,.06), rgba(22,33,66,.02)),
+        #e9eef9;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-visual img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-visual-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(47,91,255,.18), transparent 30%),
+        radial-gradient(circle at 80% 80%, rgba(47,91,255,.12), transparent 28%),
+        linear-gradient(135deg, #f5f8ff 0%, #edf2ff 45%, #f7f9fd 100%);
+    }
+
+    .fallback-frame {
+      width: 100%;
+      max-width: 520px;
+      border: 1px solid rgba(47,91,255,.14);
+      border-radius: 24px;
+      background: rgba(255,255,255,.72);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 50px rgba(31,69,216,.08);
+      padding: 22px;
+    }
+
+    .fallback-title {
       font-size: 15px;
+      font-weight: 700;
+      color: #1f45d8;
+      margin-bottom: 12px;
+    }
+
+    .fallback-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .fallback-box {
+      border: 1px solid rgba(23,32,51,.08);
+      border-radius: 16px;
+      background: rgba(255,255,255,.86);
+      padding: 14px;
+      font-size: 14px;
+      color: #334155;
     }
 
     .section {
-      margin-bottom: 22px;
-      padding: 28px;
+      padding: 30px;
+      margin-bottom: 24px;
     }
 
     .section h2 {
       margin: 0 0 10px;
-      font-size: 30px;
-      line-height: 1.08;
-      letter-spacing: -0.02em;
+      font-size: 32px;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
     }
 
     .section-intro {
       margin: 0 0 20px;
-      color: var(--muted);
+      max-width: 68ch;
       font-size: 16px;
-      max-width: 70ch;
+      color: var(--muted);
     }
 
-    .flow-grid {
+    .flow {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 16px;
+      align-items: stretch;
     }
 
     .flow-step {
+      background: var(--surface-soft);
       border: 1px solid var(--line);
-      border-radius: 18px;
-      background: #fff;
+      border-radius: 20px;
       padding: 18px;
       position: relative;
-      min-height: 220px;
+      min-height: 200px;
     }
 
-    .flow-step .num {
+    .flow-step::after {
+      content: "→";
+      position: absolute;
+      right: -13px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      box-shadow: 0 6px 14px rgba(16,24,40,.06);
+    }
+
+    .flow-step:last-child::after {
+      display: none;
+    }
+
+    .step-no {
       width: 34px;
       height: 34px;
       border-radius: 999px;
@@ -241,61 +309,64 @@
 
     .flow-step h3 {
       margin: 0 0 8px;
-      font-size: 18px;
-      line-height: 1.15;
+      font-size: 19px;
+      line-height: 1.12;
     }
 
     .flow-step p {
       margin: 0;
-      color: var(--muted);
       font-size: 15px;
+      color: var(--muted);
     }
 
     .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 22px;
-      margin-bottom: 22px;
+      gap: 24px;
+      margin-bottom: 24px;
     }
 
-    .bullets {
+    .text-blocks {
       display: grid;
-      gap: 12px;
-      margin-top: 14px;
+      gap: 14px;
+      margin-top: 16px;
     }
 
-    .bullet {
-      padding: 14px 16px;
+    .text-block {
+      padding: 16px 18px;
       border: 1px solid var(--line);
-      border-radius: 16px;
-      background: #fff;
+      border-radius: var(--radius-lg);
+      background: var(--surface-soft);
     }
 
-    .bullet strong {
+    .text-block strong {
       display: block;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       font-size: 15px;
     }
 
-    .bullet span {
+    .text-block span {
       color: var(--muted);
       font-size: 15px;
     }
 
     .call-panel {
-      margin-bottom: 22px;
-      padding: 28px;
+      padding: 30px;
+      margin-bottom: 24px;
     }
 
     .call-panel h2 {
       margin: 0 0 8px;
-      font-size: 30px;
+      font-size: 32px;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
     }
 
     .call-panel p {
       margin: 0 0 16px;
       color: var(--muted);
-      max-width: 72ch;
+      max-width: 70ch;
+      font-size: 16px;
     }
 
     .status-note {
@@ -321,19 +392,22 @@
     }
 
     .feedback {
-      margin-bottom: 22px;
-      padding: 28px;
+      padding: 30px;
+      margin-bottom: 24px;
     }
 
     .feedback h2 {
       margin: 0 0 8px;
-      font-size: 30px;
+      font-size: 32px;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
     }
 
     .feedback p {
       margin: 0 0 14px;
       color: var(--muted);
       max-width: 68ch;
+      font-size: 16px;
     }
 
     .feedback-row {
@@ -376,16 +450,25 @@
     @media (max-width: 980px) {
       .hero,
       .grid-2,
-      .flow-grid {
+      .flow {
         grid-template-columns: 1fr;
+      }
+
+      .flow-step::after {
+        content: "↓";
+        right: auto;
+        left: 50%;
+        bottom: -13px;
+        top: auto;
+        transform: translateX(-50%);
       }
 
       .topbar {
         flex-direction: column;
       }
 
-      .flow-step {
-        min-height: unset;
+      .hero-visual {
+        min-height: 320px;
       }
     }
   </style>
@@ -397,16 +480,16 @@
         <strong>Any &amp; All</strong>
         <span>Laura – AI front desk</span>
       </div>
-      <div class="build">Build: LAURA-v101</div>
+      <div class="build">Build: LAURA-v102</div>
     </div>
 
-    <section class="hero">
-      <div class="card hero-main">
+    <section class="card hero">
+      <div class="hero-copy">
         <div class="eyebrow">Prøv Laura</div>
-        <h1>Ring til Laura</h1>
+        <h1>Alle opkald bliver håndteret.</h1>
         <p class="lead">
-          Laura stiller videre til den rigtige funktion i åbningstiden, håndterer henvendelser uden telefonkø
-          og samler op, når virksomheden ikke er tilgængelig.
+          Laura tager imod opkald med det samme, stiller videre når det er muligt og samler op,
+          når det ikke er. Så dialogen ikke stopper, bare fordi virksomheden ikke er tilgængelig i øjeblikket.
         </p>
 
         <div class="cta-row">
@@ -416,30 +499,26 @@
         </div>
 
         <p class="helper">
-          Du kan fx bede om salg, support eller stille et spørgsmål om pakker og priser.
+          Du kan fx bede om salg eller support, eller stille et spørgsmål om pakker og priser.
         </p>
       </div>
 
-      <div class="card hero-side">
-        <div class="mini">
-          <h3>Ingen telefonkø</h3>
-          <p>
-            Alle opkald bliver taget med det samme, så kunder ikke møder ventetid som første oplevelse.
-          </p>
-        </div>
-
-        <div class="mini">
-          <h3>Kontakt kan samles op igen</h3>
-          <p>
-            Hvis virksomheden ikke er tilgængelig, bliver henvendelsen registreret, så kunden kan kontaktes igen.
-          </p>
-        </div>
-
-        <div class="mini">
-          <h3>Struktureret opfølgning</h3>
-          <p>
-            Henvendelser bliver samlet op på en måde, der gør det tydeligt, hvad der skal følges op på – og af hvem.
-          </p>
+      <div class="hero-visual">
+        <img
+          src="hero-laura.jpg"
+          alt="Visualisering af Laura som et roligt og kontrolleret front desk-lag mellem opkald og virksomhed"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        />
+        <div class="hero-visual-fallback" style="display:none;">
+          <div class="fallback-frame">
+            <div class="fallback-title">Laura som front desk-lag</div>
+            <div class="fallback-grid">
+              <div class="fallback-box">Opkald kommer ind og bliver mødt med det samme.</div>
+              <div class="fallback-box">Laura vælger spor: videre, svar eller opsamling.</div>
+              <div class="fallback-box">Svar bygger på officielle kilder og godkendt Q&amp;A.</div>
+              <div class="fallback-box">Henvendelser bliver samlet op, så der kan følges op efterfølgende.</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -447,103 +526,103 @@
     <section class="card section">
       <h2>Sådan arbejder Laura</h2>
       <p class="section-intro">
-        Laura er bygget som et kontrolleret front desk-flow. Hun håndterer opkald i en fast rækkefølge, så kunder bliver mødt ensartet og virksomheden bevarer kontrollen.
+        Laura er bygget som et fast front desk-flow. Hun møder opkald ensartet, leder dem i den rigtige retning og sørger for, at dialogen kan fortsætte, også når virksomheden ikke er tilgængelig.
       </p>
 
-      <div class="flow-grid">
+      <div class="flow">
         <div class="flow-step">
-          <div class="num">1</div>
-          <h3>Opkald kommer ind</h3>
+          <div class="step-no">1</div>
+          <h3>Opkald bliver taget</h3>
           <p>
-            Laura tager imod alle opkald med det samme og identificerer, hvad den der ringer ønsker.
+            Laura tager imod alle opkald med det samme og skaber et klart første møde med virksomheden.
           </p>
         </div>
 
         <div class="flow-step">
-          <div class="num">2</div>
-          <h3>Laura finder det rigtige spor</h3>
+          <div class="step-no">2</div>
+          <h3>Det rigtige spor bliver valgt</h3>
           <p>
-            I åbningstiden stiller Laura videre til den rigtige funktion. Hvis virksomheden har lukket, samler hun henvendelsen op i stedet.
+            I åbningstiden stiller Laura videre til den relevante funktion. Hvis virksomheden har lukket, går hun i stedet videre til opsamling.
           </p>
         </div>
 
         <div class="flow-step">
-          <div class="num">3</div>
-          <h3>AI bruges inden for klare rammer</h3>
+          <div class="step-no">3</div>
+          <h3>Kendte spørgsmål kan besvares</h3>
           <p>
-            Laura bruger AI til at forstå henvendelsen, finde det rigtige spor og formulere en struktureret opsummering til opfølgning.
+            Når svaret allerede findes inden for de rammer, virksomheden har sat, kan Laura give det med det samme.
           </p>
         </div>
 
         <div class="flow-step">
-          <div class="num">4</div>
+          <div class="step-no">4</div>
           <h3>Henvendelsen bliver samlet op</h3>
           <p>
-            Hvis kunden ikke kan stilles videre med det samme, bliver kontakt og henvendelse registreret struktureret, så virksomheden kan følge op.
+            Hvis ingen kan tage over med det samme, bliver kontakt og indhold registreret, så virksomheden kan følge op bagefter.
           </p>
         </div>
       </div>
     </section>
 
     <section class="grid-2">
-      <div class="card section">
-        <h2>Hvordan AI bruges i Laura</h2>
+      <section class="card section">
+        <h2>Hvordan AI indgår</h2>
         <p class="section-intro">
-          AI er en del af Laura, men kun i de dele af flowet, hvor det giver mening og kan styres.
+          AI er en del af Laura, men kun dér, hvor det giver mening. Den bruges til at forstå henvendelser, vælge det rigtige spor og formulere svar inden for tydelige rammer.
         </p>
 
-        <div class="bullets">
-          <div class="bullet">
-            <strong>AI bruges til at forstå henvendelser</strong>
-            <span>Laura bruger AI til at forstå, hvad kunden ønsker, og til at vælge det rigtige spor.</span>
+        <div class="text-blocks">
+          <div class="text-block">
+            <strong>AI bruges til at forstå det, der bliver sagt</strong>
+            <span>Laura bruger AI til at forstå, hvad den der ringer ønsker, og til at føre samtalen i den rigtige retning.</span>
           </div>
 
-          <div class="bullet">
-            <strong>AI bruges til at finde det rigtige svar</strong>
-            <span>Hvis Laura svarer på et spørgsmål, hentes svaret fra virksomhedens officielle hjemmeside og/eller fra en Q&amp;A, som virksomheden selv har sendt og godkendt.</span>
+          <div class="text-block">
+            <strong>AI bruges til at formulere svar inden for faste rammer</strong>
+            <span>Når Laura besvarer spørgsmål, sker det på baggrund af virksomhedens officielle hjemmeside og/eller en Q&amp;A, som virksomheden selv har sendt og godkendt.</span>
           </div>
 
-          <div class="bullet">
-            <strong>AI bruges til struktureret opsummering</strong>
-            <span>Når en henvendelse skal følges op, hjælper AI med at opsummere den, så opfølgning bliver enkel og ensartet.</span>
+          <div class="text-block">
+            <strong>AI bruges til at samle op på henvendelser</strong>
+            <span>Når et opkald skal følges op, hjælper AI med at omsætte samtalen til en kort og brugbar opsummering.</span>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div class="card section">
-        <h2>Data og kontrol</h2>
+      <section class="card section">
+        <h2>Data og ansvar</h2>
         <p class="section-intro">
-          Laura er ikke lagt ind i virksomhedens interne systemer som udgangspunkt. Hun arbejder i et kontrolleret front desk-lag foran virksomheden.
+          Laura er ikke et åbent AI-lag inde i virksomheden. Hun arbejder foran virksomheden i et separat og kontrolleret flow, hvor kilder, datagrundlag og opfølgning er tydeligt afgrænset.
         </p>
 
-        <div class="bullets">
-          <div class="bullet">
-            <strong>Ingen fri adgang til virksomheden</strong>
-            <span>Laura får ikke automatisk adgang til interne systemer eller virksomhedens data.</span>
+        <div class="text-blocks">
+          <div class="text-block">
+            <strong>Ingen fri adgang til virksomhedens systemer</strong>
+            <span>Laura får ikke automatisk adgang til interne systemer eller virksomhedens data som udgangspunkt.</span>
           </div>
 
-          <div class="bullet">
+          <div class="text-block">
             <strong>Kontrolleret datagrundlag</strong>
-            <span>Svar bygger på virksomhedens officielle hjemmeside og/eller en Q&amp;A, som virksomheden selv har sendt til os.</span>
+            <span>Svar hentes fra virksomhedens officielle materiale og den viden, der på forhånd er afleveret og godkendt.</span>
           </div>
 
-          <div class="bullet">
-            <strong>Struktureret håndtering</strong>
-            <span>Når Laura samler en henvendelse op, bliver de nødvendige oplysninger registreret kontrolleret og brugbart til opfølgning.</span>
+          <div class="text-block">
+            <strong>Kun det nødvendige bliver samlet op</strong>
+            <span>Når en henvendelse skal følges op, bliver de nødvendige oplysninger registreret, så virksomheden kan arbejde videre uden støj.</span>
           </div>
 
-          <div class="bullet">
-            <strong>Klare grænser</strong>
-            <span>Laura håndterer henvendelser og sender dem videre korrekt. Hun er ikke designet til at overtage virksomhedens ansvar.</span>
+          <div class="text-block">
+            <strong>Ansvar er tydeligt afgrænset</strong>
+            <span>Laura håndterer opkald og sender dem videre korrekt. Hun er ikke designet til at overtage virksomhedens ansvar.</span>
           </div>
         </div>
-      </div>
+      </section>
     </section>
 
     <section class="card call-panel">
       <h2>Test Laura nu</h2>
       <p>
-        Tryk ring, giv mikrofonadgang og prøv et almindeligt opkaldsforløb. Du kan bede om salg eller support, eller stille et spørgsmål om fx pakker og priser.
+        Tryk ring, giv mikrofonadgang og prøv et almindeligt opkaldsforløb. Bede om salg eller support, eller stil et spørgsmål om fx pakker og priser.
       </p>
 
       <div class="cta-row">
@@ -558,7 +637,7 @@
     <section class="card feedback">
       <h2>Giv feedback</h2>
       <p>
-        Har du lige testet Laura, må du meget gerne sende en kort tilbagemelding. Det hjælper os med at forbedre flow, svar og opfølgning hurtigt og konkret.
+        Vi forbedrer Laura løbende. Hvis noget var uklart, overraskende eller bare ikke fungerede, vil vi gerne høre det.
       </p>
 
       <div class="feedback-row">
